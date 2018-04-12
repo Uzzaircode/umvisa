@@ -17,6 +17,12 @@
         "jquery": "^3.2",
         "laravel-mix": "^2.0",
         "lodash": "^4.17.4",
-        "vue": "^2.5.7"
+        "vue": "^2.5.7",
+        "gulp": "^3.9.1",
+        "gulp-autoprefixer": "^5.0.0",
+        "gulp-rename": "^1.2.2",
+        "gulp-rtlcss": "^1.2.0",
+        "gulp-sass": "^3.1.0",
+        "npm-run-all": "^4.1.2"
     }
 }
