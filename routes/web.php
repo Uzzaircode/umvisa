@@ -15,6 +15,11 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+// Auth
 Auth::routes();
+// OAuth
+Route::get('login/{provider}',          'Auth\SocialAccountsController@redirectToProvider');
+Route::get('login/{provider}/callback', 'Auth\SocialAccountsController@handleProviderCallback');
+
 
 Route::get('/home', 'HomeController@index')->name('home');

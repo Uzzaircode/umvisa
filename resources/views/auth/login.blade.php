@@ -50,6 +50,7 @@
               <div class="text-center text-muted">
                 Don't have account yet? <a href="{{route('register')}}">Sign up</a>
               </div>
+              <a href="/login/github"  class="btn btn-default btn-md">Log in with Github</a>
             </div>
           </div>
         </div>
