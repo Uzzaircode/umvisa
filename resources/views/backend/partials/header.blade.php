@@ -40,7 +40,7 @@
                     <a href="#" class="nav-link pr-0 leading-none" data-toggle="dropdown">
                         <span class="avatar" style="background-image: url(./demo/faces/female/25.jpg)"></span>
                         <span class="ml-2 d-none d-lg-block">
-                            <span class="text-default">Uzzair Baharudin</span>
+                            <span class="text-default">{{Auth::user()->name}}</span>
                             <small class="text-muted d-block mt-1">Administrator</small>
                         </span>
                     </a>
@@ -64,8 +64,12 @@
                         <a class="dropdown-item" href="#">
                             <i class="dropdown-icon fe fe-help-circle"></i> Need help?
                         </a>
-                        <a class="dropdown-item" href="#">
-                            <i class="dropdown-icon fe fe-log-out"></i> Sign out
+                        <a class="dropdown-item" href="{{ route('logout') }}" onclick="event.preventDefault();
+                                                     document.getElementById('logout-form').submit();">
+                            <i class="dropdown-icon fe fe-log-out"></i> {{ __('Logout') }}
+                            <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                                        @csrf
+                            </form>
                         </a>
                     </div>
                 </div>
