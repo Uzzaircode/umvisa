@@ -7,7 +7,9 @@
         "watch-poll": "npm run watch -- --watch-poll",
         "hot": "cross-env NODE_ENV=development node_modules/webpack-dev-server/bin/webpack-dev-server.js --inline --hot --config=node_modules/laravel-mix/setup/webpack.config.js",
         "prod": "npm run production",
-        "production": "cross-env NODE_ENV=production node_modules/webpack/bin/webpack.js --no-progress --hide-modules --config=node_modules/laravel-mix/setup/webpack.config.js"
+        "production": "cross-env NODE_ENV=production node_modules/webpack/bin/webpack.js --no-progress --hide-modules --config=node_modules/laravel-mix/setup/webpack.config.js",
+        "gulp-watch": "gulp watch",
+        "gulp-build": "gulp build"
     },
     "devDependencies": {
         "axios": "^0.18",
@@ -24,5 +26,17 @@
         "gulp-rtlcss": "^1.2.0",
         "gulp-sass": "^3.1.0",
         "npm-run-all": "^4.1.2"
-    }
+    },
+    "browserslist": [
+    "last 1 major version",
+    ">= 1%",
+    "Chrome >= 45",
+    "Firefox >= 38",
+    "Edge >= 12",
+    "Explorer >= 10",
+    "iOS >= 9",
+    "Safari >= 9",
+    "Android >= 4.4",
+    "Opera >= 30"
+]
 }

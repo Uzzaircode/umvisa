@@ -6,7 +6,7 @@ var gulp = require('gulp'),
     pckg = require('./package.json');
 
 gulp.task('styles', function () {
-    return gulp.src('src/assets/scss/bundle.scss', { base: '.' })
+    return gulp.src('resources/assets/scss/bundle.scss', { base: '.' })
         .pipe(sass({
             precision: 8,
             outputStyle: 'expanded'
@@ -16,15 +16,15 @@ gulp.task('styles', function () {
             cascade: false
         }))
         .pipe(rename('dashboard.css'))
-        .pipe(gulp.dest('src/assets/css/'))
+        .pipe(gulp.dest('public/css/'))
 
         .pipe(rtlcss())
         .pipe(rename('dashboard.rtl.css'))
-        .pipe(gulp.dest('src/assets/css/'));
+        .pipe(gulp.dest('public/css/'));
 });
 
 gulp.task('styles-plugins', function () {
-    return gulp.src('src/assets/plugins/**/plugin.scss', { base: '.' })
+    return gulp.src('public/plugins/**/plugin.scss', { base: '.' })
         .pipe(sass({
             precision: 6,
             outputStyle: 'expanded'
@@ -40,8 +40,8 @@ gulp.task('styles-plugins', function () {
 });
 
 gulp.task('watch', ['styles', 'styles-plugins'], function () {
-    gulp.watch('src/assets/scss/**/*.scss', ['styles']);
-    gulp.watch('src/assets/plugins/**/*.scss', ['styles-plugins']);
+    gulp.watch('resources/assets/scss/**/*.scss', ['styles']);
+    gulp.watch('resources/assets/plugins/**/*.scss', ['styles-plugins']);
 });
 
 gulp.task('build', ['styles', 'styles-plugins']);
