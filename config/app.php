@@ -152,6 +152,8 @@ return [
          */
         Laravel\Socialite\SocialiteServiceProvider::class,
         Collective\Html\HtmlServiceProvider::class,
+        App\Providers\FormInputServiceProvider::class,       
+
         /*
          * Application Service Providers...
          */

@@ -23,3 +23,5 @@ Route::get('login/{provider}/callback', 'Auth\SocialAccountsController@handlePro
 
 
 Route::get('/home', 'HomeController@index')->name('home');
+
+Route::get('form', ['uses'=>'\Modules\User\Http\Controllers\UsersController@create', 'as'=>'forms.create']);
