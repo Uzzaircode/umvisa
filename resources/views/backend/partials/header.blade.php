@@ -130,18 +130,15 @@
                       <a href="./empty.html" class="dropdown-item active">Empty page</a>
                       <a href="./rtl.html" class="dropdown-item ">RTL mode</a>
                     </div>
-                  </li>
-                  <li class="nav-item dropdown">
-                    <a href="./form-elements.html" class="nav-link"><i class="fe fe-check-square"></i> Forms</a>
-                  </li>
-                  <li class="nav-item">
-                    <a href="./gallery.html" class="nav-link"><i class="fe fe-image"></i> Gallery</a>
-                  </li>
+                  </li>   
+                  @role('Admin') {{-- Laravel-permission blade helper --}}               
                   <li class="nav-item">
                     <a href="./docs/index.html" class="nav-link"><i class="fe fe-file-text"></i> Documentation</a>
                   </li>
+                  @endrole
                 </ul>
               </div>
             </div>
           </div>
-        </div>
+        </div>                                    
+                                       
