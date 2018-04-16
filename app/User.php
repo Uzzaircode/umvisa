@@ -6,6 +6,7 @@ use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Spatie\Permission\Traits\HasRoles;
 use App\LinkedSocialAccount;
+use Modules\Post\Entities\Post;
 
 class User extends Authenticatable
 {
@@ -32,5 +33,10 @@ class User extends Authenticatable
 
     public function accounts(){
         return $this->hasMany(LinkedSocialAccount::class);
+    }
+
+        public function posts()
+    {
+        return $this->hasMany(Post::class);
     }
 }

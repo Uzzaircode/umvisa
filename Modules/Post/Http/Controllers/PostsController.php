@@ -1,87 +1,110 @@
 <?php
-
 namespace Modules\Post\Http\Controllers;
 
+use App\Authorizable;
+use Modules\Post\Entities\Post;
 use Illuminate\Http\Request;
-use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Routing\Controller;
-use Auth;
-use Session;
-use Modules\Post\Repositories\PostsRepository as UR;
-use Modules\Post\Http\Requests\PostsCreateRequest as PCR;
 
 class PostsController extends Controller
 {
-    /**
-     * Constructor for auth
-     */
-    public function __construct() {
-        $this->middleware(['auth', 'clearance'])->except('index', 'show');
-    }
-
+    use Authorizable;
     /**
      * Display a listing of the resource.
-     * @return Response
+     *
+     * @return \Illuminate\Http\Response
      */
-    public function index(UR $repository)
+    public function index()
     {
-       $posts = $repository->all();
-       return view('post::index', compact('posts'));
+        $result = Post::latest()->with('user')->paginate();
+        return view('post.index', compact('result'));
     }
-
     /**
      * Show the form for creating a new resource.
-     * @return Response
+     *
+     * @return \Illuminate\Http\Response
      */
     public function create()
     {
-        return view('post::create');
+        return view('post.new');
     }
-
     /**
      * Store a newly created resource in storage.
-     * @param  Request $request
-     * @return Response
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
      */
-    public function store(UR $repository, PCR $request)
+    public function store(Request $request)
     {
-        $repository->create($request);
-        Session::flash('success', 'The post has been created');
-        return redirect()->route('posts.index');
+        $this->validate($request, [
+            'title' => 'required|min:10',
+            'body' => 'required|min:20'
+        ]);
+        $request->user()->posts()->create($request->all());
+        flash('Post has been added');
+        return redirect()->back();
     }
-
     /**
-     * Show the specified resource.
-     * @return Response
+     * Display the specified resource.
+     *
+     * @param  \App\Post  $post
+     * @return \Illuminate\Http\Response
      */
-    public function show()
+    public function show(Post $post)
     {
-        return view('post::show');
+        //
     }
-
     /**
      * Show the form for editing the specified resource.
-     * @return Response
+     *
+     * @param  \App\Post  $post
+     * @return \Illuminate\Http\Response
      */
-    public function edit()
+    public function edit(Post $post)
     {
-        return view('post::edit');
+        $post = Post::findOrFail($post->id);
+        return view('post.edit', compact('post'));
     }
-
     /**
      * Update the specified resource in storage.
-     * @param  Request $request
-     * @return Response
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Post  $post
+     * @return \Illuminate\Http\Response
      */
-    public function update(Request $request)
+    public function update(Request $request, Post $post)
     {
+        $this->validate($request, [
+            'title' => 'required|min:10',
+            'body' => 'required|min:20'
+        ]);
+        $me = $request->user();
+        if( $me->hasRole('Admin') ) {
+            $post = Post::findOrFail($post->id);
+        } else {
+            $post = $me->posts()->findOrFail($post->id);
+        }
+        $post->update($request->all());
+        flash()->success('Post has been updated.');
+        return redirect()->route('posts.index');
     }
-
     /**
      * Remove the specified resource from storage.
-     * @return Response
+     *
+     * @param  \App\Post  $post
+     * @return \Illuminate\Http\Response
      */
-    public function destroy()
+    public function destroy(Post $post)
     {
+        $me = Auth::user();
+        if( $me->hasRole('Admin') ) {
+            $post = Post::findOrFail($post->id);
+        } else {
+            $post = $me->posts()->findOrFail($post->id);
+        }
+        $post->delete();
+        flash()->success('Post has been deleted.');
+        return redirect()->route('posts.index');
     }
 }
