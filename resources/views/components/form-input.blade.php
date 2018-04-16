@@ -7,10 +7,46 @@
                     @slot('card_title') Hello @endslot
                 @endcardHeader                
                 @cardBody                                               
-                            @formGroup(['form_label'=>'Hello'])
-                                <input type="text" class="form-control" name="Hello">   
-                            @endformGroup                                                    
-
+                            @formGroup(['form_label'=>'Text Input'])
+                                <input type="text" class="form-control" name="text">   
+                            @endformGroup 
+                            @formGroup(['form_label'=>'Email Input'])
+                                <input type="email" class="form-control" name="email">   
+                            @endformGroup                                                   
+                            @formGroup(['form_label'=>'Password Input'])
+                                <input type="password" class="form-control" name="password">   
+                            @endformGroup
+                            @formGroup(['form_label'=>'Textarea'])
+                                <textarea name="textarea" id="" class="form-control"></textarea>   
+                            @endformGroup
+                            @formGroup(['form_label'=>'Image Selection'])
+                                <div class="row gutters-sm">
+                                    <div class="col-6 col-sm-4">
+                              <label class="imagecheck mb-4">
+                                <input name="imagecheck" type="checkbox" value="1" class="imagecheck-input"  />
+                                <figure class="imagecheck-figure">
+                                  <img src="{{asset('img/photos/andrew-neel-141710-1500.jpg')}}" alt="}" class="imagecheck-image">
+                                </figure>
+                              </label>
+                            </div>
+                            <div class="col-6 col-sm-4">
+                              <label class="imagecheck mb-4">
+                                <input name="imagecheck" type="checkbox" value="2" class="imagecheck-input"  checked />
+                                <figure class="imagecheck-figure">
+                                 <img src="{{asset('img/photos/andrew-neel-141710-1500.jpg')}}" alt="}" class="imagecheck-image">
+                                </figure>
+                              </label>
+                            </div>
+                            <div class="col-6 col-sm-4">
+                              <label class="imagecheck mb-4">
+                                <input name="imagecheck" type="checkbox" value="3" class="imagecheck-input"  />
+                                <figure class="imagecheck-figure">
+                                  <img src="{{asset('img/photos/andrew-neel-141710-1500.jpg')}}" alt="}" class="imagecheck-image">
+                                </figure>
+                              </label>
+                            </div>
+                                </div>
+                            @endformGroup
                 @endcardBody
                 
                 {{-- End Form --}}
