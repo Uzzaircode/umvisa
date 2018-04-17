@@ -18,7 +18,10 @@
     <title></title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,300i,400,400i,500,500i,600,600i,700,700i&amp;subset=latin-ext">
-    <link href="{{asset('css/dashboard.css')}}" rel="stylesheet" /> @yield('chart-css') @yield('maps-css')
+    <link href="{{asset('css/dashboard.css')}}" rel="stylesheet" /> 
+    @yield('chart-css') 
+    @yield('maps-css')
+    @yield('datatables-css')
 </head>
 
 <body class="">
@@ -27,24 +30,28 @@
             {{-- Header --}} 
             @include('backend.partials.header') {{-- Main Content --}}
             <div class="my-3 my-md-5">
-                <div class="container">
-                    <div class="row">
-                        @yield('content')
-                    </div>
+                <div class="container">                    
+                        @yield('content')                    
                 </div>
             </div>
         </div>
         {{-- Footer --}} 
         @include('backend.partials.footer')
     </div>
+    
     <script src="{{asset('js/require.min.js')}}"></script>
     <script type="text/javascript">
         requirejs.config({
-            baseUrl: '.'
+            baseUrl: '/'
         });
     </script>
     <script src="{{asset('js/dashboard.js')}}"></script>
-    @yield('chart-js') @yield('maps-js') @yield('input-mask-js')
+    
+    @yield('chart-js') 
+    @yield('maps-js') 
+    @yield('input-mask-js')
+    @yield('datatables-js')
+    
 </body>
 
 </html>

@@ -1,21 +1,19 @@
 @extends('backend.master') 
 @section('content')
-
 <div class="row">
-    <div class="col-md-5">
-        <h3>Create</h3>
+    <div class="col-md-9">
+        @card
+            @cardHeader
+                @slot('card_title') Create Users @endslot
+            @endcardHeader
+            @cardBody
+                {!! Form::open(['route' => ['users.store'] ]) !!}
+                    @include('backend.users._form')
+                {!! Form::submit('Create', ['class' => 'btn btn-primary']) !!}
+    <a href="{{route('users.index')}}" class="btn btn-secondary">Back</a> 
+                {!! Form::close() !!}
+            @endcardBody
+        @endcard
     </div>
-    <div class="col-md-7 page-action text-right">
-        <a href="{{ route('users.index') }}" class="btn btn-default btn-sm"> <i class="fa fa-arrow-left"></i> Back</a>
     </div>
-</div>
-
-<div class="row">
-    <div class="col-lg-12">
-        {!! Form::open(['route' => ['users.store'] ]) !!}
-    @include('backend.users._form')
-        <!-- Submit Form Button -->
-        {!! Form::submit('Create', ['class' => 'btn btn-primary']) !!} {!! Form::close() !!}
-    </div>
-</div>
 @endsection

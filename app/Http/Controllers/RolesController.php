@@ -48,4 +48,9 @@ class RolesController extends Controller
 
         return redirect()->route('roles.index');
     }
+
+    public function destroy($id){
+        
+        Role::find($id)->delete();
+    }
 }
