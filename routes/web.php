@@ -21,7 +21,7 @@ Auth::routes();
 Route::get('login/{provider}',          'Auth\SocialAccountsController@redirectToProvider');
 Route::get('login/{provider}/callback', 'Auth\SocialAccountsController@handleProviderCallback');
 
-Route::group( ['middleware' => ['auth'], 'prefix'=>'backend'], function() {
+Route::group( ['middleware' => ['auth']], function() {
     Route::resource('users', 'UsersController');
     Route::resource('roles', 'RolesController');    
 });

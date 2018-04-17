@@ -95,13 +95,25 @@
                 <ul class="nav nav-tabs border-0 flex-column flex-lg-row">
                   <li class="nav-item">
                     <a href="./index.html" class="nav-link"><i class="fe fe-home"></i> Home</a>
-                  </li>                                                       
+                  </li>
+                  <li class="nav-item">
+                    <a href="#" class="nav-link"><i class="fe fe-tag"></i> My Ticket</a>
+                  </li>
                   @role('Admin') {{-- Laravel-permission blade helper --}}               
                   <li class="nav-item dropdown">
-                    <a href="javascript:void(0)" class="nav-link" data-toggle="dropdown"><i class="fe fe-file-text"></i> Admin</a>
+                    <a href="javascript:void(0)" class="nav-link" data-toggle="dropdown"><i class="fe fe-package"></i> Modules</a>
+                    <div class="dropdown-menu dropdown-menu-arrow">
+                    <a href="{{route('saps.index')}}" class="dropdown-item">SAP Modules</a>
+                    <a href="{{route('roles.index')}}" class="dropdown-item">Roles & Permissions</a>     
+                    </div>
+                  </li>
+                  @endrole                                                       
+                  @role('Admin') {{-- Laravel-permission blade helper --}}               
+                  <li class="nav-item dropdown">
+                    <a href="javascript:void(0)" class="nav-link" data-toggle="dropdown"><i class="fe fe-shield"></i> Admin</a>
                     <div class="dropdown-menu dropdown-menu-arrow">
                     <a href="{{route('users.index')}}" class="dropdown-item">Users</a>
-                    <a href="{{route('roles.index')}}" class="dropdown-item">Roles & Permissions</a>                
+                    <a href="{{route('roles.index')}}" class="dropdown-item">Roles & Permissions</a>     
                     </div>
                   </li>
                   @endrole

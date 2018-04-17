@@ -22,6 +22,7 @@
     @yield('chart-css') 
     @yield('maps-css')
     @yield('datatables-css')
+    <link rel="stylesheet" href="{{asset('css/toastr.min.css')}}">
 </head>
 
 <body class="">
@@ -51,7 +52,31 @@
     @yield('maps-js') 
     @yield('input-mask-js')
     @yield('datatables-js')
-    
+    <script src="{{asset('js/toastr.min.js')}}"></script>
+    <script type="text/javascript">
+		toastr.options.progressBar = true;
+		toastr.options.positionClass = 'toast-top-center';
+		toastr.options.closeButton = true;
+		toastr.options.closeDuration = 600;
+		@if(Session::has('status'))
+			toastr.success("{{Session::get('status')}}");
+		@endif
+        @if(Session::has('success'))
+            toastr.success("{{Session::get('success')}}");
+        @endif
+        @if(Session::has('info'))
+            toastr.info("{{Session::get('info')}}");
+        @endif
+        @if(Session::has('deleted'))
+            toastr.success("{{Session::get('deleted')}}");
+        @endif
+		@if(Session::has('fail'))
+            toastr.error("{{Session::get('fail')}}");
+        @endif
+		@if(Session::has('warning'))
+			toastr.warning("{{Session::get('warning')}}");
+		@endif
+    </script>
 </body>
 
 </html>

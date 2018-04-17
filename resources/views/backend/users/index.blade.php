@@ -2,7 +2,7 @@
 @section('content')
 @card
     @cardHeader
-        @slot('card_title')Users @endslot
+        @slot('card_title')<i class="fe fe-users"></i> Users @endslot
         @cardOptions
         <a class="btn btn-secondary btn-md">Total: {{ $result->total() }} {{ str_plural('User', $result->count()) }}</a>
 
@@ -16,7 +16,7 @@
     <div class="table-responsive">
         @table(['class'=>'table card-table table-vcenter text-nowrap', 'id'=>'datatable'])
             <thead>
-                <th>Id</th>
+                <th>#</th>
                 <th>Name</th>
                 <th>Email</th>
                 <th>Role</th>
@@ -46,6 +46,6 @@
     </div>
     @endcardBody
 @endcard
-</div>
+
 @include('asset-partials.datatables')
 @endsection

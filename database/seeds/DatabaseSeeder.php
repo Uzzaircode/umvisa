@@ -59,6 +59,8 @@ class DatabaseSeeder extends Seeder
         factory(Post::class, 30)->create();
         $this->command->info('Some Posts data seeded.');
         $this->command->warn('All done :)');
+
+        $this->call(UserTableSeeder::class);
     }
     /**
      * Create a user with given role
@@ -75,4 +77,6 @@ class DatabaseSeeder extends Seeder
             $this->command->warn('Password is "secret"');
         }
     }
+
+   
 }
