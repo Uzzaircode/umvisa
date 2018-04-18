@@ -106,7 +106,7 @@
                         @can('view_saps')<a href="{{route('saps.index')}}" class="dropdown-item">SAP Modules</a>
                         @endcan
                         
-                    <a href="{{route('roles.index')}}" class="dropdown-item">Roles & Permissions</a>     
+                    <a href="{{route('departments.index')}}" class="dropdown-item">Departments</a>     
                     </div>
                   </li>
                   @endrole                                                       
@@ -115,7 +115,7 @@
                     <a href="javascript:void(0)" class="nav-link" data-toggle="dropdown"><i class="fe fe-shield"></i> Admin</a>
                     <div class="dropdown-menu dropdown-menu-arrow">
                     <a href="{{route('users.index')}}" class="dropdown-item">Users</a>
-                    <a href="{{route('roles.index')}}" class="dropdown-item">Roles & Permissions</a>     
+                    <a href="{{route('roles.index')}}" class="dropdown-item">Roles & Permissions</a>    
                     </div>
                   </li>
                   @endrole
