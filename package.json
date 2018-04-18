@@ -39,5 +39,7 @@
         "Android >= 4.4",
         "Opera >= 30"
     ],
-    "dependencies": {}
+    "dependencies": {
+        "gulp-sourcemaps": "^2.6.4"
+    }
 }

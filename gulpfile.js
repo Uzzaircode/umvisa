@@ -4,9 +4,11 @@ var gulp = require('gulp'),
     autoprefixer = require('gulp-autoprefixer'),
     rtlcss = require('gulp-rtlcss'),
     pckg = require('./package.json');
+    maps = require('gulp-sourcemaps');
 
 gulp.task('styles', function () {
     return gulp.src('resources/assets/scss/bundle.scss', { base: '.' })
+        .pipe(maps.init())
         .pipe(sass({
             precision: 8,
             outputStyle: 'expanded'
@@ -16,6 +18,7 @@ gulp.task('styles', function () {
             cascade: false
         }))
         .pipe(rename('dashboard.css'))
+        .pipe(maps.write())
         .pipe(gulp.dest('public/css/'))
 
         .pipe(rtlcss())

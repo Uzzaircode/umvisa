@@ -27,15 +27,17 @@
         <tbody>
            @foreach($results as $key => $result)
         <tr>
+
             <td>{{ ++$key }}</td>
             <td>{{ $result->name }}</td>
             <td>{{ $result->code }}</td>            
         
             @can('edit_saps')
-            <td class="text-right">
+            <td class="text-center">
                 @include('shared._actions', [ 'entity' => 'saps', 'id' => $result->id ])
             </td>
             @endcan
+            
         </tr>
         @endforeach             
         </tbody>
