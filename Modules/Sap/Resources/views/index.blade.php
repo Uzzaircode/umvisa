@@ -44,3 +44,4 @@
 @endcardBody
 @endcard    
 @stop
+@include('asset-partials.datatables')

@@ -2,20 +2,21 @@
 
 namespace Modules\Sap\Http\Controllers;
 
-use Auth;
+
 use App\Authorizable;
 use Session;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
-use Illuminate\Routing\Controller;
+use Illuminate\Support\Facades\Auth;
 use Modules\Sap\Repositories\SapsRepository as SR;
 use Modules\Sap\Http\Requests\SapsCreateRequest as SCR;
-
-
+use App\Http\Controllers\Controller;
 
 
 class SapsController extends Controller
 {
+    use Authorizable;
+
     public $entity = 'SAP Module';
 
     public function index(SR $repo){

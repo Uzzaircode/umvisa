@@ -6,6 +6,7 @@ use App\Role;
 use App\Permission;
 use Illuminate\Http\Request;
 use App\Authorizable;
+use Session;
 
 class RolesController extends Controller
 {
@@ -24,7 +25,7 @@ class RolesController extends Controller
         $this->validate($request, ['name' => 'required|unique:roles']);
 
         if( Role::create($request->only('name')) ) {
-            flash('Role Added');
+            Session::flash('success', 'The role has been added.');
         }
 
         return redirect()->back();
@@ -41,7 +42,7 @@ class RolesController extends Controller
 
             $permissions = $request->get('permissions', []);
             $role->syncPermissions($permissions);
-            flash( $role->name . ' permissions has been updated.');
+            Session::flash('success',$role->name . ' permissions has been updated.');
         } else {
             flash()->error( 'Role with id '. $id .' note found.');
         }

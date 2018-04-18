@@ -6,10 +6,13 @@ use Illuminate\Http\Request;
 use App\User;
 use App\Role;
 use App\Permission;
+use App\Authorizable;
 use Auth;
 
 class UsersController extends Controller
 {
+    use Authorizable;
+    
     public function index()
     {
         $result = User::latest()->paginate();

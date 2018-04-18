@@ -39,15 +39,8 @@
         {{-- Footer --}} 
         @include('backend.partials.footer')
     </div>
-    
-    <script src="{{asset('js/require.min.js')}}"></script>
-    <script type="text/javascript">
-        requirejs.config({
-            baseUrl: '/'
-        });
-    </script>
-    <script src="{{asset('js/dashboard.js')}}"></script>
-    
+<script src="{{asset('js/vendors/jquery-3.2.1.min.js')}}"></script>
+<script src="{{asset('js/vendors/bootstrap.bundle.min.js')}}"></script>   
     @yield('chart-js') 
     @yield('maps-js') 
     @yield('input-mask-js')

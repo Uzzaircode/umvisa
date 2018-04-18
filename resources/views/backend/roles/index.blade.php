@@ -2,7 +2,7 @@
 @section('content')    
         @card 
         @cardHeader 
-            @slot('card_title') Roles & Permissions @endslot 
+            @slot('card_title')<i class="fe fe-lock"></i> Roles & Permissions @endslot 
         @endcardHeader 
             @cardBody 
             {!! Form::open(['method' => 'post']) !!} @formGroup(['form_label'=>'Name'])

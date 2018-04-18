@@ -7,7 +7,7 @@ class Permission extends \Spatie\Permission\Models\Permission
     public static function defaultPermissions()
     {
         return [
-            
+
             'view_users',
             'add_users',
             'edit_users',
@@ -21,12 +21,7 @@ class Permission extends \Spatie\Permission\Models\Permission
             'view_posts',
             'add_posts',
             'edit_posts',
-            'delete_posts',
-
-            'view_saps',
-            'add_saps',
-            'edit_saps',
-            'delete_saps',
+            'delete_posts',            
 
         ];
     }
