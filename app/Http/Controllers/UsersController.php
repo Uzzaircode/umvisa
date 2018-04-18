@@ -8,6 +8,7 @@ use App\Role;
 use App\Permission;
 use App\Authorizable;
 use Auth;
+use Session;
 
 class UsersController extends Controller
 {
@@ -40,9 +41,9 @@ class UsersController extends Controller
         // Create the user
         if ($user = User::create($request->except('roles', 'permissions'))) {
             $this->syncPermissions($request, $user);
-            flash('User has been created.');
+            Session::flash('success','User has been created.');
         } else {
-            flash()->error('Unable to create user.');
+            Session::flash('fail','Unable to create user.');
         }
 
         return redirect()->route('users.index');
@@ -80,21 +81,21 @@ class UsersController extends Controller
         $this->syncPermissions($request, $user);
 
         $user->save();
-        flash()->success('User has been updated.');
-        return redirect()->route('users.index');
+        Session::flash('success','User has been updated.');
+        return redirect()->back();
     }
 
     public function destroy($id)
     {
         if (Auth::user()->id == $id) {
-            flash()->warning('Deletion of currently logged in user is not allowed :(')->important();
+            Session::flash('warning','Deletion of currently logged in user is not allowed :(')->important();
             return redirect()->back();
         }
 
         if (User::findOrFail($id)->delete()) {
-            flash()->success('User has been deleted');
+            Session::flash('success','User has been deleted');
         } else {
-            flash()->success('User not deleted');
+            Session::flash('success','User not deleted');
         }
 
         return redirect()->back();

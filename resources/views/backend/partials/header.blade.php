@@ -103,7 +103,9 @@
                   <li class="nav-item dropdown">
                     <a href="javascript:void(0)" class="nav-link" data-toggle="dropdown"><i class="fe fe-package"></i> Modules</a>
                     <div class="dropdown-menu dropdown-menu-arrow">
-                    <a href="{{route('saps.index')}}" class="dropdown-item">SAP Modules</a>
+                        @can('view_saps')<a href="{{route('saps.index')}}" class="dropdown-item">SAP Modules</a>
+                        @endcan
+                        
                     <a href="{{route('roles.index')}}" class="dropdown-item">Roles & Permissions</a>     
                     </div>
                   </li>

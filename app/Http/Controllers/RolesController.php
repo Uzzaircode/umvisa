@@ -44,7 +44,7 @@ class RolesController extends Controller
             $role->syncPermissions($permissions);
             Session::flash('success',$role->name . ' permissions has been updated.');
         } else {
-            flash()->error( 'Role with id '. $id .' note found.');
+            Session::flash('fail','Role with id '. $id .' note found.');
         }
 
         return redirect()->route('roles.index');

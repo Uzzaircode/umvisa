@@ -1,13 +1,11 @@
-<?php
-
+<?php 
 namespace Modules\Sap\Repositories;
 
-use Modules\Sap\Entities\Sap;
+use App\Abstracts\Repository as AbstractRepository;
+use Modules\Sap\Repositories\SapRepoInterface;
 
-class SapsRepository{
 
-    public function all(){
-        return Sap::all();
-    }
-
+class SapsRepository extends AbstractRepository implements SapRepoInterface
+{
+	protected $modelClassName = 'Modules\Sap\Entities\Sap';	    
 }
