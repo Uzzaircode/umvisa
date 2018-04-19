@@ -7,6 +7,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Spatie\Permission\Traits\HasRoles;
 use App\LinkedSocialAccount;
 use Modules\Department\Entities\Department;
+use Modules\Sap\Entities\Sap;
 
 class User extends Authenticatable
 {
@@ -37,8 +38,13 @@ class User extends Authenticatable
 
     public function profile(){
         return $this->hasOne(Profile::class);
-    }
-     public function departments(){
+    } 
+      
+    public function departments(){
          return $this->belongsToMany(Department::class);
-     }
+    }
+
+    public function saps(){
+        return $this->belongsToMany(Sap::class);
+    }
 }
