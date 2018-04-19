@@ -25,9 +25,15 @@
     : null, ['class' => 'form-control', 'multiple']) !!} @if ($errors->has('roles'))
     <p class="help-block">{{ $errors->first('roles') }}</p> @endif
 </div>
+<div class="form-group @if ($errors->has('depts')) has-error @endif">
+        {!! Form::label('depts[]', 'Departments') !!} {!! Form::select('depts[]', $depts, isset($user) ? $user->departments->pluck('id')->toArray()
+        : null, ['class' => 'form-control', 'multiple', 'id'=>'depts']) !!} @if ($errors->has('depts'))
+        <p class="help-block">{{ $errors->first('depts') }}</p> @endif
+</div>
 
 
 <!-- Permissions -->
 @if(isset($user))
-    @include('shared._permissions', ['closed' => 'true', 'model' => $user ]) 
-@endif
+    @include('shared._permissions', ['closed' => 'true', 'model' => $user ]) @endif
+
+@include('asset-partials.selectize')

@@ -8,6 +8,7 @@ use App\Role;
 use App\Permission;
 use App\Authorizable;
 use App\Profile;
+use Modules\Department\Entities\Department;
 use Auth;
 use Session;
 use Illuminate\Support\Facades\Storage;
@@ -23,9 +24,10 @@ class UsersController extends Controller
     }
 
     public function create()
-    {
+    {   
+        $depts = Department::pluck('name','id');
         $roles = Role::pluck('name', 'id');
-        return view('backend.users.create', compact('roles'));
+        return view('backend.users.create', compact('roles','depts'));
     }
 
     public function store(Request $request)
@@ -34,16 +36,18 @@ class UsersController extends Controller
             'name' => 'bail|required|min:2',
             'email' => 'required|email|unique:users',
             'password' => 'required|min:6',
-            'roles' => 'required|min:1'
+            'roles' => 'required|min:1',
+            'depts'=>'required'
         ]);
         
 
         // hash password
         $request->merge(['password' => bcrypt($request->get('password'))]);
 
-        
-        if ($user = User::create($request->except('roles', 'permissions'))) {            
-            $this->syncPermissions($request, $user);                                
+        // Create the user
+        if ($user = User::create($request->except('roles', 'permissions'))) {
+            $this->syncPermissions($request, $user);
+            $user->departments()->attach($request->depts);
             Session::flash('success','User has been created.');
         } else {
             Session::flash('fail','Unable to create user.');

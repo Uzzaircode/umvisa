@@ -6,7 +6,7 @@ use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Spatie\Permission\Traits\HasRoles;
 use App\LinkedSocialAccount;
-use Modules\Post\Entities\Post;
+use Modules\Department\Entities\Department;
 
 class User extends Authenticatable
 {
@@ -38,4 +38,7 @@ class User extends Authenticatable
     public function profile(){
         return $this->hasOne(Profile::class);
     }
+     public function departments(){
+         return $this->belongsToMany(Department::class);
+     }
 }
