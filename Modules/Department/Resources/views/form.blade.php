@@ -18,7 +18,7 @@
                 <input type="text" class="form-control" name="name" value="{{old('name',$department->name ?? null)}}">   
             @endformGroup
             @formGroup(['form_label'=>'Department Email'])
-                <input type="text" class="form-control" name="code" value="{{old('name',$department->code ?? null)}}">   
+                <input type="email" class="form-control" name="email" value="{{old('email',$department->email ?? null)}}">   
             @endformGroup
             @formGroup(['form_label'=>''])
                 
