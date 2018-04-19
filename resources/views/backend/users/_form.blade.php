@@ -26,6 +26,8 @@
     <p class="help-block">{{ $errors->first('roles') }}</p> @endif
 </div>
 
+
 <!-- Permissions -->
 @if(isset($user))
-    @include('shared._permissions', ['closed' => 'true', 'model' => $user ]) @endif
+    @include('shared._permissions', ['closed' => 'true', 'model' => $user ]) 
+@endif

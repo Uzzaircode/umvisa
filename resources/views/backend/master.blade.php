@@ -45,6 +45,7 @@
     @yield('maps-js') 
     @yield('input-mask-js')
     @yield('datatables-js')
+    @yield('input-file-js')
     <script src="{{asset('js/toastr.min.js')}}"></script>
     <script type="text/javascript">
 		toastr.options.progressBar = true;

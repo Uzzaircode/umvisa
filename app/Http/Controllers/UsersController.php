@@ -7,8 +7,10 @@ use App\User;
 use App\Role;
 use App\Permission;
 use App\Authorizable;
+use App\Profile;
 use Auth;
 use Session;
+use Illuminate\Support\Facades\Storage;
 
 class UsersController extends Controller
 {
@@ -32,20 +34,20 @@ class UsersController extends Controller
             'name' => 'bail|required|min:2',
             'email' => 'required|email|unique:users',
             'password' => 'required|min:6',
-            'roles' => 'required|min:1',
+            'roles' => 'required|min:1'
         ]);
+        
 
         // hash password
         $request->merge(['password' => bcrypt($request->get('password'))]);
 
-        // Create the user
-        if ($user = User::create($request->except('roles', 'permissions'))) {
-            $this->syncPermissions($request, $user);
+        
+        if ($user = User::create($request->except('roles', 'permissions'))) {            
+            $this->syncPermissions($request, $user);                                
             Session::flash('success','User has been created.');
         } else {
             Session::flash('fail','Unable to create user.');
-        }
-
+        }        
         return redirect()->route('users.index');
     }
 
