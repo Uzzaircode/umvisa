@@ -105,8 +105,9 @@
                     <div class="dropdown-menu dropdown-menu-arrow">
                         @can('view_saps')<a href="{{route('saps.index')}}" class="dropdown-item">SAP Modules</a>
                         @endcan
-                        
-                    <a href="{{route('departments.index')}}" class="dropdown-item">Departments</a>     
+                    @can('view_departments')   
+                    <a href="{{route('departments.index')}}" class="dropdown-item">Departments</a> 
+                    @endcan    
                     </div>
                   </li>
                   @endrole                                                       
