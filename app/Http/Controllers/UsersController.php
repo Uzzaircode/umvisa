@@ -60,8 +60,9 @@ class UsersController extends Controller
         $user = User::find($id);
         $roles = Role::pluck('name', 'id');
         $permissions = Permission::all('name', 'id');
+        $depts = Department::pluck('name','id');
 
-        return view('backend.users.edit', compact('user', 'roles', 'permissions'));
+        return view('backend.users.edit', compact('user', 'roles', 'permissions','depts'));
     }
 
     public function update(Request $request, $id)
@@ -85,7 +86,7 @@ class UsersController extends Controller
 
         // Handle the user roles
         $this->syncPermissions($request, $user);
-
+        $user->departments()->sync($request->depts);
         $user->save();
         Session::flash('success','User has been updated.');
         return redirect()->back();

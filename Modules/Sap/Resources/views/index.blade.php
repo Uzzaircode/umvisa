@@ -3,7 +3,7 @@
 @section('content')
 @card
 @cardHeader
-    @slot('card_title')Sap Modules @endslot
+    @slot('card_title')<i class="fe fe-codepen"></i> Sap Modules @endslot
     @cardOptions
     <a class="btn btn-secondary btn-sm">Total: {{ $results->count() }} {{ str_plural('Sap Module', $results->count()) }}</a>
 

@@ -3,7 +3,7 @@
 @section('content')
 @card
 @cardHeader
-    @slot('card_title')Departments @endslot
+    @slot('card_title')<i class="fe fe-briefcase"></i> Departments @endslot
     @cardOptions
     <a class="btn btn-secondary btn-sm">Total: {{ $results->count() }} {{ str_plural('Department', $results->count()) }}</a>
 

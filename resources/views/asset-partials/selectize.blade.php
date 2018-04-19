@@ -1,7 +1,7 @@
 @section('selectize-js')
 <script  src="{{asset('js/vendors/selectize.min.js')}}"></script>
 <script>
-   $('#depts').selectize({
+   $('.selectize').selectize({
 					create: true,
 					sortField: {
 						field: 'text',

@@ -22,12 +22,12 @@
 <!-- Roles Form Input -->
 <div class="form-group @if ($errors->has('roles')) has-error @endif">
     {!! Form::label('roles[]', 'Roles') !!} {!! Form::select('roles[]', $roles, isset($user) ? $user->roles->pluck('id')->toArray()
-    : null, ['class' => 'form-control', 'multiple']) !!} @if ($errors->has('roles'))
+    : null, ['class' => 'form-control selectize', 'multiple']) !!} @if ($errors->has('roles'))
     <p class="help-block">{{ $errors->first('roles') }}</p> @endif
 </div>
 <div class="form-group @if ($errors->has('depts')) has-error @endif">
         {!! Form::label('depts[]', 'Departments') !!} {!! Form::select('depts[]', $depts, isset($user) ? $user->departments->pluck('id')->toArray()
-        : null, ['class' => 'form-control', 'multiple', 'id'=>'depts']) !!} @if ($errors->has('depts'))
+        : null, ['class' => 'form-control selectize', 'multiple']) !!} @if ($errors->has('depts'))
         <p class="help-block">{{ $errors->first('depts') }}</p> @endif
 </div>
 
