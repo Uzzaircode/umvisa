@@ -49,9 +49,22 @@ class UsersController extends Controller
 
         // Create the user
         if ($user = User::create($request->except('roles', 'permissions'))) {
+            // sync permission
             $this->syncPermissions($request, $user);
+            //departments           
             $user->departments()->attach($request->depts);
+            // SAP Modules
             $user->saps()->attach($request->saps);
+            // user's avatar
+            if ($request->hasFile('avatar')) {
+                $avatar = $request->avatar;
+                $avatar_new_name = $request->name. time() . $avatar->getClientOriginalName();
+                $avatar->move('uploads/avatars', $avatar_new_name);
+            }   
+            $profile = Profile::create([
+                'user_id' => $user->id,
+                'avatar' => 'uploads/avatars/'.$avatar_new_name
+            ]);        
             Session::flash('success','User has been created.');
         } else {
             Session::flash('fail','Unable to create user.');

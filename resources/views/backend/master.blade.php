@@ -50,7 +50,7 @@
     <script src="{{asset('js/toastr.min.js')}}"></script>
     <script type="text/javascript">
 		toastr.options.progressBar = true;
-		toastr.options.positionClass = 'toast-top-center';
+		toastr.options.positionClass = 'toast-top-right';
 		toastr.options.closeButton = true;
 		toastr.options.closeDuration = 600;
 		@if(Session::has('status'))

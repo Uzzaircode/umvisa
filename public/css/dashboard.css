@@ -72,7 +72,11 @@ body {
   line-height: 1.5;
   color: #495057;
   text-align: left;
-  background-color: #f5f7fb;
+  /* background-image: linear-gradient(120deg, #fdfbfb 0%, #ebedee 100%); */
+  background: #ebedee; /* fallback for old browsers */
+background: -webkit-linear-gradient(to right, #fdfbfb, #ebedee);  /* Chrome 10-25, Safari 5.1-6 */
+background: linear-gradient(to right, #fdfbfb, #ebedee); 
+/* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
 }
 
 [tabindex="-1"]:focus {
