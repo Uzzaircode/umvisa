@@ -10,5 +10,7 @@ interface TicketRepoInterface extends RepositoryInterface {
     
     public function create(array $attributes);
 
+    // public function update($id, array $attributes);
+
 
 }

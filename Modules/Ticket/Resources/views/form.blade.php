@@ -19,8 +19,13 @@
                 <input type="text" class="form-control" name="subject" value="{{old('subject',$ticket->subject ?? null)}}">   
             @endformGroup
             @formGroup(['form_label'=>'Message'])
-            <textarea name="body" id="" cols="30" rows="10" class="form-control">{{old('body',$ticket->body ?? null)}}</textarea>                  
+            <textarea name="body" id="" cols="30" rows="5" class="form-control">{{old('body',$ticket->body ?? null)}}</textarea>                  
             @endformGroup
+            @formGroup(['form_label'=>'Assign To'])            
+    {!! Form::select('dept_id', $depts, isset($ticket) ? $ticket->department()->pluck('id')->toArray()
+                    : null, ['class' => 'form-control selectize']) !!} @if ($errors->has('depts'))
+                    <p class="help-block">{{ $errors->first('depts') }}</p> @endif            
+            @endformGroup 
             @formGroup(['form_label'=>'SAP Modules'])            
                     {!! Form::select('sap_id', $saps, isset($ticket) ? $ticket->sap->pluck('id')->toArray()
                     : null, ['class' => 'form-control selectize']) !!} @if ($errors->has('saps'))
@@ -41,3 +46,4 @@
     </div>
 </div>
 @endsection
+@include('asset-partials.selectize')

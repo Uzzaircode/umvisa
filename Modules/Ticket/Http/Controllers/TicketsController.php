@@ -9,6 +9,7 @@ use App\Authorizable;
 use Session;
 use Illuminate\Support\Facades\Auth;
 use Modules\Sap\Entities\Sap;
+use Modules\Department\Entities\Department;
 use App\User;
 use Modules\Ticket\Repositories\TicketsRepository as TR;
 
@@ -26,9 +27,10 @@ class TicketsController extends Controller
      * Display a listing of the resource.
      * @return Response
      */
-    public function index()
+    public function index(TR $repo)
     {
-        return view('ticket::index');
+        $results = $repo->all();
+        return view('ticket::index',compact('results'));
     }
 
     /**
@@ -39,7 +41,8 @@ class TicketsController extends Controller
     {   
         $users = User::pluck('name','id');
         $saps = Sap::pluck('name','id');
-        return view('ticket::form',compact('users','saps'));
+        $depts = Department::all();
+        return view('ticket::form',compact('users','saps','depts'));
     }
 
     /**
@@ -67,9 +70,11 @@ class TicketsController extends Controller
      * Show the form for editing the specified resource.
      * @return Response
      */
-    public function edit()
-    {
-        return view('ticket::edit');
+    public function edit(TR $repo,$id)
+    {   $ticket = $repo->find($id);        
+        $saps = Sap::pluck('name', 'id');
+        $depts = Department::pluck('name','id');
+        return view('ticket::form',compact('depts','saps','ticket'));
     }
 
     /**
@@ -77,8 +82,12 @@ class TicketsController extends Controller
      * @param  Request $request
      * @return Response
      */
-    public function update(Request $request)
+    public function update(TR $repo,Request $request,$id)
     {
+        $ticket = $repo->find($id);
+        $ticket->update($request->all());
+        Session::flash('success','Updated');
+        return redirect()->back();
     }
 
     /**

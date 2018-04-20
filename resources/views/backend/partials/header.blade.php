@@ -96,6 +96,11 @@
                   <li class="nav-item">
                     <a href="./index.html" class="nav-link"><i class="fe fe-home"></i> Home</a>
                   </li>
+                  @can('view_tickets')
+                  <li class="nav-item">
+                        <a href="{{route('tickets.index')}}" class="nav-link"><i class="fe fe-tag"></i>Tickets</a>
+                      </li>
+                  @endcan
                   <li class="nav-item">
                     <a href="#" class="nav-link"><i class="fe fe-tag"></i> My Ticket</a>
                   </li>
@@ -113,7 +118,7 @@
                   @endrole                                                       
                   @role('Admin') {{-- Laravel-permission blade helper --}}               
                   <li class="nav-item dropdown">
-                    <a href="javascript:void(0)" class="nav-link" data-toggle="dropdown"><i class="fe fe-shield"></i> Admin</a>
+                    <a href="javascript:void(0)" class="nav-link" data-toggle="dropdown"><i class="fe fe-shield"></i> Administration</a>
                     <div class="dropdown-menu dropdown-menu-arrow">
                     <a href="{{route('users.index')}}" class="dropdown-item">Users</a>
                     <a href="{{route('roles.index')}}" class="dropdown-item">Roles & Permissions</a>    
