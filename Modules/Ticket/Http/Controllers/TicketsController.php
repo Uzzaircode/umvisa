@@ -12,6 +12,7 @@ use Modules\Sap\Entities\Sap;
 use Modules\Department\Entities\Department;
 use App\User;
 use Modules\Ticket\Repositories\TicketsRepository as TR;
+use Modules\Ticket\Entities\TicketAttachment;
 
 class TicketsController extends Controller
 {
@@ -52,7 +53,15 @@ class TicketsController extends Controller
      */
     public function store(TR $repo, Request $request)
     {
-        $repo->create($request->all());
+        $ticket = $repo->create($request->all());
+        foreach($request->file('files') as $file){
+            $filename = time() . $file->getClientOriginalName();
+            $file->move('uploads/attachments', $filename);
+            TicketAttachment::create([
+                'ticket_id' => $ticket->id,
+                'path' => 'uploads/attachments/'.$filename
+            ]);
+        }
         Session::flash('success', 'The '.$this->entity.' has been created successfully');
         return redirect()->route('tickets.index');
     }
@@ -74,7 +83,7 @@ class TicketsController extends Controller
     {   
         $ticket = $repo->find($id);        
         $saps = Sap::pluck('name', 'id');
-        $depts = Department::pluck('name','id');
+        $depts = Department::all();
         return view('ticket::form',compact('depts','saps','ticket'));
     }
 
