@@ -106,7 +106,15 @@ class UsersController extends Controller
         $this->syncPermissions($request, $user);
         $user->departments()->sync($request->depts);
         $user->saps()->sync($request->saps);
+        // user's avatar
+        if ($request->hasFile('avatar')) {
+            $avatar = $request->avatar;
+            $avatar_new_name = $request->name. time() . $avatar->getClientOriginalName();
+            $avatar->move('uploads/avatars', $avatar_new_name);
+            $user->profile->avatar = '/uploads/avatars/'.$avatar_new_name;
+        }       
         $user->save();
+        $user->profile->save();
         Session::flash('success','User has been updated.');
         return redirect()->back();
     }
