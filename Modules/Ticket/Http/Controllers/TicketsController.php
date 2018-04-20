@@ -71,7 +71,8 @@ class TicketsController extends Controller
      * @return Response
      */
     public function edit(TR $repo,$id)
-    {   $ticket = $repo->find($id);        
+    {   
+        $ticket = $repo->find($id);        
         $saps = Sap::pluck('name', 'id');
         $depts = Department::pluck('name','id');
         return view('ticket::form',compact('depts','saps','ticket'));

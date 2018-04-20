@@ -21,13 +21,24 @@
             @formGroup(['form_label'=>'Message'])
             <textarea name="body" id="" cols="30" rows="5" class="form-control">{{old('body',$ticket->body ?? null)}}</textarea>                  
             @endformGroup
-            @formGroup(['form_label'=>'Assign To'])            
-    {!! Form::select('dept_id', $depts, isset($ticket) ? $ticket->department()->pluck('id')->toArray()
-                    : null, ['class' => 'form-control selectize']) !!} @if ($errors->has('depts'))
-                    <p class="help-block">{{ $errors->first('depts') }}</p> @endif            
+            @formGroup(['form_label'=>'Assign To'])
+            {{-- <select name="dept_id" id="" class="form-control selectize">
+                    @foreach($depts as $dept)
+                    @if($ticket->dept_id == $dept->id) 
+            <option value="{{$dept->id}}" selected>{{$dept->name}}</option>
+            @else
+            <option value="{{$dept->id}}">{{$dept->name}}</option>
+            @endif
+            @endforeach            
+            </select>                                    --}}
+            {!! Form::select('dept_id', $depts, isset($ticket) ? $ticket->dept_id
+            : null, ['class' => 'form-control selectize']) !!}
+                    @if ($errors->has('depts'))
+                    <p class="help-block">{{ $errors->first('depts') }}</p> 
+                    @endif            
             @endformGroup 
             @formGroup(['form_label'=>'SAP Modules'])            
-                    {!! Form::select('sap_id', $saps, isset($ticket) ? $ticket->sap->pluck('id')->toArray()
+                    {!! Form::select('sap_id', $saps, isset($ticket) ? $ticket->sap()->pluck('id')->toArray()
                     : null, ['class' => 'form-control selectize']) !!} @if ($errors->has('saps'))
                     <p class="help-block">{{ $errors->first('saps') }}</p> @endif            
             @endformGroup            
