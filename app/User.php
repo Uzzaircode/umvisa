@@ -8,6 +8,7 @@ use Spatie\Permission\Traits\HasRoles;
 use App\LinkedSocialAccount;
 use Modules\Department\Entities\Department;
 use Modules\Sap\Entities\Sap;
+use App\Profile;
 
 class User extends Authenticatable
 {
@@ -37,7 +38,7 @@ class User extends Authenticatable
     }
 
     public function profile(){
-        return $this->hasOne(Profile::class);
+        return $this->hasOne(Profile::class,'user_id');
     } 
       
     public function departments(){

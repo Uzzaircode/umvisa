@@ -92,8 +92,7 @@ class UsersController extends Controller
         ]);
 
         // Get the user
-        $user = User::findOrFail($id);
-
+        $user = User::find($id);              
         // Update user
         $user->fill($request->except('roles', 'permissions', 'password'));
 
@@ -102,19 +101,22 @@ class UsersController extends Controller
             $user->password = bcrypt($request->get('password'));
         }
 
+        
+        // user's avatar
+        if ($request->hasFile('avatar')) {
+            
+            $avatar = $request->avatar;
+            $avatar_new_name = $request->name. time() . $avatar->getClientOriginalName();
+            $avatar->move('uploads/avatars', $avatar_new_name);
+            $avatar_path = 'uploads/avatars'.$avatar_new_name;
+        }       
+        $user->save();
+        $user->profile->update(['user_id'=>$user,
+        'avatar'=>$avatar_path]);
         // Handle the user roles
         $this->syncPermissions($request, $user);
         $user->departments()->sync($request->depts);
         $user->saps()->sync($request->saps);
-        // user's avatar
-        if ($request->hasFile('avatar')) {
-            $avatar = $request->avatar;
-            $avatar_new_name = $request->name. time() . $avatar->getClientOriginalName();
-            $avatar->move('uploads/avatars', $avatar_new_name);
-            $user->profile->avatar = '/uploads/avatars/'.$avatar_new_name;
-        }       
-        $user->save();
-        $user->profile->save();
         Session::flash('success','User has been updated.');
         return redirect()->back();
     }

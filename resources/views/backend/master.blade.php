@@ -20,6 +20,7 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,300i,400,400i,500,500i,600,600i,700,700i&amp;subset=latin-ext">
     <link href="{{asset('css/dashboard.css')}}" rel="stylesheet" />       
     <link rel="stylesheet" href="{{asset('css/toastr.min.css')}}">
+    @yield('datatables-css')
     @yield('page-css')
 </head>
 

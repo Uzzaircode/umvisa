@@ -1,5 +1,7 @@
 @extends('backend.master') 
 @section('content')
+<div class="row row-cards row-deck">
+  <div class="col-12">
 @card
     @cardHeader
         @slot('card_title')<i class="fe fe-users"></i> Users @endslot
@@ -14,7 +16,7 @@
     
     @cardBody
     <div class="table-responsive">
-        @table(['class'=>'table card-table table-vcenter text-nowrap', 'id'=>'datatable'])
+        @table(['class'=>'table card-table table-vcenter text-nowrap table-bordered', 'id'=>'datatable'])
             <thead>
                 <th>#</th>
                 <th>Name</th>
@@ -46,6 +48,6 @@
     </div>
     @endcardBody
 @endcard
-
+</div>
 @include('asset-partials.datatables')
 @endsection

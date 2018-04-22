@@ -1,6 +1,7 @@
 @extends('backend.master') 
 @section('content')
-{!! Form::model($user, ['method' => 'PUT', 'route' => ['users.update', $user->id ] ]) !!}
+{!! Form::model($user, ['method' => 'PUT', 'route' => ['users.update', $user->id ],'files'=>true ]) !!}
+
 <div class="row">
         <div class="col-md-4">
                 <div class="card card-profile">
@@ -14,8 +15,7 @@
                     </div>
                           <p class="file-return"></p> --}}
                           <div class="form-group">
-                            {!! Form::label('Product Image') !!}
-                            {!! Form::file('avatar', null) !!}
+                            <input type="file" name="avatar" id="">
                         </div>
                   </div>
                 </div>
@@ -30,7 +30,7 @@
                 @include('backend.users._form')
                 <div class="form-group">
                         <button type="submit" class="btn btn-md btn-success">
-                            @if(isset($user->id)) Update @else Create @endif
+                            {{ isset($user->id) ? 'Update':'Create'}}
                         </button>
                         <a href="{{route('users.index')}}" class="btn btn-secondary">Back</a> 
                         </div>

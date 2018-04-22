@@ -12,7 +12,6 @@
 */
 
 Route::get('/', ['uses'=>'Auth\LoginController@showLoginForm']);
-
 // Auth
 Auth::routes();
 // OAuth
@@ -24,7 +23,4 @@ Route::group( ['middleware' => ['auth']], function() {
     Route::resource('roles', 'RolesController');        
 });
 
-
 Route::get('/home', 'HomeController@index')->name('home');
-
-Route::get('form', ['uses'=>'\Modules\User\Http\Controllers\UsersController@create', 'as'=>'forms.create']);

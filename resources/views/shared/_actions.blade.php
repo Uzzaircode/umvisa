@@ -1,6 +1,5 @@
 @can('edit_saps')
-    <a href="{{ route($entity.'.edit', [str_singular($entity) => $id])  }}" class="btn btn-sm btn-primary">
-        <i class="fe fe-edit"></i> Edit</a>
+<a href="{{ route($entity.'.edit', [str_singular($entity) => $id])  }}" class="btn btn-secondary btn-sm"><i class="fe fe-edit"></i> Manage</a>
 @endcan
 
 @can('delete_saps')
@@ -10,3 +9,7 @@
         </button>
     {!! Form::close() !!}
 @endcan
+
+                    <div class="dropdown">
+                      <button class="btn btn-secondary btn-sm dropdown-toggle" data-toggle="dropdown" data-vivaldi-spatnav-clickable="1">Actions</button>
+                    </div>
