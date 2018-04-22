@@ -22,7 +22,7 @@ class TicketsController extends Controller
     protected $model;
 
     public function __construct(){
-        $this->entity = 'Ticket';                     
+        $this->entity = 'ticket';                     
     }
     /**
      * Display a listing of the resource.
@@ -55,7 +55,7 @@ class TicketsController extends Controller
     {
         $ticket = $repo->create($request->all());
         foreach($request->file('files') as $file){
-            $filename = time() . $file->getClientOriginalName();
+            $filename = trim(Auth::user()->name). time() . $file->getClientOriginalName();
             $file->move('uploads/attachments', $filename);
             TicketAttachment::create([
                 'ticket_id' => $ticket->id,
@@ -96,7 +96,15 @@ class TicketsController extends Controller
     {
         $ticket = $repo->find($id);
         $ticket->update($request->all());
-        Session::flash('success','Updated');
+        foreach($request->file('files') as $file){
+            $filename = trim(Auth::user()->name). time() . $file->getClientOriginalName();
+            $file->move('uploads/attachments', $filename);
+            TicketAttachment::create([
+                'ticket_id' => $ticket->id,
+                'path' => 'uploads/attachments/'.$filename
+            ]);
+        }
+        Session::flash('success','The '.$this->entity.' has been updated successfully');
         return redirect()->back();
     }
 
@@ -104,7 +112,11 @@ class TicketsController extends Controller
      * Remove the specified resource from storage.
      * @return Response
      */
-    public function destroy()
+    public function destroy(TR $repo, Request $request, $id)
     {
+        $ticket = $repo->find($id);
+        $ticket->delete();
+        Session::flash('success','The '.$this->entity.' has been deleted successfully');
+        return redirect()->back();
     }
 }

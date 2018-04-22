@@ -19,8 +19,7 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,300i,400,400i,500,500i,600,600i,700,700i&amp;subset=latin-ext">
     <link href="{{asset('css/dashboard.css')}}" rel="stylesheet" />
-    @yield('chart-css')    
-    @yield('maps-css')   
+    <link rel="stylesheet" href="{{asset('css/toastr.min.css')}}">
 </head>
 
 <body class="">
@@ -29,16 +28,34 @@
                 @yield('content')
         </div>        
     </div>
-    <script src="{{asset('js/require.min.js')}}"></script>
-    <script type="text/javascript">
-        requirejs.config({
-            baseUrl: '.'
-        });
-    </script>
+    <script src="{{asset('js/vendors/jquery-3.2.1.min.js')}}"></script>
+    <script src="{{asset('js/vendors/bootstrap.bundle.min.js')}}"></script>
     <script src="{{asset('js/dashboard.js')}}"></script>
-    @yield('chart-js')
-    @yield('maps-js')
-    @yield('input-mask-js')
+    <script src="{{asset('js/toastr.min.js')}}"></script>
+    <script type="text/javascript">
+		toastr.options.progressBar = true;
+		toastr.options.positionClass = 'toast-top-center';
+		toastr.options.closeButton = true;
+		toastr.options.closeDuration = 600;
+		@if(Session::has('status'))
+			toastr.success("{{Session::get('status')}}");
+		@endif
+        @if(Session::has('success'))
+            toastr.success("{{Session::get('success')}}");
+        @endif
+        @if(Session::has('info'))
+            toastr.info("{{Session::get('info')}}");
+        @endif
+        @if(Session::has('deleted'))
+            toastr.success("{{Session::get('deleted')}}");
+        @endif
+		@if(Session::has('fail'))
+            toastr.error("{{Session::get('fail')}}");
+        @endif
+		@if(Session::has('warning'))
+			toastr.warning("{{Session::get('warning')}}");
+		@endif
+    </script>
 </body>
 
 </html>
