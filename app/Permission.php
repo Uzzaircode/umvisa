@@ -32,6 +32,11 @@ class Permission extends \Spatie\Permission\Models\Permission
             'add_tickets',
             'edit_tickets',
             'delete_tickets', 
+            
+            'view_applications',
+            'add_applications',
+            'edit_applications',
+            'delete_applications', 
 
         ];
     }

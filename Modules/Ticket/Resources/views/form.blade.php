@@ -18,7 +18,7 @@
                 <input type="hidden" name="user_id" value="{{Auth::id()}}">
                 <input type="text" class="form-control" name="subject" value="{{old('subject',$ticket->subject ?? null)}}">   
             @endformGroup
-            @formGroup(['form_label'=>'Message'])
+            @formGroup(['form_label'=>'Issue'])
             <textarea name="body" id="" cols="30" rows="5" class="form-control">{{old('body',$ticket->body ?? null)}}</textarea>                  
             @endformGroup
             @formGroup(['form_label'=>'Attach Files'])                                

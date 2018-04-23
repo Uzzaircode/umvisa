@@ -96,10 +96,7 @@
                   <li class="nav-item">
                         <a href="{{route('tickets.index')}}" class="nav-link"><i class="fe fe-tag"></i>Tickets</a>
                       </li>
-                  @endcan
-                  <li class="nav-item">
-                    <a href="#" class="nav-link"><i class="fe fe-tag"></i> My Ticket</a>
-                  </li>
+                  @endcan                 
                   @role('Admin') {{-- Laravel-permission blade helper --}}               
                   <li class="nav-item dropdown">
                     <a href="javascript:void(0)" class="nav-link" data-toggle="dropdown"><i class="fe fe-package"></i> Modules</a>
@@ -108,7 +105,10 @@
                         @endcan
                     @can('view_departments')   
                     <a href="{{route('departments.index')}}" class="dropdown-item">Departments</a> 
-                    @endcan    
+                    @endcan 
+                    @can('view_applications')   
+                    <a href="{{route('applications.index')}}" class="dropdown-item">Applications</a> 
+                    @endcan   
                     </div>
                   </li>
                   @endrole                                                       
