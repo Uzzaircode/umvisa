@@ -13,6 +13,7 @@ use Modules\Department\Entities\Department;
 use App\User;
 use Modules\Ticket\Repositories\TicketsRepository as TR;
 use Modules\Ticket\Entities\TicketAttachment;
+use Modules\Application\Entities\Application;
 
 class TicketsController extends Controller
 {
@@ -44,7 +45,8 @@ class TicketsController extends Controller
         $saps = Sap::pluck('name','id');
         $sap_users = Auth::user()->saps;
         $depts = Department::all();
-        return view('ticket::form',compact('users','saps','depts','sap_users'));
+        $apps = Application::all(); 
+        return view('ticket::form',compact('users','saps','depts','sap_users','apps')); 
     }
 
     /**

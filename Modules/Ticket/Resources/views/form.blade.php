@@ -60,6 +60,7 @@
             @endformGroup 
             @formGroup(['form_label'=>'SAP Modules'])
             <select name="sap_id" id="" class="form-control selectize">
+                    @if(isset($ticket))
                     @foreach($sap_users as $sap)            
                         <option value="{{$sap->id}}"
                             @if(isset($ticket))
@@ -67,13 +68,28 @@
                             @endif
                             >{{$sap->name}}</option>
                     @endforeach
+                    @endif
             </select>
                     {{-- {!! Form::select('sap_id', $saps, isset($ticket) ? Auth::user()->saps()->pluck('id')->toArray()
                     : null, ['class' => 'form-control selectize']) !!}  --}}
                     @if ($errors->has('saps'))
                     <p class="help-block">{{ $errors->first('saps') }}</p> @endif            
             @endformGroup 
-            
+            <div class="form-group">                 
+                <label class="custom-switch"> 
+                  <input name="custom-switch-checkbox" class="custom-switch-input" type="checkbox" id="app_check"> 
+                  <span class="custom-switch-indicator"></span> 
+                  <span class="custom-switch-description">Integration with third-party application?</span> 
+                </label> 
+              </div> 
+             
+            @formGroup(['form_label'=>'Application']) 
+                <select name="app_id" id="app_id" class="form-control selectize"> 
+                    @foreach($apps as $app) 
+                        <option value="{{$app->id}}">{{$app->name}}</option> 
+                    @endforeach 
+                </select>                 
+            @endformGroup 
             
             @formGroup(['form_label'=>'Ticket Type'])                
                 <select name="ticket_type" id="" class="form-control selectize">
@@ -154,5 +170,14 @@ $('#attachment').magnificPopup({
   }
 });    
 </script> 
-    
-@endsection()
+<script type="text/javascript"> 
+    $(document).on('change', '#app_check', function(){ 
+      if($(this).prop('checked')){ 
+          $('#app_id')[0].selectize.enable(); 
+           
+      } else { 
+          $('#app_id')[0].selectize.disable();  
+      } 
+  }); 
+  </script>    
+@endsection
