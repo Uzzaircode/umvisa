@@ -15,7 +15,7 @@
 
 @cardBody
 <div class="table-responsive">
-    @table(['class'=>'table table-vcenter text-nowrap table-striped table-bordered', 'id'=>'datatable'])
+    @table(['class'=>'table table-vcenter text-nowrap card-table table-striped', 'id'=>'datatable'])
         <thead>
             <th>#</th>
             <th>Subject</th>

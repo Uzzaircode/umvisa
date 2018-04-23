@@ -16,9 +16,10 @@
     
     @cardBody
     <div class="table-responsive">
-        @table(['class'=>'table card-table table-vcenter text-nowrap table-bordered', 'id'=>'datatable'])
+        @table(['class'=>'table card-table table-vcenter text-nowrap', 'id'=>'datatable'])
             <thead>
                 <th>#</th>
+                <th></th>
                 <th>Name</th>
                 <th>Email</th>
                 <th>Role</th>
@@ -31,13 +32,16 @@
                @foreach($result as $key => $item)
             <tr>
                 <td>{{ ++$key }}</td>
+                <td class="text-center"><div class="avatar d-block" style="background-image: url({{asset($item->profile->avatar)}})">
+                    <span class="avatar-status bg-green"></span>
+                  </div></td>
                 <td>{{ $item->name }}</td>
                 <td>{{ $item->email }}</td>
                 <td>{{ $item->roles->implode('name', ', ') }}</td>
                 <td>{{ $item->created_at->toFormattedDateString() }}</td>
             
                 @can('edit_users')
-                <td class="text-right">
+                <td class="text-center">
                     @include('shared._actions', [ 'entity' => 'users', 'id' => $item->id ])
                 </td>
                 @endcan

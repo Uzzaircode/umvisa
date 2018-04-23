@@ -108,11 +108,10 @@ class UsersController extends Controller
             $avatar = $request->avatar;
             $avatar_new_name = $request->name. time() . $avatar->getClientOriginalName();
             $avatar->move('uploads/avatars', $avatar_new_name);
-            $avatar_path = 'uploads/avatars'.$avatar_new_name;
+            $user->avatar->profile = 'uploads/avatars'.$avatar_new_name;
         }       
         $user->save();
-        $user->profile->update(['user_id'=>$user,
-        'avatar'=>$avatar_path]);
+        $user->profile->update();
         // Handle the user roles
         $this->syncPermissions($request, $user);
         $user->departments()->sync($request->depts);

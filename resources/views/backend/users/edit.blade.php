@@ -7,16 +7,15 @@
                 <div class="card card-profile">
                   <div class="card-header" style="background-image: url({{asset('img/photos/bg-profile.jpg')}});"></div>
                   <div class="card-body text-center">
-                    {{-- <img class="card-profile-img" src="{{asset($user->profile->avatar)}}"> --}}
+                    <img class="card-profile-img" src="{{asset($user->profile->avatar)}}">
                   <h3 class="mb-3">{{$user->name}}</h3>                    
-                    {{-- <div class="input-file-container text-center">  
-                            <input class="input-file" id="my-file" type="file">
-                            <label tabindex="0" for="my-file" class="input-file-trigger">Change profile picture</label>
-                    </div>
-                          <p class="file-return"></p> --}}
-                          <div class="form-group">
+                    <div class="input-file-container text-center">  
+                            <input class="input-file" id="my-file" type="file" name="avatar">
+                            <label tabindex="0" for="my-file" class="input-file-trigger btn btn-sm">Change profile picture</label>
+                    </div>                          
+                          {{-- <div class="form-group">
                             <input type="file" name="avatar" id="">
-                        </div>
+                        </div> --}}
                   </div>
                 </div>
             </div>

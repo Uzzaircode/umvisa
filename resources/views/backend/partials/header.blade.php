@@ -38,7 +38,7 @@
                 </div>
                 <div class="dropdown">
                     <a href="#" class="nav-link pr-0 leading-none" data-toggle="dropdown">
-                        <span class="avatar" style="background-image: url(./demo/faces/female/25.jpg)"></span>
+                        <span class="avatar" style="background-image: url({{asset(Auth::user()->profile->avatar)}})"></span>
                         <span class="ml-2 d-none d-lg-block">
                             <span class="text-default">{{Auth::user()->name}}</span>
                         <small class="text-muted d-block mt-1">{{Auth::user()->roles()->pluck('name')->first()}}</small>
@@ -94,7 +94,7 @@
               <div class="col-lg order-lg-first">
                 <ul class="nav nav-tabs border-0 flex-column flex-lg-row">
                   <li class="nav-item">
-                    <a href="./index.html" class="nav-link"><i class="fe fe-home"></i> Home</a>
+                  <a href="{{route('home')}}" class="nav-link"><i class="fe fe-home"></i> Home</a>
                   </li>
                   @can('view_tickets')
                   <li class="nav-item">
