@@ -40,7 +40,7 @@
               {{ __('Login') }}
             </button>
           </div>
-          <div id="" class="form-footer text-center">
+          {{-- <div id="" class="form-footer text-center">
             <ul class="social-links list-inline mb-0 mt-2">
               <li class="list-inline-item"><a href="/login/github">
               <i class="fa fa-github fa-2x"></i>
@@ -52,17 +52,17 @@
               <i class="fa fa-youtube fa-2x"></i>
             </a></li>
             </ul>                                  
-          </div>
+          </div> --}}
         </div>
       </form>
 
       <div class="text-center text-muted">
-        <a href="{{ route('password.request') }}">I forgot my password</a>
+        <a href="{{ route('password.request') }}" style="color:antiquewhite">I forgot my password</a>
       </div>
-      <div class="text-center text-muted">
+      {{-- <div class="text-center text-muted">
         Don't have account yet?
         <a href="{{route('register')}}">Sign up</a>
-      </div>
+      </div> --}}
     </div>
   </div>
 </div>
