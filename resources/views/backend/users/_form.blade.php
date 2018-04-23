@@ -21,8 +21,14 @@
 
 <!-- Roles Form Input -->
 <div class="form-group @if ($errors->has('roles')) has-error @endif">
-    {!! Form::label('roles[]', 'Roles') !!} {!! Form::select('roles[]', $roles, isset($user) ? $user->roles->pluck('id')->toArray()
-    : null, ['class' => 'form-control selectize', 'multiple']) !!} @if ($errors->has('roles'))
+    {!! Form::label('roles[]', 'Roles') !!}
+    @if($user->roles->count() > 0)
+    {!! Form::select('roles[]', $roles, isset($user) ? $user->roles->pluck('id')->toArray()
+    : null, ['class' => 'form-control selectize', 'multiple']) !!} 
+    @else
+    {!! Form::select('roles[]', $roles, null, ['class' => 'form-control selectize', 'multiple']) !!}
+    @endif
+    @if ($errors->has('roles'))
     <p class="help-block">{{ $errors->first('roles') }}</p> @endif
 </div>
 <div class="form-group @if ($errors->has('depts')) has-error @endif">
