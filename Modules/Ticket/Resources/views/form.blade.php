@@ -171,6 +171,11 @@ $('#attachment').magnificPopup({
 });    
 </script> 
 <script type="text/javascript"> 
+
+$(document).ready(function(){
+    $('#app_id')[0].selectize.disable();
+});
+
     $(document).on('change', '#app_check', function(){ 
       if($(this).prop('checked')){ 
           $('#app_id')[0].selectize.enable(); 
