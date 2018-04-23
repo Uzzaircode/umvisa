@@ -18,11 +18,11 @@
     <title></title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,300i,400,400i,500,500i,600,600i,700,700i&amp;subset=latin-ext">
-    <link href="{{asset('css/dashboard.css')}}" rel="stylesheet" />
-    @yield('datatables-css')
-    @yield('chart-css') 
-    @yield('maps-css')    
+    {{-- <link href="https://fonts.googleapis.com/css?family=Roboto+Mono:400,700" rel="stylesheet"> --}}
+    <link href="{{asset('css/dashboard.css')}}" rel="stylesheet" />       
     <link rel="stylesheet" href="{{asset('css/toastr.min.css')}}">
+    @yield('datatables-css')
+    @yield('page-css')
 </head>
 
 <body class="">
@@ -45,12 +45,12 @@
     @yield('maps-js') 
     @yield('input-mask-js')
     @yield('datatables-js')
-    @yield('input-file-js')
     @yield('selectize-js')
+    @yield('input-file-js')
     <script src="{{asset('js/toastr.min.js')}}"></script>
     <script type="text/javascript">
 		toastr.options.progressBar = true;
-		toastr.options.positionClass = 'toast-top-right';
+		toastr.options.positionClass = 'toast-top-center';
 		toastr.options.closeButton = true;
 		toastr.options.closeDuration = 600;
 		@if(Session::has('status'))
@@ -72,6 +72,7 @@
 			toastr.warning("{{Session::get('warning')}}");
 		@endif
     </script>
+    @yield('page-js')
 </body>
 
 </html>

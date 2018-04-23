@@ -20,10 +20,13 @@
 </div>
 
 <!-- Roles Form Input -->
-<div class="form-group @if ($errors->has('roles')) has-error @endif">
-    {!! Form::label('roles[]', 'Roles') !!} {!! Form::select('roles[]', $roles, isset($user) ? $user->roles->pluck('id')->toArray()
-    : null, ['class' => 'form-control selectize', 'multiple']) !!} @if ($errors->has('roles'))
-    <p class="help-block">{{ $errors->first('roles') }}</p> @endif
+<div class="form-group @if ($errors->has('roles')) has-error @endif">            
+    {!! Form::label('roles[]', 'Roles') !!}
+    {!! Form::select('roles[]', $roles, isset($user) ? $user->roles->pluck('id')->toArray()
+    : null, ['class' => 'form-control selectize', 'multiple']) !!} 
+    @if($errors->has('roles'))
+    <p class="help-block">{{ $errors->first('roles') }}</p>
+    @endif
 </div>
 <div class="form-group @if ($errors->has('depts')) has-error @endif">
         {!! Form::label('depts[]', 'Departments') !!} {!! Form::select('depts[]', $depts, isset($user) ? $user->departments->pluck('id')->toArray()

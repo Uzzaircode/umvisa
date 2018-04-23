@@ -8,6 +8,8 @@ use Spatie\Permission\Traits\HasRoles;
 use App\LinkedSocialAccount;
 use Modules\Department\Entities\Department;
 use Modules\Sap\Entities\Sap;
+use App\Profile;
+use Cache;
 
 class User extends Authenticatable
 {
@@ -37,7 +39,7 @@ class User extends Authenticatable
     }
 
     public function profile(){
-        return $this->hasOne(Profile::class);
+        return $this->hasOne(Profile::class,'user_id');
     } 
       
     public function departments(){
@@ -46,5 +48,16 @@ class User extends Authenticatable
 
     public function saps(){
         return $this->belongsToMany(Sap::class);
+    }
+
+    // Check if user is online
+
+    public function isOnline()
+    {
+    return Cache::has('user-is-online-' . $this->id);
+    }
+
+    public function profileOwner($user){
+        return $this->id == $user->id;
     }
 }

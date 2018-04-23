@@ -3,7 +3,6 @@
 <script>
    $('.selectize').selectize({
 	plugins: ['remove_button'],
-					create: true,
 					sortField: {
 						field: 'text',
 						direction: 'asc'

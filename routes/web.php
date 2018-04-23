@@ -11,10 +11,7 @@
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
-
+Route::get('/', ['uses'=>'Auth\LoginController@showLoginForm']);
 // Auth
 Auth::routes();
 // OAuth
@@ -23,10 +20,8 @@ Route::get('login/{provider}/callback', 'Auth\SocialAccountsController@handlePro
 
 Route::group( ['middleware' => ['auth']], function() {
     Route::resource('users', 'UsersController');
-    Route::resource('roles', 'RolesController');        
+    Route::resource('roles', 'RolesController');
+    Route::get('myprofile', 'UsersController@myprofile');
 });
 
-
 Route::get('/home', 'HomeController@index')->name('home');
-
-Route::get('form', ['uses'=>'\Modules\User\Http\Controllers\UsersController@create', 'as'=>'forms.create']);

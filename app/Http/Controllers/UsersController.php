@@ -92,8 +92,7 @@ class UsersController extends Controller
         ]);
 
         // Get the user
-        $user = User::findOrFail($id);
-
+        $user = User::find($id);              
         // Update user
         $user->fill($request->except('roles', 'permissions', 'password'));
 
@@ -102,11 +101,21 @@ class UsersController extends Controller
             $user->password = bcrypt($request->get('password'));
         }
 
+        
+        // user's avatar
+        if ($request->hasFile('avatar')) {
+            
+            $avatar = $request->avatar;
+            $avatar_new_name = $request->name. time() . $avatar->getClientOriginalName();
+            $avatar->move('uploads/avatars', $avatar_new_name);
+            $user->avatar->profile = 'uploads/avatars'.$avatar_new_name;
+        }       
+        $user->save();
+        $user->profile->update();
         // Handle the user roles
         $this->syncPermissions($request, $user);
         $user->departments()->sync($request->depts);
         $user->saps()->sync($request->saps);
-        $user->save();
         Session::flash('success','User has been updated.');
         return redirect()->back();
     }
@@ -147,5 +156,14 @@ class UsersController extends Controller
 
         $user->syncRoles($roles);
         return $user;
+    }
+
+    public function myprofile(){
+        $user = User::find(Auth::id());
+        $roles = Role::pluck('name', 'id');
+        $permissions = Permission::all('name', 'id');
+        $depts = Department::pluck('name','id');
+        $saps = Sap::pluck('name', 'id');
+        return view('backend.users.edit', compact('user', 'roles', 'permissions','depts','saps'));
     }
 }

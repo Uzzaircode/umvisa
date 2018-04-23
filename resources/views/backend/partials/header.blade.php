@@ -38,16 +38,18 @@
                 </div>
                 <div class="dropdown">
                     <a href="#" class="nav-link pr-0 leading-none" data-toggle="dropdown">
-                        <span class="avatar" style="background-image: url(./demo/faces/female/25.jpg)"></span>
+                        <span class="avatar" style="background-image: url({{asset(Auth::user()->profile->avatar)}})"></span>
                         <span class="ml-2 d-none d-lg-block">
                             <span class="text-default">{{Auth::user()->name}}</span>
                         <small class="text-muted d-block mt-1">{{Auth::user()->roles()->pluck('name')->first()}}</small>
                         </span>
                     </a>
                     <div class="dropdown-menu dropdown-menu-right dropdown-menu-arrow">
-                        <a class="dropdown-item" href="#">
+                        @can('edit_profiles')
+                    <a class="dropdown-item" href="/myprofile">
                             <i class="dropdown-icon fe fe-user"></i> Profile
-                        </a>
+                    </a>
+                    @endcan
                         <a class="dropdown-item" href="#">
                             <i class="dropdown-icon fe fe-settings"></i> Settings
                         </a>
@@ -56,14 +58,8 @@
                                 <span class="badge badge-primary">6</span>
                             </span>
                             <i class="dropdown-icon fe fe-mail"></i> Inbox
-                        </a>
-                        <a class="dropdown-item" href="#">
-                            <i class="dropdown-icon fe fe-send"></i> Message
-                        </a>
-                        <div class="dropdown-divider"></div>
-                        <a class="dropdown-item" href="#">
-                            <i class="dropdown-icon fe fe-help-circle"></i> Need help?
-                        </a>
+                        </a>                       
+                        <div class="dropdown-divider"></div>                        
                         <a class="dropdown-item" href="{{ route('logout') }}" onclick="event.preventDefault();
                                                      document.getElementById('logout-form').submit();">
                             <i class="dropdown-icon fe fe-log-out"></i> {{ __('Logout') }}
@@ -94,11 +90,13 @@
               <div class="col-lg order-lg-first">
                 <ul class="nav nav-tabs border-0 flex-column flex-lg-row">
                   <li class="nav-item">
-                    <a href="./index.html" class="nav-link"><i class="fe fe-home"></i> Home</a>
+                  <a href="{{route('home')}}" class="nav-link"><i class="fe fe-home"></i> Home</a>
                   </li>
+                  @can('view_tickets')
                   <li class="nav-item">
-                    <a href="#" class="nav-link"><i class="fe fe-tag"></i> My Ticket</a>
-                  </li>
+                        <a href="{{route('tickets.index')}}" class="nav-link"><i class="fe fe-tag"></i>Tickets</a>
+                      </li>
+                  @endcan                 
                   @role('Admin') {{-- Laravel-permission blade helper --}}               
                   <li class="nav-item dropdown">
                     <a href="javascript:void(0)" class="nav-link" data-toggle="dropdown"><i class="fe fe-package"></i> Modules</a>
@@ -107,13 +105,16 @@
                         @endcan
                     @can('view_departments')   
                     <a href="{{route('departments.index')}}" class="dropdown-item">Departments</a> 
-                    @endcan    
+                    @endcan 
+                    @can('view_applications')   
+                    <a href="{{route('applications.index')}}" class="dropdown-item">Applications</a> 
+                    @endcan   
                     </div>
                   </li>
                   @endrole                                                       
                   @role('Admin') {{-- Laravel-permission blade helper --}}               
                   <li class="nav-item dropdown">
-                    <a href="javascript:void(0)" class="nav-link" data-toggle="dropdown"><i class="fe fe-shield"></i> Admin</a>
+                    <a href="javascript:void(0)" class="nav-link" data-toggle="dropdown"><i class="fe fe-shield"></i> Administration</a>
                     <div class="dropdown-menu dropdown-menu-arrow">
                     <a href="{{route('users.index')}}" class="dropdown-item">Users</a>
                     <a href="{{route('roles.index')}}" class="dropdown-item">Roles & Permissions</a>    

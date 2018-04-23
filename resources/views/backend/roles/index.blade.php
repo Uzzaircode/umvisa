@@ -19,7 +19,7 @@
                     @if($role->name === 'Admin')
                         @include('shared._permissions', [ 'title' => $role->name .' Permissions', 'options'=> ['disabled'] ])
                     @else
-                        @include('shared._permissions', [ 'title' => $role->name .' Permissions', 'model' => $role ])
+                        @include('shared._permissions', ['title' => $role->name .' Permissions', 'model' => $role ])
                         
                         @can('edit_roles')
                         <div class="form-group">
