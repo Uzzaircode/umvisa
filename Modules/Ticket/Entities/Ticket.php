@@ -6,11 +6,12 @@ use Illuminate\Database\Eloquent\Model;
 use Modules\Sap\Entities\Sap;
 use Modules\Department\Entities\Department;
 use Modules\Ticket\Entities\TicketAttachment;
+use Modules\Application\Entities\Application;
 use App\User;
 
 class Ticket extends Model
 {
-    protected $fillable = ['subject', 'body', 'sap_id', 'user_id','dept_id','ticket_type'];
+    protected $fillable = ['subject', 'body', 'sap_id', 'user_id','dept_id','ticket_type','integration','application_id'];
 
     public function sap(){
         return $this->belongsTo(Sap::class);
@@ -26,6 +27,10 @@ class Ticket extends Model
 
     public function attachments(){
         return $this->hasMany(TicketAttachment::class);
+    }
+
+    public function application(){
+        return $this->belongsTo(Application::class);
     }
 
 }

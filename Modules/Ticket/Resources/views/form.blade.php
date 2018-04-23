@@ -73,14 +73,14 @@
             @endformGroup 
             <div class="form-group">                 
                 <label class="custom-switch"> 
-                  <input name="custom-switch-checkbox" class="custom-switch-input" type="checkbox" id="app_check"> 
+                <input name="custom-switch-checkbox" class="custom-switch-input" name="integration" type="checkbox" id="app_check" value="1" {{isset($ticket) && $ticket->integration == 1 ? 'checked="checked"':''}}> 
                   <span class="custom-switch-indicator"></span> 
                   <span class="custom-switch-description">Integration with third-party application?</span> 
                 </label> 
               </div> 
              
             @formGroup(['form_label'=>'Application']) 
-                <select name="app_id" id="app_id" class="form-control selectize"> 
+                <select name="application_id" id="app_id" class="form-control selectize"> 
                     @foreach($apps as $app) 
                         <option value="{{$app->id}}">{{$app->name}}</option> 
                     @endforeach 
