@@ -60,15 +60,13 @@
             @endformGroup 
             @formGroup(['form_label'=>'SAP Modules'])
             <select name="sap_id" id="" class="form-control selectize">
-                    @if(isset($ticket))
-                    @foreach($sap_users as $sap)            
-                        <option value="{{$sap->id}}"
-                            @if(isset($ticket))
-                                {{ Auth::user()->saps->id == $sap->id ? 'selected':''}}
-                            @endif
-                            >{{$sap->name}}</option>
-                    @endforeach
-                    @endif
+                @foreach($sap_users as $sap)
+            <option value="{{$sap->id}}"
+                @if(isset($ticket))
+                    {{$ticket->sap->id == $sap->id ? 'selected':''}}
+                @endif                
+                >{{$sap->name}}</option>
+                @endforeach                    
             </select>
                     {{-- {!! Form::select('sap_id', $saps, isset($ticket) ? Auth::user()->saps()->pluck('id')->toArray()
                     : null, ['class' => 'form-control selectize']) !!}  --}}
