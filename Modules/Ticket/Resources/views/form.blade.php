@@ -21,6 +21,27 @@
             @formGroup(['form_label'=>'Message'])
             <textarea name="body" id="" cols="30" rows="5" class="form-control">{{old('body',$ticket->body ?? null)}}</textarea>                  
             @endformGroup
+            @formGroup(['form_label'=>'Attach Files'])                                
+                <input type="file" class="" name="files[]" multiple>
+                    @if ($errors->has('files'))
+                        <p class="help-block">{{ $errors->first('files') }}</p> 
+                    @endif            
+            @endformGroup
+            @if(isset($ticket))
+            @if($ticket->attachments->count() > 1)
+                @formGroup(['form_label'=>''])
+                    <div class="row gutters-sm" id="attachment">
+                        @foreach($ticket->attachments as $t)             
+                            <div class="col-6 col-sm-4" >
+                        <a href="{{asset($t->path)}}" data-effect="mfp-move-from-top">                  
+                            <img src="{{asset($t->path)}}" class="img-fluid"> 
+                        </a>                
+                            </div>              
+                        @endforeach
+                    </div>             
+                @endformGroup
+            @endif
+            @endif
             @formGroup(['form_label'=>'Assign To'])
             <select name="dept_id" id="" class="form-control selectize">
                     @foreach($depts as $dept)                                    
@@ -37,31 +58,31 @@
                     <p class="help-block">{{ $errors->first('depts') }}</p> 
                     @endif            
             @endformGroup 
-            @formGroup(['form_label'=>'SAP Modules'])            
-                    {!! Form::select('sap_id', $saps, isset($ticket) ? $ticket->sap()->pluck('id')->toArray()
-                    : null, ['class' => 'form-control selectize']) !!} @if ($errors->has('saps'))
+            @formGroup(['form_label'=>'SAP Modules'])
+            <select name="sap_id" id="" class="form-control selectize">
+                    @foreach($sap_users as $sap)            
+                        <option value="{{$sap->id}}"
+                            @if(isset($ticket))
+                                {{ Auth::user()->saps->id == $sap->id ? 'selected':''}}
+                            @endif
+                            >{{$sap->name}}</option>
+                    @endforeach
+            </select>
+                    {{-- {!! Form::select('sap_id', $saps, isset($ticket) ? Auth::user()->saps()->pluck('id')->toArray()
+                    : null, ['class' => 'form-control selectize']) !!}  --}}
+                    @if ($errors->has('saps'))
                     <p class="help-block">{{ $errors->first('saps') }}</p> @endif            
             @endformGroup 
             
-            @formGroup(['form_label'=>'Attach Files'])                                
-                <input type="file" class="" name="files[]" multiple>
-                    @if ($errors->has('files'))
-                        <p class="help-block">{{ $errors->first('files') }}</p> 
-                    @endif            
+            
+            @formGroup(['form_label'=>'Ticket Type'])                
+                <select name="ticket_type" id="" class="form-control selectize">
+                    <option value="new">{{ucwords('new')}}</option>
+                    <option value="open">{{ucwords('open')}}</option>
+                    <option value="pending">{{ucwords('pending')}}</option>
+                    <option value="recurring">{{ucwords('recurring')}}</option>
+                </select> 
             @endformGroup
-            @if($ticket->attachments->count() > 1)
-                @formGroup(['form_label'=>''])
-                    <div class="row gutters-sm" id="attachment">
-                        @foreach($ticket->attachments as $t)             
-                            <div class="col-6 col-sm-4" >
-                        <a href="{{asset($t->path)}}" data-effect="mfp-move-from-top">                  
-                            <img src="{{asset($t->path)}}" class="img-fluid"> 
-                        </a>                
-                            </div>              
-                        @endforeach
-                    </div>             
-                @endformGroup
-            @endif
             @formGroup(['form_label'=>''])                
                 <button type="submit" class="btn btn-md btn-primary">
                     @if(isset($ticket->id))
