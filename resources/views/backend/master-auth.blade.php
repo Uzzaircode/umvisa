@@ -20,7 +20,16 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,300i,400,400i,500,500i,600,600i,700,700i&amp;subset=latin-ext">
     <link href="{{asset('css/dashboard.css')}}" rel="stylesheet" />
     @yield('chart-css')    
-    @yield('maps-css')   
+    @yield('maps-css')  
+    <style>
+    body{
+        
+  background: #076585; /* fallback for old browsers */
+  background: -webkit-linear-gradient(to top, #076585, #fff); /* Chrome 10-25, Safari 5.1-6 */
+  background: linear-gradient(to top, #076585, #fff); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+
+    }
+    </style> 
 </head>
 
 <body class="">
