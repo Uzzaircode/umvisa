@@ -3,27 +3,24 @@
 <div class="row">
     <div class="col-md-9">
         {{-- Start Form --}} 
-    @if(isset($department->id))
-    <form action="{{route('departments.update',['id'=>$department->id])}}" class="card" method="POST">
+    @if(isset($application->id))
+    <form action="{{route('applications.update',['id'=>$application->id])}}" class="card" method="POST">
         {{method_field('PUT')}}
     @else
-    <form action="{{route('departments.store')}}" class="card" method="POST">
+    <form action="{{route('applications.store')}}" class="card" method="POST">
     @endif
         @csrf
             @cardHeader
-                @slot('card_title') Departments @endslot
+                @slot('card_title') Applications @endslot
             @endcardHeader                
         @cardBody                                               
-            @formGroup(['form_label'=>'Department Name'])
-                <input type="text" class="form-control" name="name" value="{{old('name',$department->name ?? null)}}">   
-            @endformGroup
-            @formGroup(['form_label'=>'Department Email'])
-                <input type="email" class="form-control" name="email" value="{{old('email',$department->email ?? null)}}">   
-            @endformGroup
+            @formGroup(['form_label'=>'Application Name'])
+                <input type="text" class="form-control" name="name" value="{{old('name',$application->name ?? null)}}">   
+            @endformGroup           
             @formGroup(['form_label'=>''])
                 
                 <button type="submit" class="btn btn-md btn-success">
-                    @if(isset($department->id))
+                    @if(isset($application->id))
                         Update
                     @else
                         Create 

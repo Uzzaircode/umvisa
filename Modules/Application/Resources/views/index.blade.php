@@ -18,8 +18,7 @@
     @table(['class'=>'table table-vcenter card-table text-nowrap table-striped ', 'id'=>'datatable'])
         <thead>
             <th>#</th>
-            <th>Name</th>
-            <th>Email</th>            
+            <th>Name</th>                      
             @can('edit_applications', 'delete_applications')
             <th class="text-center">Actions</th>
             @endcan
@@ -29,9 +28,7 @@
         <tr>
 
             <td>{{ ++$key }}</td>
-            <td>{{ $result->name }}</td>
-            <td>{{ $result->email }}</td>            
-        
+            <td>{{ $result->name }}</td>                             
             @can('edit_applications')
             <td class="text-center">
                 @include('shared._actions', [ 'entity' => 'applications', 'id' => $result->id ])
