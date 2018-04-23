@@ -67,9 +67,7 @@
                 @endif                
                 >{{$sap->name}}</option>
                 @endforeach                    
-            </select>
-                    {{-- {!! Form::select('sap_id', $saps, isset($ticket) ? Auth::user()->saps()->pluck('id')->toArray()
-                    : null, ['class' => 'form-control selectize']) !!}  --}}
+            </select>                    
                     @if ($errors->has('saps'))
                     <p class="help-block">{{ $errors->first('saps') }}</p> @endif            
             @endformGroup 
