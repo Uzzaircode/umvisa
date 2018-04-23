@@ -12,17 +12,14 @@
                     <div class="input-file-container text-center">  
                             <input class="input-file" id="my-file" type="file" name="avatar">
                             <label tabindex="0" for="my-file" class="input-file-trigger btn btn-sm">Change profile picture</label>
-                    </div>                          
-                          {{-- <div class="form-group">
-                            <input type="file" name="avatar" id="">
-                        </div> --}}
+                    </div>                                        
                   </div>
                 </div>
             </div>
 <div class="col-md-8">
     @card
         @cardHeader
-            @slot('card_title') Edit {{$user->name}} @endslot
+            @slot('card_title') Edit {{ Auth::id() == $user->id ? 'Your Profile':$user->name }} @endslot
         @endcardHeader
 
         @cardBody              
