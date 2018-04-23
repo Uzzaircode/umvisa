@@ -1,10 +1,13 @@
 <div class="header py-4">
     <div class="container">
         <div class="d-flex">
-            <a class="header-brand" href="./index.html">
+        <a class="header-brand" href="{{route('home')}}">
             <img src="{{asset('img/logo.png')}}" class="header-brand-img" alt="brillante logo">
             </a>
-            <div class="d-flex order-lg-2 ml-auto">                
+            <div class="d-flex order-lg-2 ml-auto">
+                    <div class="nav-item d-none d-md-flex">                       
+                            <a href="{{route('tickets.create')}}" class="btn btn-sm btn-outline-primary"> <i class="fe fe-plus-circle"></i> New Ticket</a>
+                    </div>               
                 <div class="dropdown d-none d-md-flex">
                     <a class="nav-link icon" data-toggle="dropdown">
                         <i class="fe fe-bell"></i>

@@ -6,130 +6,86 @@
       Dashboard
     </h1>
 </div>
-<div class="row row-cards">
-              <div class="col-6 col-sm-4 col-lg-2">
-                <div class="card">
-                  <div class="card-body p-3 text-center">
-                    <div class="text-right text-green">
-                      6%
-                      <i class="fe fe-chevron-up"></i>
-                    </div>
-                    <div class="h1 m-0">43</div>
-                    <div class="text-muted mb-4">New Tickets</div>
-                  </div>
-                </div>
-              </div>
-              <div class="col-6 col-sm-4 col-lg-2">
-                <div class="card">
-                  <div class="card-body p-3 text-center">
-                    <div class="text-right text-red">
-                      -3%
-                      <i class="fe fe-chevron-down"></i>
-                    </div>
-                    <div class="h1 m-0">17</div>
-                    <div class="text-muted mb-4">Closed Today</div>
-                  </div>
-                </div>
-              </div>
-              <div class="col-6 col-sm-4 col-lg-2">
-                <div class="card">
-                  <div class="card-body p-3 text-center">
-                    <div class="text-right text-green">
-                      9%
-                      <i class="fe fe-chevron-up"></i>
-                    </div>
-                    <div class="h1 m-0">7</div>
-                    <div class="text-muted mb-4">New Replies</div>
-                  </div>
-                </div>
-              </div>
-              <div class="col-6 col-sm-4 col-lg-2">
-                <div class="card">
-                  <div class="card-body p-3 text-center">
-                    <div class="text-right text-green">
-                      3%
-                      <i class="fe fe-chevron-up"></i>
-                    </div>
-                    <div class="h1 m-0">27.3K</div>
-                    <div class="text-muted mb-4">Followers</div>
-                  </div>
-                </div>
-              </div>
-              <div class="col-6 col-sm-4 col-lg-2">
-                <div class="card">
-                  <div class="card-body p-3 text-center">
-                    <div class="text-right text-red">
-                      -2%
-                      <i class="fe fe-chevron-down"></i>
-                    </div>
-                    <div class="h1 m-0">$95</div>
-                    <div class="text-muted mb-4">Daily Earnings</div>
-                  </div>
-                </div>
-              </div>
-              <div class="col-6 col-sm-4 col-lg-2">
-                <div class="card">
-                  <div class="card-body p-3 text-center">
-                    <div class="text-right text-red">
-                      -1%
-                      <i class="fe fe-chevron-down"></i>
-                    </div>
-                    <div class="h1 m-0">621</div>
-                    <div class="text-muted mb-4">Products</div>
-                  </div>
-                </div>
-              </div>                            
-              <div class="col-sm-6 col-lg-3">
+<div class="row row-cards">                                                       
+              <div class="col-sm-6 col-lg-4">
                 <div class="card p-3">
                   <div class="d-flex align-items-center">
                     <span class="stamp stamp-md bg-blue mr-3">
-                      <i class="fe fe-dollar-sign"></i>
+                      <i class="fe fe-tag"></i>
                     </span>
                     <div>
-                      <h4 class="m-0"><a href="javascript:void(0)">132 <small>Sales</small></a></h4>
-                      <small class="text-muted">12 waiting payments</small>
+                      <h4 class="m-0"><a href="javascript:void(0)">132 <small>Tickets</small></a></h4>
+                      <small class="text-muted">12 tickets closed today</small>
                     </div>
                   </div>
                 </div>
               </div>
-              <div class="col-sm-6 col-lg-3">
+              <div class="col-sm-6 col-lg-4">
                 <div class="card p-3">
                   <div class="d-flex align-items-center">
                     <span class="stamp stamp-md bg-green mr-3">
-                      <i class="fe fe-shopping-cart"></i>
+                      <i class="fe fe-message-square"></i>
                     </span>
                     <div>
-                      <h4 class="m-0"><a href="javascript:void(0)">78 <small>Orders</small></a></h4>
-                      <small class="text-muted">32 shipped</small>
+                      <h4 class="m-0"><a href="javascript:void(0)">32 <small>Agents Reply</small></a></h4>
+                      <small class="text-muted">7 New Replies</small>
                     </div>
                   </div>
                 </div>
               </div>
-              <div class="col-sm-6 col-lg-3">
+              <div class="col-sm-6 col-lg-4">
                 <div class="card p-3">
                   <div class="d-flex align-items-center">
                     <span class="stamp stamp-md bg-red mr-3">
                       <i class="fe fe-users"></i>
                     </span>
                     <div>
-                      <h4 class="m-0"><a href="javascript:void(0)">1,352 <small>Members</small></a></h4>
-                      <small class="text-muted">163 registered today</small>
+                      <h4 class="m-0"><a href="javascript:void(0)">58 <small>Members</small></a></h4>
+                      <small class="text-muted">2 registered today</small>
                     </div>
                   </div>
                 </div>
-              </div>
-              <div class="col-sm-6 col-lg-3">
-                <div class="card p-3">
-                  <div class="d-flex align-items-center">
-                    <span class="stamp stamp-md bg-yellow mr-3">
-                      <i class="fe fe-message-square"></i>
-                    </span>
-                    <div>
-                      <h4 class="m-0"><a href="javascript:void(0)">132 <small>Comments</small></a></h4>
-                      <small class="text-muted">16 waiting</small>
-                    </div>
-                  </div>
-                </div>
-              </div>
+              </div>              
             </div>
+            <div class="row row-cards row-deck">
+            <div class="col-12">
+                    <div class="card">
+                      <div class="card-header">
+                        <h3 class="card-title">Recent Tickets</h3>
+                      </div>
+                      <div class="table-responsive">
+                        <table class="table card-table table-vcenter text-nowrap">
+                          <thead>
+                            <tr>
+                              <th class="w-1">No.</th>
+                              <th>Ticket Subject</th>
+                              <th>Assigned To</th>                              
+                              <th>Created</th>
+                              <th>Status</th>                             
+                              <th>Action</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <tr>
+                              <td><span class="text-muted">UM001401</span></td>
+                              <td>Design Works</td>
+                              <td>
+                                Carlson Limited
+                              </td>                              
+                              <td>
+                                15 Dec 2017
+                              </td>
+                              <td>
+                                <span class="status-icon bg-success"></span> Paid
+                              </td>                              
+                              <td class="text-left">
+                                <a href="javascript:void(0)" class="btn btn-secondary btn-sm">View</a>
+                              </td>                              
+                            </tr>                            
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+                  </div>
+                </div>
 @endsection
