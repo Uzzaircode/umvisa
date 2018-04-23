@@ -4,7 +4,7 @@
             {{ $title or 'Override Permissions' }} {!! isset($user) ? '<span class="text-danger">(' . $user->getDirectPermissions()->count() . ')</span>' : '' !!}           
         </h4>
         
-        <div class="card-options">
+        {{-- <div class="card-options">
             
             @can('delete_roles')
             @if(!empty($role))
@@ -20,7 +20,7 @@
         @endif
             @endcan
 
-        </div>
+        </div> --}}
     </div>
     <div id="" class="card-body" role="">        
             <div class="row">

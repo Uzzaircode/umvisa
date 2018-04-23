@@ -157,4 +157,13 @@ class UsersController extends Controller
         $user->syncRoles($roles);
         return $user;
     }
+
+    public function myprofile(){
+        $user = User::find(Auth::id());
+        $roles = Role::pluck('name', 'id');
+        $permissions = Permission::all('name', 'id');
+        $depts = Department::pluck('name','id');
+        $saps = Sap::pluck('name', 'id');
+        return view('backend.users.edit', compact('user', 'roles', 'permissions','depts','saps'));
+    }
 }

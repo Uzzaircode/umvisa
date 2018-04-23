@@ -30,6 +30,7 @@
             </thead>
             <tbody>
                @foreach($result as $key => $user)
+               {{-- @if(Auth::user->hasRoles('Admin')) --}}
             <tr>
                 <td>{{ ++$key }}</td>
                 <td class="text-center"><div class="avatar d-block" style="background-image: url({{asset($user->profile->avatar)}})">                    

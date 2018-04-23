@@ -56,4 +56,8 @@ class User extends Authenticatable
     {
     return Cache::has('user-is-online-' . $this->id);
     }
+
+    public function profileOwner($user){
+        return $this->id == $user->id;
+    }
 }
