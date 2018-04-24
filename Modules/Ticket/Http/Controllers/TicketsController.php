@@ -14,6 +14,7 @@ use App\User;
 use Modules\Ticket\Repositories\TicketsRepository as TR;
 use Modules\Ticket\Http\Requests\CreateTicketRequest as CTR;
 use Modules\Ticket\Entities\TicketAttachment;
+use Modules\Ticket\Entities\Ticket;
 use Modules\Application\Entities\Application;
 
 class TicketsController extends Controller
@@ -41,15 +42,16 @@ class TicketsController extends Controller
      * @return Response
      */
     public function create()
-    {   
-        
+    {           
         $users = User::pluck('name','id');
         $saps = Sap::pluck('name','id');
         $sap_users = Auth::user()->saps;
         $depts = Department::all();
         $apps = Application::all();
-        $user_tickets = Auth::user()->tickets;
-        return view('ticket::form',compact('users','saps','depts','sap_users','apps','user_tickets')); 
+        $user_tickets = Auth::user()->tickets;        
+        $latestTicket = Ticket::orderBy('created_at','DESC')->first();
+        $ticket_rn = 'UM'.str_pad($latestTicket->id + 1, 8, "0", STR_PAD_LEFT);     
+        return view('ticket::form',compact('users','saps','depts','sap_users','apps','user_tickets','ticket_rn')); 
     }
 
     /**

@@ -11,12 +11,17 @@
     @endif
         @csrf
             @cardHeader
-                @slot('card_title')<i class="fe fe-tag"></i> Ticket @endslot
+    @slot('card_title')<i class="fe fe-tag"></i> Ticket  
+    @endslot
+    <div class="card-options">           
+        <button class="btn btn-sm btn-primary">#{{$ticket_rn}}</button>       
+    </div>
             @endcardHeader                
-        @cardBody                                               
+        @cardBody                                           
         <div class="form-group"  @if ($errors->has('subject')) has-error @endif>
                 <label for="" class="form-label">Subject</label>
                 <input type="hidden" name="user_id" value="{{Auth::id()}}">
+                <input type="hidden" name="ticket_number" value="{{$ticket_rn}}">
                 <input type="text" class="form-control" name="subject" value="{{old('subject',$ticket->subject ?? null)}}">
                 @if ($errors->has('subject'))
                         <p class="text-danger">{{ $errors->first('subject') }}</p> 
@@ -30,7 +35,7 @@
                     @endif                 
             </div>
             <div class="form-group"  @if ($errors->has('name')) has-error @endif>
-                    <label for="" class="form-label"></label>
+                    <label for="" class="form-label">Attachments</label>
                 <input type="file" class="" name="files[]" multiple>
                     @if ($errors->has('files'))
                         <p class="text-danger">{{ $errors->first('files') }}</p> 
@@ -54,7 +59,7 @@
             @endif
             <div class="form-group"  @if ($errors->has('dept_id')) has-error @endif>
                     <label for="" class="form-label">Department</label>
-            <select name="dept_id" id="" class="form-control selectize">
+            <select name="dept_id" id="" class="form-control selectize" placeholder="Select department">
                     @foreach($depts as $dept)                                    
                         <option value="{{$dept->id}}" 
                                 @if(isset($ticket))
@@ -84,15 +89,8 @@
                     <p class="text-danger">{{ $errors->first('saps') }}</p> @endif            
             </div>
             <div class="form-group">                 
-                {{-- <label class="custom-switch"> 
-                <input class="custom-switch-input" name="integration" type="checkbox" id="app_check" 
-                value="{{old('integration',$ticket->integration ?? null)}}" 
-                {{isset($ticket) && $ticket->integration == 1 ? 'checked=checked':''}}> 
-                  <span class="custom-switch-indicator"></span> 
-                  <span class="custom-switch-description">Integration with third-party application?</span> 
-                </label>  --}}
                 <label for="" class="form-label">Integration with another application?</label>
-                <select name="sap_integration" id="" onchange="showDiv(this)" class="form-control selectize">
+                <select name="sap_integration" id="" onchange="showDiv(this)" class="form-control selectize" placeholder="Please select">
                         <option value="">Please Select</option>
                 <option value="1" {{isset($ticket) && $ticket->integration == 1 ? 'selected':''}}>Yes</option>
                         <option value="0" {{isset($ticket) && $ticket->integration == 0 ? 'selected':''}}>No</option>
@@ -101,7 +99,8 @@
              
             <div class="form-group"  @if ($errors->has('application_id')) has-error @endif>
                     <label for="" class="form-label">Applications</label>
-                <select name="application_id" id="app_id" class="form-control selectize"> 
+
+                <select name="application_id" id="app_id" class="form-control selectize" placeholder="Select the application">
                     @foreach($apps as $app) 
                 <option value="{{$app->id}}" {{isset($ticket) && $ticket->application_id == $app->id ? 'selected':''}}>{{$app->name}}</option> 
                     @endforeach 
