@@ -32,7 +32,7 @@
             <td>{{ ++$key }}</td>
             <td>{{ $result->subject }}</td>
             <td>{{ $result->user->name }}</td>
-            <td>{{$result->created_at->toFormattedDateString()}}</td>            
+            <td>{{$result->created_at->toDayDateTimeString()}}</td>            
         
             @can('edit_tickets')
             <td class="text-center">

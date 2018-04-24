@@ -42,6 +42,7 @@ class TicketsController extends Controller
      */
     public function create()
     {   
+        
         $users = User::pluck('name','id');
         $saps = Sap::pluck('name','id');
         $sap_users = Auth::user()->saps;
@@ -58,6 +59,7 @@ class TicketsController extends Controller
     public function store(TR $repo, CTR $request)
     {
         $ticket = $repo->create($request->all());
+        if($request->hasFile('files')){
         foreach($request->file('files') as $file){
             $filename = trim(Auth::user()->name). time() . $file->getClientOriginalName();
             $file->move('uploads/attachments', $filename);
@@ -66,6 +68,7 @@ class TicketsController extends Controller
                 'path' => 'uploads/attachments/'.$filename
             ]);
         }
+    }
         Session::flash('success', 'The '.$this->entity.' has been created successfully');
         return redirect()->route('tickets.index');
     }
@@ -101,15 +104,18 @@ class TicketsController extends Controller
     public function update(TR $repo,CTR $request,$id)
     {
         $ticket = $repo->find($id);
+        dd($request->all());
         $ticket->update($request->all());
+        if($request->hasFile('files')){
         foreach($request->file('files') as $file){
             $filename = trim(Auth::user()->name). time() . $file->getClientOriginalName();
             $file->move('uploads/attachments', $filename);
-            TicketAttachment::create([
+            TicketAttachment::update([
                 'ticket_id' => $ticket->id,
                 'path' => 'uploads/attachments/'.$filename
             ]);
         }
+    }
         Session::flash('success','The '.$this->entity.' has been updated successfully');
         return redirect()->back();
     }

@@ -84,18 +84,26 @@
                     <p class="text-danger">{{ $errors->first('saps') }}</p> @endif            
             </div>
             <div class="form-group">                 
-                <label class="custom-switch"> 
-                <input name="custom-switch-checkbox" class="custom-switch-input" name="integration" type="checkbox" id="app_check" value="1" {{isset($ticket) && $ticket->integration == 1 ? 'checked="checked"':''}}> 
+                {{-- <label class="custom-switch"> 
+                <input class="custom-switch-input" name="integration" type="checkbox" id="app_check" 
+                value="{{old('integration',$ticket->integration ?? null)}}" 
+                {{isset($ticket) && $ticket->integration == 1 ? 'checked=checked':''}}> 
                   <span class="custom-switch-indicator"></span> 
                   <span class="custom-switch-description">Integration with third-party application?</span> 
-                </label> 
+                </label>  --}}
+                <label for="" class="form-label">Integration with another application?</label>
+                <select name="sap_integration" id="" onchange="showDiv(this)" class="form-control selectize">
+                        <option value="">Please Select</option>
+                <option value="1" {{isset($ticket) && $ticket->integration == 1 ? 'selected':''}}>Yes</option>
+                        <option value="0" {{isset($ticket) && $ticket->integration == 0 ? 'selected':''}}>No</option>
+                    </select>
               </div> 
              
             <div class="form-group"  @if ($errors->has('application_id')) has-error @endif>
                     <label for="" class="form-label">Applications</label>
                 <select name="application_id" id="app_id" class="form-control selectize"> 
                     @foreach($apps as $app) 
-                        <option value="{{$app->id}}">{{$app->name}}</option> 
+                <option value="{{$app->id}}" {{isset($ticket) && $ticket->application_id == $app->id ? 'selected':''}}>{{$app->name}}</option> 
                     @endforeach 
                 </select>
                 @if ($errors->has('application_id'))
@@ -104,7 +112,7 @@
             </div>
             
             <div class="form-group"  @if ($errors->has('ticket_type')) has-error @endif>
-                    <label for="" class="form-label"></label>
+                    <label for="" class="form-label">Ticket Type</label>
                 <select name="ticket_type" id="" class="form-control selectize">
                     <option value="new">{{ucwords('new')}}</option>
                     <option value="open">{{ucwords('open')}}</option>
@@ -186,19 +194,34 @@ $('#attachment').magnificPopup({
   }
 });    
 </script> 
-<script type="text/javascript"> 
+{{-- <script type="text/javascript"> 
 
 $(document).ready(function(){
+    @if(isset($ticket) && $ticket->integration == 1)
+    $('#app_id')[0].selectize.enable();
+    @else
     $('#app_id')[0].selectize.disable();
+    @endif
 });
 
     $(document).on('change', '#app_check', function(){ 
       if($(this).prop('checked')){ 
+          $(this).attr('value', 1);
           $('#app_id')[0].selectize.enable(); 
            
       } else { 
-          $('#app_id')[0].selectize.disable();  
+        $(this).attr('value', 0);
+        $('#app_id')[0].selectize.disable();  
       } 
   }); 
-  </script>    
+  </script>     --}}
+  <script type="text/javascript">
+    function showDiv(elem){
+   if(elem.value == 1){
+    $('#app_id')[0].selectize.enable();
+    }else{
+  $('#app_id')[0].selectize.disable();
+}
+}
+</script>
 @endsection
