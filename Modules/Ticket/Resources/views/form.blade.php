@@ -216,6 +216,11 @@ $(document).ready(function(){
   }); 
   </script>     --}}
   <script type="text/javascript">
+  $(document).ready(function(){
+    $('#app_id')[0].selectize.disable();
+  });
+  </script>
+  <script type="text/javascript">
     function showDiv(elem){
    if(elem.value == 1){
     $('#app_id')[0].selectize.enable();
