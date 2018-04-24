@@ -49,9 +49,15 @@ class TicketsController extends Controller
         $depts = Department::all();
         $apps = Application::all();
         $user_tickets = Auth::user()->tickets;        
-        $latestTicket = Ticket::orderBy('created_at','DESC')->first();
-        $ticket_rn = 'UM'.str_pad($latestTicket->id + 1, 8, "0", STR_PAD_LEFT);     
-        return view('ticket::form',compact('users','saps','depts','sap_users','apps','user_tickets','ticket_rn')); 
+        
+        $lastTicket = Ticket::orderBy('id', 'desc')->first();
+        if(!$lastTicket ){        
+            $number = 0;
+        }else{ 
+            $number = substr($lastTicket->ticket_number,2);            
+        }
+        $ticket_rn =  'UM' . sprintf('%08d', intval($number) + 1);
+        return view('ticket::form',compact('users','saps','depts','sap_users','apps','user_tickets','ticket_rn'));
     }
 
     /**
@@ -97,7 +103,14 @@ class TicketsController extends Controller
         $depts = Department::all();
         $apps = Application::all(); 
         $user_tickets = Auth::user()->tickets;
-        return view('ticket::form',compact('users','saps','depts','sap_users','apps','user_tickets'));
+        $lastTicket = Ticket::orderBy('id', 'desc')->first();
+        if(!$lastTicket){        
+            $number = 0;
+        }else{ 
+            $number = substr($lastTicket->ticket_number,2);            
+        }
+        $ticket_rn =  'UM' . sprintf('%08d', intval($number) + 1);
+        return view('ticket::form',compact('users','saps','depts','sap_users','apps','user_tickets','ticket_rn','ticket'));
     }
 
     /**

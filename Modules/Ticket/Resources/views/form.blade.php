@@ -14,14 +14,17 @@
     @slot('card_title')<i class="fe fe-tag"></i> Ticket  
     @endslot
     <div class="card-options">           
-        <button class="btn btn-sm btn-primary">#{{$ticket_rn}}</button>       
+    <button class="btn btn-sm btn-primary"># {{isset($ticket) ? $ticket->ticket_number:$ticket_rn}}
+    </button>       
     </div>
             @endcardHeader                
         @cardBody                                           
         <div class="form-group"  @if ($errors->has('subject')) has-error @endif>
                 <label for="" class="form-label">Subject</label>
                 <input type="hidden" name="user_id" value="{{Auth::id()}}">
-                <input type="hidden" name="ticket_number" value="{{$ticket_rn}}">
+                @if(!isset($ticket))
+                <input type="hidden" name="ticket_number" value="{{isset($ticket) ? $ticket->ticket_number:$ticket_rn}}">
+                @endif
                 <input type="text" class="form-control" name="subject" value="{{old('subject',$ticket->subject ?? null)}}">
                 @if ($errors->has('subject'))
                         <p class="text-danger">{{ $errors->first('subject') }}</p> 

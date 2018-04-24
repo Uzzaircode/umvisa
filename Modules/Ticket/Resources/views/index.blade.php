@@ -18,6 +18,7 @@
     @table(['class'=>'table table-vcenter text-nowrap card-table table-striped', 'id'=>'datatable'])
         <thead>
             <th>#</th>
+            <th>Ticket Number</th>
             <th>Subject</th>
             <th>Created By</th>
             <th>Created At</th>            
@@ -30,6 +31,7 @@
         <tr>
 
             <td>{{ ++$key }}</td>
+            <td>{{$result->ticket_number}}</td>
             <td>{{ $result->subject }}</td>
             <td>{{ $result->user->name }}</td>
             <td>{{$result->created_at->toDayDateTimeString()}}</td>            
