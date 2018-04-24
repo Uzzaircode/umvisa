@@ -33,10 +33,7 @@ class TicketsController extends Controller
      */
     public function index(TR $repo)
     {
-        $results = $repo->all();
-        if(!(Auth::user()->hasRole('Administrator'))){
-            $results = Ticket::all()->where('user_id',Auth::id());
-        }
+        $results = $repo->allTickets();        
         return view('ticket::index',compact('results'));
     }
 
@@ -44,7 +41,7 @@ class TicketsController extends Controller
      * Show the form for creating a new resource.
      * @return Response
      */
-    public function create()
+    public function create(TR $repo)
     {           
         $users = User::pluck('name','id');
         $saps = Sap::pluck('name','id');
@@ -52,14 +49,7 @@ class TicketsController extends Controller
         $depts = Department::all();
         $apps = Application::all();
         $user_tickets = Auth::user()->tickets;        
-        
-        $lastTicket = Ticket::orderBy('id', 'desc')->first();
-        if(!$lastTicket ){        
-            $number = 0;
-        }else{ 
-            $number = substr($lastTicket->ticket_number,2);            
-        }
-        $ticket_rn =  'UM' . sprintf('%08d', intval($number) + 1);
+        $ticket_rn =  $repo->ticketNumber();
         return view('ticket::form',compact('users','saps','depts','sap_users','apps','user_tickets','ticket_rn'));
     }
 
@@ -106,13 +96,7 @@ class TicketsController extends Controller
         $depts = Department::all();
         $apps = Application::all(); 
         $user_tickets = Auth::user()->tickets;
-        $lastTicket = Ticket::orderBy('id', 'desc')->first();
-        if(!$lastTicket){        
-            $number = 0;
-        }else{ 
-            $number = substr($lastTicket->ticket_number,2);            
-        }
-        $ticket_rn =  'UM' . sprintf('%08d', intval($number) + 1);
+        $ticket_rn =  $repo->ticketNumber();
         return view('ticket::form',compact('users','saps','depts','sap_users','apps','user_tickets','ticket_rn','ticket'));
     }
 
@@ -124,7 +108,6 @@ class TicketsController extends Controller
     public function update(TR $repo,CTR $request,$id)
     {
         $ticket = $repo->find($id);
-        dd($request->all());
         $ticket->update($request->all());
         if($request->hasFile('files')){
         foreach($request->file('files') as $file){

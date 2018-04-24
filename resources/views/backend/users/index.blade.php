@@ -6,7 +6,7 @@
     @cardHeader
         @slot('card_title')<i class="fe fe-users"></i> Users @endslot
         @cardOptions
-        <a class="btn btn-secondary btn-sm">Total: {{ $result->total() }} {{ str_plural('User', $result->count()) }}</a>
+        <a class="btn btn-secondary btn-sm">Total: {{ $result->count() }} {{ str_plural('User', $result->count()) }}</a>
 
         @can('add_users')
         <a href="{{ route('users.create') }}" class="btn btn-primary btn-sm text-white"> <i class=""></i> Create</a> 

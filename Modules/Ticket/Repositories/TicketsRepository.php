@@ -3,18 +3,27 @@ namespace Modules\Ticket\Repositories;
 
 use App\Abstracts\Repository as AbstractRepository;
 use Modules\Ticket\Repositories\TicketRepoInterface;
-
+use Auth;
 
 class TicketsRepository extends AbstractRepository implements TicketRepoInterface
 {
 	protected $modelClassName = 'Modules\Ticket\Entities\Ticket';
 	
-	// public function create($request){
-	// 	return $modelClassName::create([
-	// 		'user_id' => $request->user_id,
-	// 		'subject' => $request->subject,
-	// 		'body' => $request->body,
-	// 		'sap_id' => $request->sap_id
-	// 	]);
-	// }
+	public function allTickets(){
+				
+		if(!(Auth::user()->hasRole('Administrator'))){
+        	return $this->modelClassName::all()->where('user_id',Auth::id());
+        }else{
+			return $this->modelClassName::all();
+		}
+	}
+	public function ticketNumber(){
+		$lastTicket = $this->modelClassName::orderBy('id', 'desc')->first();
+        if(!$lastTicket ){        
+            $number = 0;
+        }else{ 
+            $number = substr($lastTicket->ticket_number,2);            
+		}
+		return 'UM' . sprintf('%08d', intval($number) + 1);
+	}
 }

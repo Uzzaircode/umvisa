@@ -10,6 +10,7 @@ use App\Authorizable;
 use App\Profile;
 use Modules\Department\Entities\Department;
 use Modules\Sap\Entities\Sap;
+use App\Repositories\UsersRepository as UR;
 use Auth;
 use Session;
 use Illuminate\Support\Facades\Storage;
@@ -18,9 +19,10 @@ class UsersController extends Controller
 {
     use Authorizable;
     
-    public function index()
-    {
-        $result = User::latest()->paginate();
+    public function index(UR $repo)
+    {   
+        $result = $repo->allUsers();
+
         return view('backend.users.index', compact('result'));
     }
 
