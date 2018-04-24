@@ -11,7 +11,7 @@ class TicketsRepository extends AbstractRepository implements TicketRepoInterfac
 	
 	public function allTickets(){
 				
-		if(!(Auth::user()->hasRole('Administrator'))){
+		if(!(Auth::user()->hasRole('Admin'))){
         	return $this->modelClassName::all()->where('user_id',Auth::id());
         }else{
 			return $this->modelClassName::all();

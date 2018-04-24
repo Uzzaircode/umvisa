@@ -18,7 +18,7 @@
     !!} @if ($errors->has('password'))
     <p class="help-block">{{ $errors->first('password') }}</p> @endif
 </div>
-@role('Admin')
+@role('Administrator')
 <!-- Roles Form Input -->
 <div class="form-group @if ($errors->has('roles')) has-error @endif">            
     {!! Form::label('roles[]', 'Roles') !!}
