@@ -12,6 +12,7 @@ use Modules\Sap\Entities\Sap;
 use Modules\Department\Entities\Department;
 use App\User;
 use Modules\Ticket\Repositories\TicketsRepository as TR;
+use Modules\Ticket\Http\Requests\CreateTicketRequest as CTR;
 use Modules\Ticket\Entities\TicketAttachment;
 use Modules\Application\Entities\Application;
 
@@ -54,7 +55,7 @@ class TicketsController extends Controller
      * @param  Request $request
      * @return Response
      */
-    public function store(TR $repo, Request $request)
+    public function store(TR $repo, CTR $request)
     {
         $ticket = $repo->create($request->all());
         foreach($request->file('files') as $file){
@@ -97,7 +98,7 @@ class TicketsController extends Controller
      * @param  Request $request
      * @return Response
      */
-    public function update(TR $repo,Request $request,$id)
+    public function update(TR $repo,CTR $request,$id)
     {
         $ticket = $repo->find($id);
         $ticket->update($request->all());

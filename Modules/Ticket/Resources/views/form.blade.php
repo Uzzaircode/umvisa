@@ -11,25 +11,35 @@
     @endif
         @csrf
             @cardHeader
-                @slot('card_title') Ticket @endslot
+                @slot('card_title')<i class="fe fe-tag"></i> Ticket @endslot
             @endcardHeader                
         @cardBody                                               
-            @formGroup(['form_label'=>'Subject'])
+        <div class="form-group"  @if ($errors->has('subject')) has-error @endif>
+                <label for="" class="form-label">Subject</label>
                 <input type="hidden" name="user_id" value="{{Auth::id()}}">
-                <input type="text" class="form-control" name="subject" value="{{old('subject',$ticket->subject ?? null)}}">   
-            @endformGroup
-            @formGroup(['form_label'=>'Issue'])
-            <textarea name="body" id="" cols="30" rows="5" class="form-control">{{old('body',$ticket->body ?? null)}}</textarea>                  
-            @endformGroup
-            @formGroup(['form_label'=>'Attach Files'])                                
+                <input type="text" class="form-control" name="subject" value="{{old('subject',$ticket->subject ?? null)}}">
+                @if ($errors->has('subject'))
+                        <p class="text-danger">{{ $errors->first('subject') }}</p> 
+                    @endif   
+        </div>
+            <div class="form-group"  @if ($errors->has('body')) has-error @endif>
+                    <label for="" class="form-label">Issue</label>
+            <textarea name="body" id="" cols="30" rows="5" class="form-control">{{old('body',$ticket->body ?? null)}}</textarea> 
+            @if ($errors->has('body'))
+                        <p class="text-danger">{{ $errors->first('body') }}</p> 
+                    @endif                 
+            </div>
+            <div class="form-group"  @if ($errors->has('name')) has-error @endif>
+                    <label for="" class="form-label"></label>
                 <input type="file" class="" name="files[]" multiple>
                     @if ($errors->has('files'))
-                        <p class="help-block">{{ $errors->first('files') }}</p> 
+                        <p class="text-danger">{{ $errors->first('files') }}</p> 
                     @endif            
-            @endformGroup
+            </div>
             @if(isset($ticket))
             @if($ticket->attachments->count() > 1)
-                @formGroup(['form_label'=>''])
+                <div class="form-group">
+                    <label for="" class="form-label">Attached Files</label>
                     <div class="row gutters-sm" id="attachment">
                         @foreach($ticket->attachments as $t)             
                             <div class="col-6 col-sm-4" >
@@ -39,10 +49,11 @@
                             </div>              
                         @endforeach
                     </div>             
-                @endformGroup
+                </div>
             @endif
             @endif
-            @formGroup(['form_label'=>'Assign To'])
+            <div class="form-group"  @if ($errors->has('dept_id')) has-error @endif>
+                    <label for="" class="form-label">Department</label>
             <select name="dept_id" id="" class="form-control selectize">
                     @foreach($depts as $dept)                                    
                         <option value="{{$dept->id}}" 
@@ -54,11 +65,12 @@
                         </option>
                     @endforeach            
             </select>                                               
-                    @if ($errors->has('depts'))
-                    <p class="help-block">{{ $errors->first('depts') }}</p> 
+                    @if ($errors->has('dept_id'))
+                    <p class="text-danger">{{ $errors->first('dept_id') }}</p> 
                     @endif            
-            @endformGroup 
-            @formGroup(['form_label'=>'SAP Modules'])
+            </div>
+            <div class="form-group"  @if ($errors->has('sap_id')) has-error @endif>
+                    <label for="" class="form-label">SAP Modules</label>
             <select name="sap_id" id="" class="form-control selectize">
                 @foreach($sap_users as $sap)
             <option value="{{$sap->id}}"
@@ -69,8 +81,8 @@
                 @endforeach                    
             </select>                    
                     @if ($errors->has('saps'))
-                    <p class="help-block">{{ $errors->first('saps') }}</p> @endif            
-            @endformGroup 
+                    <p class="text-danger">{{ $errors->first('saps') }}</p> @endif            
+            </div>
             <div class="form-group">                 
                 <label class="custom-switch"> 
                 <input name="custom-switch-checkbox" class="custom-switch-input" name="integration" type="checkbox" id="app_check" value="1" {{isset($ticket) && $ticket->integration == 1 ? 'checked="checked"':''}}> 
@@ -79,23 +91,31 @@
                 </label> 
               </div> 
              
-            @formGroup(['form_label'=>'Application']) 
+            <div class="form-group"  @if ($errors->has('application_id')) has-error @endif>
+                    <label for="" class="form-label">Applications</label>
                 <select name="application_id" id="app_id" class="form-control selectize"> 
                     @foreach($apps as $app) 
                         <option value="{{$app->id}}">{{$app->name}}</option> 
                     @endforeach 
-                </select>                 
-            @endformGroup 
+                </select>
+                @if ($errors->has('application_id'))
+                        <p class="text-danger">{{ $errors->first('application_id') }}</p> 
+                    @endif                 
+            </div>
             
-            @formGroup(['form_label'=>'Ticket Type'])                
+            <div class="form-group"  @if ($errors->has('ticket_type')) has-error @endif>
+                    <label for="" class="form-label"></label>
                 <select name="ticket_type" id="" class="form-control selectize">
                     <option value="new">{{ucwords('new')}}</option>
                     <option value="open">{{ucwords('open')}}</option>
                     <option value="pending">{{ucwords('pending')}}</option>
                     <option value="recurring">{{ucwords('recurring')}}</option>
-                </select> 
-            @endformGroup
-            @formGroup(['form_label'=>''])                
+                </select>
+                @if ($errors->has('ticket_type'))
+                        <p class="text-danger">{{ $errors->first('ticket_type') }}</p> 
+                    @endif 
+            </div>
+            <div class="form-group"  @if ($errors->has('name')) has-error @endif>
                 <button type="submit" class="btn btn-md btn-primary">
                     @if(isset($ticket->id))
                         Update
@@ -104,7 +124,7 @@
                     @endif
                 </button>
             <a href="{{URL::previous()}}" class="btn btn-md btn-secondary">Back</a>  
-            @endformGroup
+            </div>
         @endcardBody
     </form>
     </div>
