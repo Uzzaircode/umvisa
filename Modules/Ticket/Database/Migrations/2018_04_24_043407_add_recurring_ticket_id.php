@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class AddRunningNumberToTickets extends Migration
+class AddRecurringTicketId extends Migration
 {
     /**
      * Run the migrations.
@@ -14,7 +14,7 @@ class AddRunningNumberToTickets extends Migration
     public function up()
     {
         Schema::table('tickets', function (Blueprint $table) {
-            $table->integer();
+            $table->integer('recurring_ticket_id')->nullable();
         });
     }
 

@@ -7,6 +7,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Spatie\Permission\Traits\HasRoles;
 use App\LinkedSocialAccount;
 use Modules\Department\Entities\Department;
+use Modules\Ticket\Entities\Ticket;
 use Modules\Sap\Entities\Sap;
 use App\Profile;
 use Cache;
@@ -59,5 +60,8 @@ class User extends Authenticatable
 
     public function profileOwner($user){
         return $this->id == $user->id;
+    }
+    public function tickets(){
+        return $this->hasMany(Ticket::class);
     }
 }

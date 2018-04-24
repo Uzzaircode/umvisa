@@ -47,8 +47,9 @@ class TicketsController extends Controller
         $saps = Sap::pluck('name','id');
         $sap_users = Auth::user()->saps;
         $depts = Department::all();
-        $apps = Application::all(); 
-        return view('ticket::form',compact('users','saps','depts','sap_users','apps')); 
+        $apps = Application::all();
+        $user_tickets = Auth::user()->tickets;
+        return view('ticket::form',compact('users','saps','depts','sap_users','apps','user_tickets')); 
     }
 
     /**

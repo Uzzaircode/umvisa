@@ -108,12 +108,12 @@
                 </select>
                 @if ($errors->has('application_id'))
                         <p class="text-danger">{{ $errors->first('application_id') }}</p> 
-                    @endif                 
+                @endif                 
             </div>
             
             <div class="form-group"  @if ($errors->has('ticket_type')) has-error @endif>
                     <label for="" class="form-label">Ticket Type</label>
-                <select name="ticket_type" id="" class="form-control selectize">
+                <select name="ticket_type" id="" class="form-control selectize" onchange="showRecurring(this)">
                     <option value="new">{{ucwords('new')}}</option>
                     <option value="open">{{ucwords('open')}}</option>
                     <option value="pending">{{ucwords('pending')}}</option>
@@ -121,7 +121,15 @@
                 </select>
                 @if ($errors->has('ticket_type'))
                         <p class="text-danger">{{ $errors->first('ticket_type') }}</p> 
-                    @endif 
+                @endif 
+            </div>
+            <div id="old_ticket" class="form-group">
+                <label for="" class="form-label">Which Ticket as recurring issue?</label>
+                <select name="recurring_ticket_id" id="" class="form-control selectize">
+                @foreach($user_tickets as $t)
+                    <option value="{{$t->id}}">{{$t->subject}}</option>
+                @endforeach
+                </select>
             </div>
             <div class="form-group"  @if ($errors->has('name')) has-error @endif>
                 <button type="submit" class="btn btn-md btn-primary">
@@ -218,6 +226,11 @@ $(document).ready(function(){
   <script type="text/javascript">
   $(document).ready(function(){
     $('#app_id')[0].selectize.disable();
+    @if(isset($ticket) && !empty($ticket->recurring_ticket_id))
+        $('#old_ticket').show();
+    @else
+        $('#old_ticket').hide();
+    @endif    
   });
   </script>
   <script type="text/javascript">
@@ -227,6 +240,13 @@ $(document).ready(function(){
     }else{
   $('#app_id')[0].selectize.disable();
 }
+}
+function showRecurring(elem){
+    if(elem.value == 'recurring'){
+        $('#old_ticket').show();
+    }else{
+        $('#old_ticket').hide();
+    }
 }
 </script>
 @endsection

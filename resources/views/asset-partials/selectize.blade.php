@@ -7,7 +7,8 @@
 						field: 'text',
 						direction: 'asc'
 					},
-					dropdownParent: 'body'
+					dropdownParent: 'body',
+					create:false
 				});
 </script>
 
