@@ -11,7 +11,7 @@
     @endif
         @csrf
             @cardHeader
-    @slot('card_title')<i class="fe fe-tag"></i> Ticket  
+    @slot('card_title')<i class="fe fe-tag"></i> {{isset($ticket) ? 'Edit Ticket':'New Ticket'}}  
     @endslot
     <div class="card-options">           
     <button class="btn btn-sm btn-primary"># {{isset($ticket) ? $ticket->ticket_number:$ticket_rn}}
@@ -133,15 +133,10 @@
                 @endforeach
                 </select>
             </div>
-            <div class="form-group"  @if ($errors->has('name')) has-error @endif>
-                <button type="submit" class="btn btn-md btn-primary">
-                    @if(isset($ticket->id))
-                        Update
-                    @else
-                        Create 
-                    @endif
-                </button>
-            <a href="{{URL::previous()}}" class="btn btn-md btn-secondary">Back</a>  
+            <div class="form-group"  @if ($errors->has('name')) has-error @endif>                
+                <input type="submit" name="publish" class="btn btn-md btn-primary" value="{{isset($ticket) ? 'Update':'Create'}}">
+                <input type="submit" name="draft" class="btn btn-md btn-secondary" value="Save as Draft">
+                <a href="{{route('tickets.index')}}" class="btn btn-md btn-secondary">Back</a>  
             </div>
         @endcardBody
     </form>

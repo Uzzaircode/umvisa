@@ -16,6 +16,7 @@ use Modules\Ticket\Http\Requests\CreateTicketRequest as CTR;
 use Modules\Ticket\Entities\TicketAttachment;
 use Modules\Ticket\Entities\Ticket;
 use Modules\Application\Entities\Application;
+use Illuminate\Support\Facades\Input;
 
 class TicketsController extends Controller
 {
@@ -59,7 +60,7 @@ class TicketsController extends Controller
      * @return Response
      */
     public function store(TR $repo, CTR $request)
-    {
+    {        
         $ticket = $repo->create($request->all());
         if($request->hasFile('files')){
         foreach($request->file('files') as $file){
@@ -70,6 +71,11 @@ class TicketsController extends Controller
                 'path' => 'uploads/attachments/'.$filename
             ]);
         }
+    }    
+    if(Input::get('submit') == 'Create') {
+        $ticket->status = 1;
+    }elseif(Input::get('submit') == 'Save as Draft') {
+        $ticket->status = 0;
     }
         Session::flash('success', 'The '.$this->entity.' has been created successfully');
         return redirect()->route('tickets.index');
