@@ -97,9 +97,9 @@
                   </li>
                   @can('view_tickets')
                   <li class="nav-item">
-                        <a href="{{route('tickets.index')}}" class="nav-link"><i class="fe fe-tag"></i>Tickets</a>
+                        <a href="{{route('tickets.index')}}" class="nav-link"><i class="fe fe-tag"></i>{{Auth::user()->hasRole('Admin')? 'Tickets':'My Tickets'}}</a>
                       </li>
-                  @endcan                 
+                  @endcan                               
                   @role('Admin') {{-- Laravel-permission blade helper --}}               
                   <li class="nav-item dropdown">
                     <a href="javascript:void(0)" class="nav-link" data-toggle="dropdown"><i class="fe fe-package"></i> Modules</a>
