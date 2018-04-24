@@ -85,9 +85,17 @@ class TicketsController extends Controller
      * Show the specified resource.
      * @return Response
      */
-    public function show()
+    public function show(TR $repo, $id)
     {
-        return view('ticket::show');
+        
+        $ticket = $repo->find($id);        
+        $saps = Sap::pluck('name', 'id');
+        $sap_users = Auth::user()->saps;
+        $depts = Department::all();
+        $apps = Application::all(); 
+        $user_tickets = Auth::user()->tickets;
+        $ticket_rn =  $repo->ticketNumber();
+        return view('ticket::show',compact('users','saps','depts','sap_users','apps','user_tickets','ticket_rn','ticket'));        
     }
 
     /**
