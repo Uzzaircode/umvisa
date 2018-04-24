@@ -34,6 +34,9 @@ class TicketsController extends Controller
     public function index(TR $repo)
     {
         $results = $repo->all();
+        if(!(Auth::user()->hasRole('Administrator'))){
+            $results = Ticket::all()->where('user_id',Auth::id());
+        }
         return view('ticket::index',compact('results'));
     }
 
