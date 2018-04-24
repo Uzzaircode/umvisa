@@ -127,7 +127,7 @@
                 <label for="" class="form-label">Which Ticket as recurring issue?</label>
                 <select name="recurring_ticket_id" id="" class="form-control selectize">
                 @foreach($user_tickets as $t)
-                    <option value="{{$t->id}}">{{$t->subject}}</option>
+                <option value="{{$t->id}}" {{isset($ticket) && $t->id == $ticket->recurring_ticket_id ? 'selected':''}}>{{$t->subject}}</option>
                 @endforeach
                 </select>
             </div>
