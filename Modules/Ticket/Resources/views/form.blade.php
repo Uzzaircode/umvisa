@@ -149,7 +149,7 @@
         @endcardBody
         </div>
     </div>
-    <div class="col-md-4">
+    <div class="col-md-4" >
             <div class="card">
                     @cardHeader 
                     @slot('card_title')
@@ -163,6 +163,7 @@
                         <p class="text-danger">{{ $errors->first('replybody') }}</p>
                         @endif
                     </div>
+                    @isset($replies)
                     <ul class="list-group list-card-group">
                         @foreach($replies as $reply)
                             <li class="list-group-item py-5">
@@ -180,7 +181,8 @@
                                     </div>
                                   </li>
                         @endforeach
-                    </ul>   
+                    </ul>
+                    @endisset  
                     @endcardBody
                 </div>
     </div>

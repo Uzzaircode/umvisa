@@ -88,8 +88,7 @@ class TicketsController extends Controller
                 'ticket_id' => $ticket->id,
                 'user_id' => Auth::id()
             ]);
-        }
-
+        }        
         $ticket->save();
         Session::flash('success', 'The ' . $this->entity . ' has been created successfully');
         return redirect()->route('tickets.index');
