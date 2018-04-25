@@ -1,17 +1,18 @@
 @extends('backend.master') 
 @section('content')
 <div class="row">
-    <div class="col-md-9">
+    <div class="col-md-8">
         {{-- Start Form --}} 
     @if(isset($ticket->id))
     {{-- Edit Form --}}
-    <form action="{{route('tickets.update',['id'=>$ticket->id])}}" class="card" method="POST" enctype="multipart/form-data">
+    <form action="{{route('tickets.update',['id'=>$ticket->id])}}" class="" method="POST" enctype="multipart/form-data">
         {{method_field('PUT')}}
     @else
     {{-- Store Form --}}
-    <form action="{{route('tickets.store')}}" class="card" method="POST" enctype="multipart/form-data">
+    <form action="{{route('tickets.store')}}" class="" method="POST" enctype="multipart/form-data">
     @endif
     @csrf
+    <div class="card">
     @cardHeader
     {{-- Card Header --}}
     @slot('card_title')<i class="fe fe-tag"></i> {{isset($ticket) ? 'Edit Ticket':'New Ticket'}}  
@@ -146,9 +147,45 @@
                 <a href="{{route('tickets.index')}}" class="btn btn-md btn-secondary">Back</a>  
             </div>
         @endcardBody
-    </form>
+        </div>
+    </div>
+    <div class="col-md-4">
+            <div class="card">
+                    @cardHeader 
+                    @slot('card_title')
+                    <i class="fe fe-message-circle"></i> Remarks @endslot 
+                    @endcardHeader 
+                    @cardBody   
+                    <div class="form-group" @if ($errors->has('replybody')) has-error @endif>
+                        <label for="" class="form-label">Leave a remark</label>
+                    <textarea name="replybody" id="" cols="30" rows="5" class="form-control"></textarea>
+                        @if ($errors->has('replybody'))
+                        <p class="text-danger">{{ $errors->first('replybody') }}</p>
+                        @endif
+                    </div>
+                    <ul class="list-group list-card-group">
+                        @foreach($replies as $reply)
+                            <li class="list-group-item py-5">
+                                    <div class="media">
+                                      <div class="media-object avatar avatar-md mr-4" style="background-image: url({{asset($reply->user->profile->avatar)}})"></div>
+                                      <div class="media-body">
+                                        <div class="media-heading">
+                                          <small class="float-right text-muted">{{$reply->created_at->diffForHumans()}}</small>
+                                          <h5>{{$reply->user->name}}</h5>
+                                        </div>
+                                        <div>
+                                          {{$reply->body}}
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </li>
+                        @endforeach
+                    </ul>   
+                    @endcardBody
+                </div>
     </div>
 </div>
+</form>
 @endsection
 @include('asset-partials.selectize')
 @section('page-css')

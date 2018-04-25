@@ -15,6 +15,7 @@ use Modules\Ticket\Entities\Ticket;
 use Modules\Ticket\Entities\TicketAttachment;
 use Modules\Ticket\Http\Requests\CreateTicketRequest as CTR;
 use Modules\Ticket\Repositories\TicketsRepository as TR;
+use Modules\Ticket\Entities\Reply;
 use Session;
 
 class TicketsController extends Controller
@@ -61,12 +62,14 @@ class TicketsController extends Controller
      */
     public function store(TR $repo, CTR $request)
     {
+        // dd($request->replybody);
         $ticket = $repo->create($request->all());
         $sap_id = $request->sap_id;
         $sap_code = Sap::find($sap_id)->code;
         $tn = $request->ticket_number;
         $ticket->ticket_number = 'UM' . date('Y') . '-' . $sap_code . '-' . $tn;
-
+        
+        // if there is attachment
         if ($request->hasFile('files')) {
             foreach ($request->file('files') as $file) {
                 $filename = trim(Auth::user()->name) . time() . $file->getClientOriginalName();
@@ -77,6 +80,16 @@ class TicketsController extends Controller
                 ]);
             }
         }
+        
+        //if the user leaves a remark
+        if(!empty($request->replybody)){
+            Reply::create([
+                'body' => $request->replybody,
+                'ticket_id' => $ticket->id,
+                'user_id' => Auth::id()
+            ]);
+        }
+
         $ticket->save();
         Session::flash('success', 'The ' . $this->entity . ' has been created successfully');
         return redirect()->route('tickets.index');
@@ -96,8 +109,8 @@ class TicketsController extends Controller
         $apps = Application::all();
         $user_tickets = Auth::user()->tickets;
         $ticket_rn = $repo->ticketNumber();
-        $reply = $ticket->replies();
-        return view('ticket::show', compact('users', 'saps', 'depts', 'sap_users', 'apps', 'user_tickets', 'ticket_rn', 'ticket'));
+        $replies = $ticket->replies();
+        return view('ticket::show', compact('users', 'saps', 'depts', 'sap_users', 'apps', 'user_tickets', 'ticket_rn', 'ticket','replies'));
     }
 
     /**
@@ -113,7 +126,8 @@ class TicketsController extends Controller
         $apps = Application::all();
         $user_tickets = Auth::user()->tickets;
         $ticket_rn = $repo->ticketNumber();
-        return view('ticket::form', compact('users', 'saps', 'depts', 'sap_users', 'apps', 'user_tickets', 'ticket_rn', 'ticket'));
+        $replies = $ticket->replies;
+        return view('ticket::form', compact('users', 'saps', 'depts', 'sap_users', 'apps', 'user_tickets', 'ticket_rn', 'ticket','replies'));
     }
 
     /**

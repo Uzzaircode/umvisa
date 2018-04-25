@@ -9,6 +9,7 @@ use App\LinkedSocialAccount;
 use Modules\Department\Entities\Department;
 use Modules\Ticket\Entities\Ticket;
 use Modules\Sap\Entities\Sap;
+use Modules\Ticket\Entities\Reply;
 use App\Profile;
 use Cache;
 
@@ -63,5 +64,8 @@ class User extends Authenticatable
     }
     public function tickets(){
         return $this->hasMany(Ticket::class);
+    }
+    public function replies(){
+        return $this->hasMany(Reply::class);
     }
 }
