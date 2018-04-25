@@ -95,6 +95,7 @@ class TicketsController extends Controller
         $apps = Application::all(); 
         $user_tickets = Auth::user()->tickets;
         $ticket_rn =  $repo->ticketNumber();
+        $reply = $ticket->replies();
         return view('ticket::show',compact('users','saps','depts','sap_users','apps','user_tickets','ticket_rn','ticket'));        
     }
 
