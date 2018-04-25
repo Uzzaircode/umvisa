@@ -63,7 +63,7 @@ class User extends Authenticatable
         return $this->id == $user->id;
     }
     public function tickets(){
-        return $this->belongsToMany(Ticket::class);
+        return $this->hasMany(Ticket::class);
     }
     public function replies(){
         return $this->hasMany(Reply::class);
