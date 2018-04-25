@@ -4,22 +4,26 @@
     <div class="col-md-9">
         {{-- Start Form --}} 
     @if(isset($ticket->id))
+    {{-- Edit Form --}}
     <form action="{{route('tickets.update',['id'=>$ticket->id])}}" class="card" method="POST" enctype="multipart/form-data">
         {{method_field('PUT')}}
     @else
+    {{-- Store Form --}}
     <form action="{{route('tickets.store')}}" class="card" method="POST" enctype="multipart/form-data">
     @endif
-        @csrf
-            @cardHeader
+    @csrf
+    @cardHeader
+    {{-- Card Header --}}
     @slot('card_title')<i class="fe fe-tag"></i> {{isset($ticket) ? 'Edit Ticket':'New Ticket'}}  
     @endslot
+    {{-- Card Options --}}
     <div class="card-options">  
     @if(isset($ticket))        
     <button class="btn btn-sm btn-primary"># {{$ticket->ticket_number}}
     </button>
     @endif      
     </div>
-            @endcardHeader                
+    @endcardHeader                
         @cardBody                                           
         <div class="form-group"  @if ($errors->has('subject')) has-error @endif>
                 <label for="" class="form-label">Subject</label>
@@ -132,7 +136,7 @@
                 <label for="" class="form-label">Which Ticket as recurring issue?</label>
                 <select name="recurring_ticket_id" id="" class="form-control selectize">
                 @foreach($user_tickets as $t)
-                <option value="{{$t->id}}" {{isset($ticket) && $t->id == $ticket->recurring_ticket_id ? 'selected':''}}>{{$t->subject}}</option>
+                <option value="{{$t->id}}" {{isset($ticket) && $t->id == $ticket->recurring_ticket_id ? 'selected':''}}>#{{$t->ticket_number}} - {{$t->subject}}</option>
                 @endforeach
                 </select>
             </div>
