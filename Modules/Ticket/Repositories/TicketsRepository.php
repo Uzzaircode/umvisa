@@ -22,8 +22,8 @@ class TicketsRepository extends AbstractRepository implements TicketRepoInterfac
         if(!$lastTicket ){        
             $number = 0;
         }else{ 
-            $number = substr($lastTicket->ticket_number,2);            
+            $number = substr($lastTicket->ticket_number,10);            
 		}
-		return 'UM' . sprintf('%08d', intval($number) + 1);
+		return sprintf('%03d', intval($number) + 1);
 	}
 }

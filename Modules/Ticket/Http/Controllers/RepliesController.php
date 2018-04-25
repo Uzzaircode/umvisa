@@ -5,7 +5,7 @@ namespace Modules\Ticket\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Routing\Controller;
-
+use DB;
 class RepliesController extends Controller
 {
     /**
@@ -69,4 +69,15 @@ class RepliesController extends Controller
     public function destroy()
     {
     }
+
+    public function getSapCode(Request $request)
+{
+    $sap_id = $request->sap_id;
+
+    $codes = DB::table('saps')->where('id' ,'=', $sap_id )->get();        
+
+    $html = view('ticket::form', compact('codes'))->render();
+
+    return  $html;
+}
 }

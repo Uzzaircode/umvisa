@@ -25,21 +25,21 @@
                 @if(!isset($ticket))
                 <input type="hidden" name="ticket_number" value="{{isset($ticket) ? $ticket->ticket_number:$ticket_rn}}">
                 @endif
-                <input type="text" class="form-control" name="subject" value="{{old('subject',$ticket->subject ?? null)}}">
+                <input type="text" class="form-control" name="subject" value="{{old('subject',$ticket->subject ?? null)}}" readonly>
                 @if ($errors->has('subject'))
                         <p class="text-danger">{{ $errors->first('subject') }}</p> 
                     @endif   
         </div>
             <div class="form-group"  @if ($errors->has('body')) has-error @endif>
                     <label for="" class="form-label">Issue</label>
-            <textarea name="body" id="" cols="30" rows="5" class="form-control">{{old('body',$ticket->body ?? null)}}</textarea> 
+            <textarea name="body" id="" cols="30" rows="5" class="form-control" readonly>{{old('body',$ticket->body ?? null)}}</textarea> 
             @if ($errors->has('body'))
                         <p class="text-danger">{{ $errors->first('body') }}</p> 
                     @endif                 
             </div>
             <div class="form-group"  @if ($errors->has('name')) has-error @endif>
                     <label for="" class="form-label">Attachments</label>
-                <input type="file" class="" name="files[]" multiple>
+                <input type="file" class="" name="files[]" multiple disabled>
                     @if ($errors->has('files'))
                         <p class="text-danger">{{ $errors->first('files') }}</p> 
                     @endif            
@@ -62,7 +62,7 @@
             @endif
             <div class="form-group"  @if ($errors->has('dept_id')) has-error @endif>
                     <label for="" class="form-label">Department</label>
-            <select name="dept_id" id="" class="form-control selectize" placeholder="Select department">
+            <select name="dept_id" id="" class="form-control selectize" placeholder="Select department" disabled>
                     @foreach($depts as $dept)                                    
                         <option value="{{$dept->id}}" 
                                 @if(isset($ticket))
@@ -79,7 +79,7 @@
             </div>
             <div class="form-group"  @if ($errors->has('sap_id')) has-error @endif>
                     <label for="" class="form-label">SAP Modules</label>
-            <select name="sap_id" id="" class="form-control selectize">
+            <select name="sap_id" id="" class="form-control selectize" disabled>
                 @foreach($sap_users as $sap)
             <option value="{{$sap->id}}"
                 @if(isset($ticket))
@@ -93,7 +93,7 @@
             </div>
             <div class="form-group">                 
                 <label for="" class="form-label">Integration with another application?</label>
-                <select name="sap_integration" id="" onchange="showDiv(this)" class="form-control selectize" placeholder="Please select">
+                <select name="sap_integration" id="" onchange="showDiv(this)" class="form-control selectize" placeholder="Please select" disabled>
                         <option value="">Please Select</option>
                 <option value="1" {{isset($ticket) && $ticket->integration == 1 ? 'selected':''}}>Yes</option>
                         <option value="0" {{isset($ticket) && $ticket->integration == 0 ? 'selected':''}}>No</option>
@@ -115,11 +115,11 @@
             
             <div class="form-group"  @if ($errors->has('ticket_type')) has-error @endif>
                     <label for="" class="form-label">Ticket Type</label>
-                <select name="ticket_type" id="" class="form-control selectize" onchange="showRecurring(this)">
-                    <option value="new">{{ucwords('new')}}</option>
-                    <option value="open">{{ucwords('open')}}</option>
-                    <option value="pending">{{ucwords('pending')}}</option>
-                    <option value="recurring">{{ucwords('recurring')}}</option>
+                <select name="ticket_type" id="" class="form-control selectize" onchange="showRecurring(this)" disabled>
+                <option value="new" {{isset($ticket) && $ticket->ticket_type == 'new' ? 'selected':''}}>{{ucwords('new')}}</option>
+                    <option value="open" {{isset($ticket) && $ticket->ticket_type == 'open' ? 'selected':''}}>{{ucwords('open')}}</option>
+                    <option value="pending" {{isset($ticket) && $ticket->ticket_type == 'pending' ? 'selected':''}}>{{ucwords('pending')}}</option>
+                    <option value="recurring" {{isset($ticket) && $ticket->ticket_type == 'recurring' ? 'selected':''}}>{{ucwords('recurring')}}</option>
                 </select>
                 @if ($errors->has('ticket_type'))
                         <p class="text-danger">{{ $errors->first('ticket_type') }}</p> 

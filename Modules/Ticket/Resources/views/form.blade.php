@@ -13,9 +13,11 @@
             @cardHeader
     @slot('card_title')<i class="fe fe-tag"></i> {{isset($ticket) ? 'Edit Ticket':'New Ticket'}}  
     @endslot
-    <div class="card-options">           
-    <button class="btn btn-sm btn-primary"># {{isset($ticket) ? $ticket->ticket_number:$ticket_rn}}
-    </button>       
+    <div class="card-options">  
+    @if(isset($ticket))        
+    <button class="btn btn-sm btn-primary"># {{$ticket->ticket_number}}
+    </button>
+    @endif      
     </div>
             @endcardHeader                
         @cardBody                                           
@@ -23,7 +25,8 @@
                 <label for="" class="form-label">Subject</label>
                 <input type="hidden" name="user_id" value="{{Auth::id()}}">
                 @if(!isset($ticket))
-                <input type="hidden" name="ticket_number" value="{{isset($ticket) ? $ticket->ticket_number:$ticket_rn}}">
+                <input type="hidden" name="ticket_number" 
+                value="{{isset($ticket) ? $ticket->ticket_number : $ticket_rn}}">
                 @endif
                 <input type="text" class="form-control" name="subject" value="{{old('subject',$ticket->subject ?? null)}}">
                 @if ($errors->has('subject'))
@@ -79,9 +82,9 @@
             </div>
             <div class="form-group"  @if ($errors->has('sap_id')) has-error @endif>
                     <label for="" class="form-label">SAP Modules</label>
-            <select name="sap_id" id="" class="form-control selectize">
+            <select name="sap_id" id="sap_id" class="form-control selectize">
                 @foreach($sap_users as $sap)
-            <option value="{{$sap->id}}"
+            <option data-value="{{$sap->code}}" value="{{$sap->id}}"
                 @if(isset($ticket))
                     {{$ticket->sap->id == $sap->id ? 'selected':''}}
                 @endif                
@@ -93,7 +96,7 @@
             </div>
             <div class="form-group">                 
                 <label for="" class="form-label">Integration with another application?</label>
-                <select name="sap_integration" id="" onchange="showDiv(this)" class="form-control selectize" placeholder="Please select">
+                <select name="integration" id="" onchange="showDiv(this)" class="form-control selectize" placeholder="Please select">
                         <option value="">Please Select</option>
                 <option value="1" {{isset($ticket) && $ticket->integration == 1 ? 'selected':''}}>Yes</option>
                         <option value="0" {{isset($ticket) && $ticket->integration == 0 ? 'selected':''}}>No</option>
@@ -199,27 +202,7 @@ $('#attachment').magnificPopup({
   }
 });    
 </script> 
-{{-- <script type="text/javascript"> 
 
-$(document).ready(function(){
-    @if(isset($ticket) && $ticket->integration == 1)
-    $('#app_id')[0].selectize.enable();
-    @else
-    $('#app_id')[0].selectize.disable();
-    @endif
-});
-
-    $(document).on('change', '#app_check', function(){ 
-      if($(this).prop('checked')){ 
-          $(this).attr('value', 1);
-          $('#app_id')[0].selectize.enable(); 
-           
-      } else { 
-        $(this).attr('value', 0);
-        $('#app_id')[0].selectize.disable();  
-      } 
-  }); 
-  </script>     --}}
   <script type="text/javascript">
   $(document).ready(function(){
     $('#app_id')[0].selectize.disable();
@@ -227,7 +210,9 @@ $(document).ready(function(){
         $('#old_ticket').show();
     @else
         $('#old_ticket').hide();
-    @endif    
+    @endif 
+
+   
   });
   </script>
   <script type="text/javascript">

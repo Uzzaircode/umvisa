@@ -52,7 +52,7 @@ class SapsController extends Controller
         $sap = $repo->find($id);
         $sap->update(['name'=>$request->name, 'code'=>$request->code]);
         Session::flash('success', 'The '.$this->entity.' has been updated successfully');
-        return redirect()->back();
+        return redirect()->route('saps.index');
     }
 
     public function destroy(SR $repo, $id){

@@ -2,21 +2,20 @@
 
 namespace Modules\Ticket\Http\Controllers;
 
+use App\Authorizable;
+use App\Http\Controllers\Controller;
+use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
-use App\Http\Controllers\Controller;
-use App\Authorizable;
-use Session;
 use Illuminate\Support\Facades\Auth;
-use Modules\Sap\Entities\Sap;
-use Modules\Department\Entities\Department;
-use App\User;
-use Modules\Ticket\Repositories\TicketsRepository as TR;
-use Modules\Ticket\Http\Requests\CreateTicketRequest as CTR;
-use Modules\Ticket\Entities\TicketAttachment;
-use Modules\Ticket\Entities\Ticket;
 use Modules\Application\Entities\Application;
-use Illuminate\Support\Facades\Input;
+use Modules\Department\Entities\Department;
+use Modules\Sap\Entities\Sap;
+use Modules\Ticket\Entities\Ticket;
+use Modules\Ticket\Entities\TicketAttachment;
+use Modules\Ticket\Http\Requests\CreateTicketRequest as CTR;
+use Modules\Ticket\Repositories\TicketsRepository as TR;
+use Session;
 
 class TicketsController extends Controller
 {
@@ -25,8 +24,9 @@ class TicketsController extends Controller
     private $entity;
     protected $model;
 
-    public function __construct(){
-        $this->entity = 'ticket';                     
+    public function __construct()
+    {
+        $this->entity = 'ticket';
     }
     /**
      * Display a listing of the resource.
@@ -34,8 +34,8 @@ class TicketsController extends Controller
      */
     public function index(TR $repo)
     {
-        $results = $repo->allTickets();        
-        return view('ticket::index',compact('results'));
+        $results = $repo->allTickets();
+        return view('ticket::index', compact('results'));
     }
 
     /**
@@ -43,15 +43,15 @@ class TicketsController extends Controller
      * @return Response
      */
     public function create(TR $repo)
-    {           
-        $users = User::pluck('name','id');
-        $saps = Sap::pluck('name','id');
+    {
+        $users = User::pluck('name', 'id');
+        $saps = Sap::pluck('name', 'id');
         $sap_users = Auth::user()->saps;
         $depts = Department::all();
         $apps = Application::all();
-        $user_tickets = Auth::user()->tickets;        
-        $ticket_rn =  $repo->ticketNumber();
-        return view('ticket::form',compact('users','saps','depts','sap_users','apps','user_tickets','ticket_rn'));
+        $user_tickets = Auth::user()->tickets;
+        $ticket_rn = $repo->ticketNumber();
+        return view('ticket::form', compact('users', 'saps', 'depts', 'sap_users', 'apps', 'user_tickets', 'ticket_rn'));
     }
 
     /**
@@ -60,24 +60,25 @@ class TicketsController extends Controller
      * @return Response
      */
     public function store(TR $repo, CTR $request)
-    {        
+    {
         $ticket = $repo->create($request->all());
-        if($request->hasFile('files')){
-        foreach($request->file('files') as $file){
-            $filename = trim(Auth::user()->name). time() . $file->getClientOriginalName();
-            $file->move('uploads/attachments', $filename);
-            TicketAttachment::create([
-                'ticket_id' => $ticket->id,
-                'path' => 'uploads/attachments/'.$filename
-            ]);
+        $sap_id = $request->sap_id;
+        $sap_code = Sap::find($sap_id)->code;
+        $tn = $request->ticket_number;
+        $ticket->ticket_number = 'UM' . date('Y') . '-' . $sap_code . '-' . $tn;
+
+        if ($request->hasFile('files')) {
+            foreach ($request->file('files') as $file) {
+                $filename = trim(Auth::user()->name) . time() . $file->getClientOriginalName();
+                $file->move('uploads/attachments', $filename);
+                TicketAttachment::create([
+                    'ticket_id' => $ticket->id,
+                    'path' => 'uploads/attachments/' . $filename,
+                ]);
+            }
         }
-    }    
-    if(Input::get('submit') == 'Create') {
-        $ticket->status = 1;
-    }elseif(Input::get('submit') == 'Save as Draft') {
-        $ticket->status = 0;
-    }
-        Session::flash('success', 'The '.$this->entity.' has been created successfully');
+        $ticket->save();
+        Session::flash('success', 'The ' . $this->entity . ' has been created successfully');
         return redirect()->route('tickets.index');
     }
 
@@ -87,32 +88,32 @@ class TicketsController extends Controller
      */
     public function show(TR $repo, $id)
     {
-        
-        $ticket = $repo->find($id);        
+
+        $ticket = $repo->find($id);
         $saps = Sap::pluck('name', 'id');
         $sap_users = Auth::user()->saps;
         $depts = Department::all();
-        $apps = Application::all(); 
+        $apps = Application::all();
         $user_tickets = Auth::user()->tickets;
-        $ticket_rn =  $repo->ticketNumber();
+        $ticket_rn = $repo->ticketNumber();
         $reply = $ticket->replies();
-        return view('ticket::show',compact('users','saps','depts','sap_users','apps','user_tickets','ticket_rn','ticket'));        
+        return view('ticket::show', compact('users', 'saps', 'depts', 'sap_users', 'apps', 'user_tickets', 'ticket_rn', 'ticket'));
     }
 
     /**
      * Show the form for editing the specified resource.
      * @return Response
      */
-    public function edit(TR $repo,$id)
-    {   
-        $ticket = $repo->find($id);        
+    public function edit(TR $repo, $id)
+    {
+        $ticket = $repo->find($id);
         $saps = Sap::pluck('name', 'id');
         $sap_users = Auth::user()->saps;
         $depts = Department::all();
-        $apps = Application::all(); 
+        $apps = Application::all();
         $user_tickets = Auth::user()->tickets;
-        $ticket_rn =  $repo->ticketNumber();
-        return view('ticket::form',compact('users','saps','depts','sap_users','apps','user_tickets','ticket_rn','ticket'));
+        $ticket_rn = $repo->ticketNumber();
+        return view('ticket::form', compact('users', 'saps', 'depts', 'sap_users', 'apps', 'user_tickets', 'ticket_rn', 'ticket'));
     }
 
     /**
@@ -120,21 +121,21 @@ class TicketsController extends Controller
      * @param  Request $request
      * @return Response
      */
-    public function update(TR $repo,CTR $request,$id)
+    public function update(TR $repo, CTR $request, $id)
     {
         $ticket = $repo->find($id);
         $ticket->update($request->all());
-        if($request->hasFile('files')){
-        foreach($request->file('files') as $file){
-            $filename = trim(Auth::user()->name). time() . $file->getClientOriginalName();
-            $file->move('uploads/attachments', $filename);
-            TicketAttachment::update([
-                'ticket_id' => $ticket->id,
-                'path' => 'uploads/attachments/'.$filename
-            ]);
+        if ($request->hasFile('files')) {
+            foreach ($request->file('files') as $file) {
+                $filename = trim(Auth::user()->name) . time() . $file->getClientOriginalName();
+                $file->move('uploads/attachments', $filename);
+                TicketAttachment::update([
+                    'ticket_id' => $ticket->id,
+                    'path' => 'uploads/attachments/' . $filename,
+                ]);
+            }
         }
-    }
-        Session::flash('success','The '.$this->entity.' has been updated successfully');
+        Session::flash('success', 'The ' . $this->entity . ' has been updated successfully');
         return redirect()->back();
     }
 
@@ -146,7 +147,7 @@ class TicketsController extends Controller
     {
         $ticket = $repo->find($id);
         $ticket->delete();
-        Session::flash('success','The '.$this->entity.' has been deleted successfully');
+        Session::flash('success', 'The ' . $this->entity . ' has been deleted successfully');
         return redirect()->back();
     }
 }
