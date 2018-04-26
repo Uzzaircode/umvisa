@@ -156,7 +156,7 @@
 
 .invoice-heading {
   margin-bottom: 4rem;
-  margin-top: 3rem;
+  margin-top: 1rem;
   position: relative;
   z-index: 2;
 }
