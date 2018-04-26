@@ -66,8 +66,7 @@
 @section('page-css')
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ekko-lightbox/5.3.0/ekko-lightbox.css">
 <style>
-.invoice-w {
-  /* background-image: linear-gradient(to bottom, #ffffff, #fdfdff, #fbfbff, #f9f9ff, #f7f7ff); */
+.invoice-w {  
   background: white;
   max-width: 800px;
   position: relative;
