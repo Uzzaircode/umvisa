@@ -135,6 +135,66 @@
             </div>            
         @endcardBody
     </form>
+    <div class="invoice-w">                
+            <div class="invoice-heading">
+                <h3>Invoice</h3>
+                <div class="invoice-date">22 December 2017</div>
+            </div>
+            <div class="invoice-body">
+                <div class="invoice-desc">
+                    <div class="desc-label">Invoice #</div>
+                    <div class="desc-value">HSFB 342823</div>
+                </div>
+                <div class="invoice-table">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Description</th>
+                                <th>Qty</th>
+                                <th class="text-right">Price</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>User Interface</td>
+                                <td>2</td>
+                                <td class="text-right">$4,500</td>
+                            </tr>
+                            <tr>
+                                <td>Framework Development</td>
+                                <td>4</td>
+                                <td class="text-right">$9,750</td>
+                            </tr>
+                            <tr>
+                                <td>Widgets and Plugins</td>
+                                <td>1</td>
+                                <td class="text-right">$1,240</td>
+                            </tr>
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <td>Total</td>
+                                <td class="text-right" colspan="2">$15,490</td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                    <div class="terms">
+                        <div class="terms-header">Terms and Conditions</div>
+                        <div class="terms-content">Should be paid as soon as received, otherwise a 5% penalty fee is applied</div>
+                    </div>
+                </div>
+            </div>
+            <div class="invoice-footer">
+                <div class="invoice-logo">
+                    <img alt="" src="img/logo.png">
+                    <span>Paper Inc</span>
+                </div>
+                <div class="invoice-info">
+                    <span>hello@paper.inc</span>
+                    <span>858.757.4455</span>
+                </div>
+            </div>
+        </div>
     </div>
     <div class="col-md-4">
           @can('add_replies')  
@@ -178,7 +238,187 @@
 .mfp-move-from-top.mfp-removing.mfp-bg {
   opacity: 0;
 }
+    .invoice-w {
+        background-image: linear-gradient(to bottom, #ffffff, #dcdbde, #b9b9bd, #97979e, #777780);
+  max-width: 800px;
+  position: relative;
+  overflow: hidden;
+  padding: 100px;
+  padding-bottom: 20px;
+}
 
+.invoice-w:before {
+  width: 140%;
+  height: 450px;  
+  position: absolute;
+  content: "";
+  z-index: 1;
+}
+
+.invoice-w .infos {
+  position: relative;
+  z-index: 2;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+}
+
+.invoice-w .infos .info-1 {
+  font-size: 1.08rem;
+}
+
+.invoice-w .infos .info-1 .company-name {
+  font-size: 2.25rem;
+  margin-bottom: 0.5rem;
+  margin-top: 10px;
+}
+
+.invoice-w .infos .info-1 .company-extra {
+  font-size: 0.81rem;
+  color: rgba(0, 0, 0, 0.4);
+  margin-top: 1rem;
+}
+
+.invoice-w .infos .info-2 {
+  padding-top: 140px;
+  text-align: right;
+}
+
+.invoice-w .infos .info-2 .company-name {
+  margin-bottom: 1rem;
+  font-size: 1.26rem;
+}
+
+.invoice-w .infos .info-2 .company-address {
+  color: rgba(0, 0, 0, 0.6);
+}
+
+.invoice-w .terms {
+  font-size: 0.81rem;
+  margin-top: 2.5rem;
+}
+
+.invoice-w .terms .terms-header {
+  font-size: 0.9rem;
+  margin-bottom: 10px;
+}
+
+.invoice-w .terms .terms-content {
+  color: rgba(0, 0, 0, 0.4);
+}
+
+.invoice-table thead th {
+  border-bottom: 2px solid #333;
+}
+
+.invoice-table tbody tr td {
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.invoice-table tbody tr:last-child td {
+  padding-bottom: 40px;
+}
+
+.invoice-table tfoot tr td {
+  border-top: 3px solid #333;
+  font-size: 1.26rem;
+}
+
+.invoice-heading {
+  margin-bottom: 4rem;
+  margin-top: 3rem;
+  position: relative;
+  z-index: 2;
+}
+
+.invoice-heading h3 {
+  margin-bottom: 0px;
+}
+
+.invoice-footer {
+  padding-top: 1rem;
+  padding-bottom: 1rem;
+  border-top: 1px solid rgba(0, 0, 0, 0.1);
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  margin-top: 6rem;
+}
+
+.invoice-footer .invoice-logo img {
+  vertical-align: middle;
+  height: 20px;
+  width: auto;
+  display: inline-block;
+}
+
+.invoice-footer .invoice-logo span {
+  vertical-align: middle;
+  margin-left: 10px;
+  display: inline-block;
+}
+
+.invoice-footer .invoice-info span {
+  display: inline-block;
+}
+
+.invoice-footer .invoice-info span + span {
+  margin-left: 1rem;
+  padding-left: 1rem;
+  border-left: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.invoice-body {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.invoice-body .invoice-desc {
+  -webkit-box-flex: 0;
+      -ms-flex: 0 1 250px;
+          flex: 0 1 250px;
+  font-size: 1.17rem;
+}
+@media (max-width: 1250px) {
+  .element-box, .invoice-w, .big-error-w, .invoice-w, .big-error-w {
+    padding: 1rem 1.5rem;
+  }
+  .element-box .os-tabs-controls, .invoice-w .os-tabs-controls, .big-error-w .os-tabs-controls, .invoice-w .os-tabs-controls, .big-error-w .os-tabs-controls {
+    margin-left: -1.5rem;
+    margin-right: -1.5rem;
+  }
+}
+@media (max-width: 1024px) {
+  .invoice-w {
+    padding: 50px;
+  }
+}
+@media (min-width: 768px) and (max-width: 1024px) {
+    .element-box, .invoice-w, .big-error-w, .invoice-w, .big-error-w {
+    padding: 1rem 1rem;
+  }
+  .element-box .os-tabs-controls, .invoice-w .os-tabs-controls, .big-error-w .os-tabs-controls, .invoice-w .os-tabs-controls, .big-error-w .os-tabs-controls {
+    margin-left: -1rem;
+    margin-right: -1rem;
+  }
+}
+.element-box, .invoice-w, .big-error-w, .invoice-w, .big-error-w {
+    padding: 1rem 1rem;
+  }
+  .element-box .os-tabs-controls, .invoice-w .os-tabs-controls, .big-error-w .os-tabs-controls, .invoice-w .os-tabs-controls, .big-error-w .os-tabs-controls {
+    margin-left: -1rem;
+    margin-right: -1rem;
+  }
+  .invoice-w {
+    padding: 30px;
+  }
 </style>
 @endsection
 
@@ -199,27 +439,6 @@ $('#attachment').magnificPopup({
   }
 });    
 </script> 
-{{-- <script type="text/javascript"> 
-
-$(document).ready(function(){
-    @if(isset($ticket) && $ticket->integration == 1)
-    $('#app_id')[0].selectize.enable();
-    @else
-    $('#app_id')[0].selectize.disable();
-    @endif
-});
-
-    $(document).on('change', '#app_check', function(){ 
-      if($(this).prop('checked')){ 
-          $(this).attr('value', 1);
-          $('#app_id')[0].selectize.enable(); 
-           
-      } else { 
-        $(this).attr('value', 0);
-        $('#app_id')[0].selectize.disable();  
-      } 
-  }); 
-  </script>     --}}
   <script type="text/javascript">
   $(document).ready(function(){
     $('#app_id')[0].selectize.disable();
