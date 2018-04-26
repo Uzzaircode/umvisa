@@ -118,7 +118,8 @@ class TicketsController extends Controller
         $user_tickets = Auth::user()->tickets;
         $ticket_rn = $repo->ticketNumber();
         $replies = $ticket->replies();
-        return view('ticket::show', compact('users', 'saps', 'depts', 'sap_users', 'apps', 'user_tickets', 'ticket_rn', 'ticket','replies'));
+        $status = $ticket->status;
+        return view('ticket::show', compact('users', 'saps', 'depts', 'sap_users', 'apps', 'user_tickets', 'ticket_rn', 'ticket','replies','status'));
     }
 
     /**

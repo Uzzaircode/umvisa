@@ -23,7 +23,7 @@ class Ticket extends Model
     }
 
     public function department(){
-        return $this->belongsTo(Department::class);
+        return $this->belongsTo(Department::class,'dept_id');
     }
 
     public function attachments(){
