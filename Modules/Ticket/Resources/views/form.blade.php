@@ -18,11 +18,18 @@
     @slot('card_title')<i class="fe fe-tag"></i> {{isset($ticket) ? 'Edit Ticket':'New Ticket'}}  
     @endslot
     {{-- Card Options --}}
-    <div class="card-options">  
-    @if(isset($ticket))        
-    <button class="btn btn-sm btn-primary"># {{$ticket->ticket_number}}
-    </button>
-    @endif      
+    <div class="card-options">        
+    @if(isset($ticket))
+    @if($ticket->status != NULL)
+            @if($ticket->status == 2)
+                <a href="#" class="btn btn-success btn-sm text-white"> Published</a>
+            @elseif($ticket->status == 1)
+            <a href="#" class="btn btn-success btn-sm text-white"> Draft</a>
+            @endif
+        @endif        
+        <a href="#" class="btn btn-sm btn-primary text-white"># {{$ticket->ticket_number}}
+        </a>
+    @endif        
     </div>
     @endcardHeader                
         @cardBody                                           
@@ -171,7 +178,7 @@
                                       <div class="media-object avatar avatar-md mr-4" style="background-image: url({{asset($reply->user->profile->avatar)}})"></div>
                                       <div class="media-body">
                                         <div class="media-heading">
-                                          <small class="float-right text-muted">{{$reply->created_at->diffForHumans()}}</small>
+                                          <small class="float-right text-muted">{{$reply->created_at->diffForHumans(date('Y/m/d H:i:sa'))}}</small>
                                           <h5>{{$reply->user->name}}</h5>
                                         </div>
                                         <div>
