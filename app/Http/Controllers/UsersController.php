@@ -116,6 +116,7 @@ class UsersController extends Controller
         }     
         if($request->has('hod_id')){
             $user->profile->hod_id = $request->hod_id;
+            $user->profile->update();
         }  
         $user->save();
         $user->profile->update();
