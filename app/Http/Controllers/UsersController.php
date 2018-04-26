@@ -65,7 +65,8 @@ class UsersController extends Controller
             }   
             $profile = Profile::create([
                 'user_id' => $user->id,
-                'avatar' => 'uploads/avatars/'.$avatar_new_name
+                'avatar' => 'uploads/avatars/'.$avatar_new_name,
+                'hod_id' => $request->hod_id
             ]);        
             Session::flash('success','User has been created.');
         } else {
@@ -112,7 +113,10 @@ class UsersController extends Controller
             $avatar_new_name = $request->name. time() . $avatar->getClientOriginalName();
             $avatar->move('uploads/avatars', $avatar_new_name);
             $user->avatar->profile = 'uploads/avatars'.$avatar_new_name;
-        }       
+        }     
+        if($request->has('hod_id')){
+            $user->profile->hod_id = $request->hod_id;
+        }  
         $user->save();
         $user->profile->update();
         // Handle the user roles

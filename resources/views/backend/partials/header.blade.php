@@ -44,7 +44,10 @@
                         <span class="avatar" style="background-image: url({{asset(Auth::user()->profile->avatar)}})"></span>
                         <span class="ml-2 d-none d-lg-block">
                             <span class="text-default">{{Auth::user()->name}}</span>
-                        <small class="text-muted d-block mt-1">{{Auth::user()->roles()->pluck('name')->first()}}</small>
+                        <small class="text-muted d-block mt-1">{{Auth::user()->roles()->pluck('name')->first()}}
+                        @if(!empty(Auth::user()->profile->department->name))
+                            {{Auth::user()->profile->department->name}}
+                            @endif</small>
                         </span>
                     </a>
                     <div class="dropdown-menu dropdown-menu-right dropdown-menu-arrow">

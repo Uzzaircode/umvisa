@@ -48,7 +48,7 @@ class TicketsController extends Controller
         $users = User::pluck('name', 'id');
         $saps = Sap::pluck('name', 'id');
         $sap_users = Auth::user()->saps;
-        $depts = Department::all();
+        $depts = Auth::user()->departments;
         $apps = Application::all();
         $user_tickets = Auth::user()->tickets;
         $ticket_rn = $repo->ticketNumber();
@@ -88,7 +88,16 @@ class TicketsController extends Controller
                 'ticket_id' => $ticket->id,
                 'user_id' => Auth::id()
             ]);
-        }        
+        }
+        if($request->has('draft')){
+            $ticket->status = 1;
+            $ticket->save();
+        }
+        
+        if($request->has('publish')){
+            $ticket->status = 2;
+            $ticket->save();
+        }
         $ticket->save();
         Session::flash('success', 'The ' . $this->entity . ' has been created successfully');
         return redirect()->route('tickets.index');

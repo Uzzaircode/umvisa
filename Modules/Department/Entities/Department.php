@@ -5,6 +5,7 @@ namespace Modules\Department\Entities;
 use Illuminate\Database\Eloquent\Model;
 use App\User;
 use Modules\Ticket\Entities\Ticket;
+use App\Profile;
 
 class Department extends Model
 {
@@ -16,5 +17,8 @@ class Department extends Model
 
     public function tickets(){
         return $this->hasMany(Ticket::class);
+    }
+    public function hods(){
+    return $this->hasMany(Profile::class);
     }
 }

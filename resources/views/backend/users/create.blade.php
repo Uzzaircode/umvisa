@@ -11,11 +11,7 @@
                     <div class="input-file-container text-center">  
                             <input class="input-file" id="my-file" type="file" name="avatar">
                             <label tabindex="0" for="my-file" class="input-file-trigger btn btn-sm">Change profile picture</label>
-                    </div>                         
-                          {{-- <div class="form-group">
-                                {!! Form::label('Product Image') !!}
-                                {!! Form::file('avatar', null) !!}
-                            </div> --}}
+                    </div>                                                   
                   </div>
                 </div>
             </div>

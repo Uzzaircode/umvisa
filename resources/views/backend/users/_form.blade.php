@@ -28,10 +28,19 @@
     <p class="help-block">{{ $errors->first('roles') }}</p>
     @endif
 </div>
+
 <div class="form-group @if ($errors->has('depts')) has-error @endif">
         {!! Form::label('depts[]', 'Departments') !!} {!! Form::select('depts[]', $depts, isset($user) ? $user->departments->pluck('id')->toArray()
         : null, ['class' => 'form-control selectize', 'multiple']) !!} @if ($errors->has('depts'))
         <p class="help-block">{{ $errors->first('depts') }}</p> @endif
+</div>
+<div class="form-group @if ($errors->has('hod')) has-error @endif">   
+    {!! Form::label('hod_id', 'Head Of Department?') !!}
+    {!! Form::select('hod_id', $depts, isset($user) ? $user->profile->pluck('hod_id')->toArray()
+    : null, ['class' => 'form-control selectize','placeholder' => 'Pick department']) !!} 
+    @if($errors->has('roles'))
+    <p class="help-block">{{ $errors->first('roles') }}</p>
+    @endif
 </div>
 <div class="form-group @if ($errors->has('saps')) has-error @endif">
         {!! Form::label('saps[]', 'SAP Modules') !!} {!! Form::select('saps[]', $saps, isset($user) ? $user->saps->pluck('id')->toArray()
