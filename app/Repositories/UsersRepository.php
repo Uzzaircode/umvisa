@@ -13,7 +13,10 @@ class UsersRepository extends AbstractRepository implements UserRepoInterface
 				
 		if(!(Auth::user()->hasRole('Admin'))){
         	return $this->modelClassName::all()->where('id',Auth::id());
-        }else{
+        }elseif(Auth::user()->hasRole('HOD')){
+			$current_user_dept_id = Auth::user()->departments->id;						
+			return $this->modelClassName::all()->departments->where('dept_id',$current_user_dept_id);
+		}else{
 			return $this->modelClassName::all();
 		}
 	}	

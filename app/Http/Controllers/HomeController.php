@@ -3,7 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-
+use Modules\Ticket\Repositories\TicketsRepository as TR;
+use App\Repositories\UsersRepository as UR;
 class HomeController extends Controller
 {
     /**
@@ -21,8 +22,11 @@ class HomeController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
-    {
-        return view('backend.dashboard');
+    public function index(TR $trepo, UR $urepo)
+    {   
+        $tickets = $trepo->allTickets();
+        $users = $urepo->allUsers();
+        // $tickets_closed = $repo->ticketsClosed();
+        return view('backend.dashboard',compact('tickets','users'));
     }
 }

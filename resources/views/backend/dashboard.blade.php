@@ -6,7 +6,8 @@
       Dashboard
     </h1>
 </div>
-<div class="row row-cards">                                                       
+<div class="row row-cards">
+  @can('view_tickets')                                                    
               <div class="col-sm-6 col-lg-4">
                 <div class="card p-3">
                   <div class="d-flex align-items-center">
@@ -14,12 +15,13 @@
                       <i class="fe fe-tag"></i>
                     </span>
                     <div>
-                      <h4 class="m-0"><a href="javascript:void(0)">132 <small>Tickets</small></a></h4>
-                      <small class="text-muted">12 tickets closed today</small>
+                    <h4 class="m-0"><a href="{{route('tickets.index')}}">{{$tickets->count()}} <small>Tickets</small></a></h4>
+                      <small class="text-muted">{{$tickets->where('status',3)->count()}} tickets closed</small>
                     </div>
                   </div>
                 </div>
               </div>
+      @endcan
               <div class="col-sm-6 col-lg-4">
                 <div class="card p-3">
                   <div class="d-flex align-items-center">
@@ -33,6 +35,7 @@
                   </div>
                 </div>
               </div>
+              @can('view_users')
               <div class="col-sm-6 col-lg-4">
                 <div class="card p-3">
                   <div class="d-flex align-items-center">
@@ -40,12 +43,13 @@
                       <i class="fe fe-users"></i>
                     </span>
                     <div>
-                      <h4 class="m-0"><a href="javascript:void(0)">58 <small>Members</small></a></h4>
+                      <h4 class="m-0"><a href="{{route('users.index')}}">{{$users->count()}} <small>Members</small></a></h4>
                       <small class="text-muted">2 registered today</small>
                     </div>
                   </div>
                 </div>
-              </div>              
+              </div>
+              @endcan              
             </div>
             <div class="row row-cards row-deck">
             <div class="col-12">

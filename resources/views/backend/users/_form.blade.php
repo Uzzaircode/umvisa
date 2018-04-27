@@ -37,7 +37,7 @@
 <div class="form-group @if ($errors->has('hod')) has-error @endif">   
     {!! Form::label('hod_id', 'Head Of Department?') !!}
     {!! Form::select('hod_id', $depts, isset($user) ? $user->profile->pluck('hod_id')->toArray()
-    : null, ['class' => 'form-control selectize','placeholder' => 'Pick department']) !!} 
+    : null, ['class' => 'form-control selectize','placeholder'=>'Select a Department']) !!} 
     @if($errors->has('roles'))
     <p class="help-block">{{ $errors->first('roles') }}</p>
     @endif
