@@ -52,44 +52,6 @@
               @endcan              
             </div>
             <div class="row row-cards row-deck">
-            <div class="col-12">
-                    <div class="card">
-                      <div class="card-header">
-                        <h3 class="card-title">Recent Tickets</h3>
-                      </div>
-                      <div class="table-responsive">
-                        <table class="table card-table table-vcenter text-nowrap">
-                          <thead>
-                            <tr>
-                              <th class="w-1">No.</th>
-                              <th>Ticket Subject</th>
-                              <th>Assigned To</th>                              
-                              <th>Created</th>
-                              <th>Status</th>                             
-                              <th>Action</th>
-                            </tr>
-                          </thead>
-                          <tbody>
-                            <tr>
-                              <td><span class="text-muted">UM001401</span></td>
-                              <td>Design Works</td>
-                              <td>
-                                Carlson Limited
-                              </td>                              
-                              <td>
-                                15 Dec 2017
-                              </td>
-                              <td>
-                                <span class="status-icon bg-success"></span> Paid
-                              </td>                              
-                              <td class="text-left">
-                                <a href="javascript:void(0)" class="btn btn-secondary btn-sm">View</a>
-                              </td>                              
-                            </tr>                            
-                          </tbody>
-                        </table>
-                      </div>
-                    </div>
-                  </div>
-                </div>
+            
+            </div>
 @endsection

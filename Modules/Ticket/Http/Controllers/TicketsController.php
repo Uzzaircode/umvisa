@@ -149,14 +149,15 @@ class TicketsController extends Controller
         $ticket = $repo->find($id);
         $ticket->update($request->all());
         if ($request->hasFile('files')) {
+            if (isset($ticket)){
             foreach ($request->file('files') as $file) {
                 $filename = trim(Auth::user()->name) . time() . $file->getClientOriginalName();
                 $file->move('uploads/attachments', $filename);
-                TicketAttachment::update([
-                    'ticket_id' => $ticket->id,
-                    'path' => 'uploads/attachments/' . $filename,
-                ]);
+                $ticket->attachments->ticket_id = $ticket->id;
+                $ticket->attachments->path = 'uploads/attachments'.$filename;
+                $ticket->attachments->save();                                    
             }
+        }
         }
         //if the user leaves a remark
         if($request->has('replybody') && !empty($request->replybody)){

@@ -60,7 +60,7 @@
                     @endif            
             </div>
             @if(isset($ticket))
-            @if($ticket->attachments->count() > 1)
+            @if($ticket->attachments->count() > 0)
                 <div class="form-group">
                     <label for="" class="form-label">Attached Files</label>
                     <div class="row gutters-sm" id="attachment">

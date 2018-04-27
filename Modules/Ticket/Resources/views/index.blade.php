@@ -7,7 +7,7 @@
     @cardOptions
     <a class="btn btn-secondary btn-sm">Total: {{ $results->count() }} {{ str_plural('Ticket', $results->count()) }}</a>
 
-    @can('add_saps')
+    @can('add_tickets')
     <a href="{{ route('tickets.create') }}" class="btn btn-primary btn-sm text-white"> <i class=""></i> Create</a> 
     @endcan 
     @endcardOptions

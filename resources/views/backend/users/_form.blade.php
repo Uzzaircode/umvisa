@@ -34,14 +34,16 @@
         : null, ['class' => 'form-control selectize', 'multiple']) !!} @if ($errors->has('depts'))
         <p class="help-block">{{ $errors->first('depts') }}</p> @endif
 </div>
+@if(!Auth::user()->hasRole('User'))
 <div class="form-group @if ($errors->has('hod')) has-error @endif">   
-    {!! Form::label('hod_id', 'Head Of Department?') !!}
+    {!! Form::label('hod_id', 'Head Of Department?') !!}    
     {!! Form::select('hod_id', $depts, isset($user) ? $user->profile->pluck('hod_id')->toArray()
-    : null, ['class' => 'form-control selectize','placeholder'=>'Select a Department']) !!} 
-    @if($errors->has('roles'))
-    <p class="help-block">{{ $errors->first('roles') }}</p>
+    : null, ['class' => 'form-control selectize']) !!} 
+    @if($errors->has('hod_id'))
+    <p class="help-block">{{ $errors->first('hod_id') }}</p>
     @endif
 </div>
+@endif
 <div class="form-group @if ($errors->has('saps')) has-error @endif">
         {!! Form::label('saps[]', 'SAP Modules') !!} {!! Form::select('saps[]', $saps, isset($user) ? $user->saps->pluck('id')->toArray()
         : null, ['class' => 'form-control selectize', 'multiple']) !!} @if ($errors->has('saps'))
