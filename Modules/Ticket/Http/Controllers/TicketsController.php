@@ -16,6 +16,7 @@ use Modules\Ticket\Entities\TicketAttachment;
 use Modules\Ticket\Http\Requests\CreateTicketRequest as CTR;
 use Modules\Ticket\Repositories\TicketsRepository as TR;
 use Modules\Ticket\Entities\Reply;
+use Modules\Ticket\Http\Requests\CreateReplies as CR;
 use Session;
 
 class TicketsController extends Controller
@@ -191,10 +192,16 @@ class TicketsController extends Controller
         return redirect()->back();
     }
 
-    public function approve(Request $request, TR $repo, $id){
-
-        $repo->approve($id);
-        Success::flash('success','The ticket has been approved');
+    public function approve(CR $request, TR $repo, $id){
+        $ticket = $repo->find($id);
+        if($request->has('approve')){
+            $repo->approve($ticket);
+            Success::flash('success','The ticket'.$request->ticket_number.'has been approved');
+        }elseif($request->has('reject')){
+            $repo->reject($ticket);
+            Success::flash('success','The ticket'.$request->ticket_number.'has been rejected');
+        }
+                
         return redirect()->route('tickets.index');
     }
 }

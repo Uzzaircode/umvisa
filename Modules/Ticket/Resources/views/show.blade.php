@@ -1,26 +1,22 @@
 @extends('backend.master') 
 @section('content')
 <form action="{{route('tickets.approve', ['id'=>$ticket->id])}}" method="POST">
-  @csrf
+  {{csrf_field()}}
   {{method_field('PUT')}}
 <div class="row">
     <div class="col-md-8">  
       <div class="card">
         <div class="card-header">
             <div class="card-options">
-                <a class="btn btn-primary text-white btn-md">Approve</a>
-                <a class="btn btn-danger text-white btn-md">Reject</a>
+              <input type="submit" name="approve" class="btn btn-primary btn-md">
+              <input type="submit" name="reject" class="btn btn-danger btn-md">               
               </div>
         </div>
       </div>       
     <div class="invoice-w">                
             <div class="invoice-heading">
             <h3>{{$ticket->subject}} 
-            @if($status == 1)    
-                <a href="#" class="btn btn-warning btn-sm">Draft</a>
-            @elseif($status == 2)
-                <a href="#" class="btn btn-success btn-sm">Published</a>
-            @endif
+            @include('ticket::components.status')
             </h3>
             <div class="invoice-date">{{$ticket->created_at}}</div>
             </div>
