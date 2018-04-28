@@ -49,7 +49,7 @@
 <a href="{{ route('tickets.show',['id'=>$result->id])  }}" class="btn btn-secondary btn-sm"><i class="fe fe-eye"></i> View</a>
 @endcan
 @can('edit_tickets')
-<a href="{{ route('tickets.edit',['id'=>$result->id])  }}" class="btn btn-secondary btn-sm"><i class="fe fe-edit"></i> Edit</a>
+            <a href="{{ route('tickets.edit',['id'=>$result->id])  }}" class="btn btn-secondary btn-sm" style="{{$result->status == 2 ? "display:none":""}}"><i class="fe fe-edit"></i> Edit</a>
 @endcan
 @can('delete_tickets')
     {!! Form::open( ['method' => 'delete', 'url' => route('tickets.destroy', ['id'=>$result->id]), 'style' => 'display: inline', 'onSubmit' => 'return confirm("Are yous sure wanted to delete this ticket?")']) !!}

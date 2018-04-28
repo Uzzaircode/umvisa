@@ -190,4 +190,11 @@ class TicketsController extends Controller
         Session::flash('success', 'The ' . $this->entity . ' has been deleted successfully');
         return redirect()->back();
     }
+
+    public function approve(Request $request, TR $repo, $id){
+
+        $repo->approve($id);
+        Success::flash('success','The ticket has been approved');
+        return redirect()->route('tickets.index');
+    }
 }

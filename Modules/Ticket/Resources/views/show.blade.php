@@ -1,7 +1,18 @@
 @extends('backend.master') 
 @section('content')
+<form action="{{route('tickets.approve', ['id'=>$ticket->id])}}" method="POST">
+  @csrf
+  {{method_field('PUT')}}
 <div class="row">
-    <div class="col-md-8">       
+    <div class="col-md-8">  
+      <div class="card">
+        <div class="card-header">
+            <div class="card-options">
+                <a class="btn btn-primary text-white btn-md">Approve</a>
+                <a class="btn btn-danger text-white btn-md">Reject</a>
+              </div>
+        </div>
+      </div>       
     <div class="invoice-w">                
             <div class="invoice-heading">
             <h3>{{$ticket->subject}} 
@@ -51,7 +62,7 @@
                     @endif
                 @endif
 
-                </div>                
+                </div>                            
             </div>            
         </div>
     </div>
@@ -61,6 +72,7 @@
           @endcan
     </div>
 </div>
+</form>
 @endsection
 @include('asset-partials.selectize')
 @section('page-css')

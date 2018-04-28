@@ -33,4 +33,10 @@ class TicketsRepository extends AbstractRepository implements TicketRepoInterfac
 		}
 		return sprintf('%03d', intval($number) + 1);
 	}
+
+	public function approve($id){
+		$ticket = $this->modelClassName::find($id);
+		$ticket->status = 3;
+		$ticket->save();
+	}
 }
