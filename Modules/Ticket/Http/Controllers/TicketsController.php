@@ -196,10 +196,10 @@ class TicketsController extends Controller
         $ticket = $repo->find($id);
         if($request->has('approve')){
             $repo->approve($ticket);
-            Success::flash('success','The ticket'.$request->ticket_number.'has been approved');
+            Session::flash('success','The ticket'.$request->ticket_number.'has been approved');
         }elseif($request->has('reject')){
             $repo->reject($ticket);
-            Success::flash('success','The ticket'.$request->ticket_number.'has been rejected');
+            Session::flash('success','The ticket'.$request->ticket_number.'has been rejected');
         }
                 
         return redirect()->route('tickets.index');

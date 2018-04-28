@@ -35,11 +35,8 @@
             <td>{{$result->ticket_number}}</td>
             <td>{{ $result->subject }}</td>
             <td>{{ $result->user->name }}</td>
-        <td>    @if($result->status == 1)
-            <span class="status-icon bg-warning"></span> Draft
-                @elseif($result->status ==2)
-            <span class="status-icon bg-success"></span> Published
-                @endif
+        <td>    
+            @include('ticket::components.status-index')
         </td>
             <td>{{$result->created_at->toDayDateTimeString()}}</td>            
         

@@ -1,28 +1,34 @@
 @extends('backend.master') 
 @section('content')
 <form action="{{route('tickets.approve', ['id'=>$ticket->id])}}" method="POST">
-  {{csrf_field()}}
-  {{method_field('PUT')}}
+  {{csrf_field()}}  
 <div class="row">
-    <div class="col-md-8">  
+    <div class="col-md-8">
       <div class="card">
         <div class="card-header">
-            <div class="card-options">
-              <input type="submit" name="approve" class="btn btn-primary btn-md">
-              <input type="submit" name="reject" class="btn btn-danger btn-md">               
-              </div>
+            <h3 class="card-title">{{$ticket->subject}} 
+                @include('ticket::components.status')
+                </h3>
+          <div class="card-options">
+              <a href="" class="btn btn-primary btn-sm"><input type="submit" name="approve" class="btn btn-link text-white" value="Approve"></a>
+              <a href="" class="btn btn-danger btn-sm"><input type="submit" name="reject" class="btn btn-link text-white" value="Reject"></a>
+          </div>
         </div>
-      </div>       
-    <div class="invoice-w">                
-            <div class="invoice-heading">
-            <h3>{{$ticket->subject}} 
-            @include('ticket::components.status')
-            </h3>
-            <div class="invoice-date">{{$ticket->created_at}}</div>
+        <div class="card-body">
+            <div class="invoice-w">                
+            {{-- <div class="invoice-heading">
+            <div class="text-right">
+               
             </div>
+            
+            <div class="invoice-date">{{$ticket->created_at}}</div>
+            </div> --}}
             <div class="invoice-body">
                 <div class="invoice-desc">
-                    <div class="desc-label"><h4>Invoice #</h4></div>
+                    <div class="desc-label"><h4>Ticket Created At</h4></div>
+                    <div class="desc-value"><p>{{$ticket->created_at}}</p></div>
+                    <br>
+                    <div class="desc-label"><h4>Ticket #</h4></div>
                     <div class="desc-value"><p>{{$ticket->ticket_number}}</p></div>
                     <br>
                     <div class="desc-label"><h4>Ticket Type</h4></div>
@@ -61,6 +67,9 @@
                 </div>                            
             </div>            
         </div>
+        </div>
+      </div>            
+    
     </div>
     <div class="col-md-4">
           @can('add_replies')  
@@ -79,7 +88,7 @@
   max-width: 800px;
   position: relative;
   overflow: hidden;
-  padding: 100px;
+  /* padding: 100px; */
   padding-bottom: 20px;
 }
 
@@ -236,24 +245,12 @@
   }
 }
 @media (min-width: 768px) and (max-width: 1024px) {
-    .element-box, .invoice-w, .big-error-w, .invoice-w, .big-error-w {
-    padding: 1rem 1rem;
-  }
+    
   .element-box .os-tabs-controls, .invoice-w .os-tabs-controls, .big-error-w .os-tabs-controls, .invoice-w .os-tabs-controls, .big-error-w .os-tabs-controls {
     margin-left: -1rem;
     margin-right: -1rem;
   }
-}
-.element-box, .invoice-w, .big-error-w, .invoice-w, .big-error-w {
-    padding: 1rem 1rem;
-  }
-  .element-box .os-tabs-controls, .invoice-w .os-tabs-controls, .big-error-w .os-tabs-controls, .invoice-w .os-tabs-controls, .big-error-w .os-tabs-controls {
-    margin-left: -1rem;
-    margin-right: -1rem;
-  }
-  .invoice-w {
-    padding: 30px;
-  }
+}   
 </style>
 @endsection
 

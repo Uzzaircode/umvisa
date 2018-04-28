@@ -7,7 +7,6 @@ Route::group(['middleware' => 'web','namespace' => 'Modules\Ticket\Http\Controll
     Route::resource('tickets', 'TicketsController');
     Route::post('tickets/{ticket}',['uses'=>'TicketsController@approve','as'=>'tickets.approve']);  
     Route::resource('replies','RepliesController');
-    Route::get('sapcode','RepliesController@getSapCode')->name('sapcode');
-    
+    Route::get('sapcode','RepliesController@getSapCode')->name('sapcode');    
 });
 
