@@ -8,7 +8,7 @@
             @if($status == 1)    
                 <a href="#" class="btn btn-warning btn-sm">Draft</a>
             @elseif($status == 2)
-                <a href="#" class="btn btn-warning btn-sm">Draft</a>
+                <a href="#" class="btn btn-success btn-sm">Published</a>
             @endif
             </h3>
             <div class="invoice-date">{{$ticket->created_at}}</div>
@@ -38,12 +38,12 @@
                 <div style="padding-top:30px"></div>
                 <h4>Ticket Attachments</h4>
                 @if(isset($ticket))
-                    @if($ticket->attachments->count() > 1)               
+                    @if($ticket->attachments->count() > 0)               
                     <div class="row gutters-sm" id="attachment">
                         @foreach($ticket->attachments as $t)             
                             <div class="col-6 col-sm-4" >
-                            <a href="{{asset($t->path)}}" data-toggle="lightbox" data-gallery="attachment-gallery">                 
-                                <img src="{{asset($t->path)}}" width="100px" class="img-fluid"> 
+                            <a href="{{asset($t->path)}}" data-toggle="lightbox" data-gallery="attachment-gallery">
+                                <img src="{{asset($t->path)}}" width="200px" class="img-fluid"> 
                             </a>                
                             </div>              
                         @endforeach

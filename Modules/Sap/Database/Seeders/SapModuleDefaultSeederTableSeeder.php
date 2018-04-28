@@ -19,39 +19,39 @@ class SapModuleDefaultSeederTableSeeder extends Seeder
         
         Sap::create([
             'name' => ucwords('general ledger'),
-            'code' => strtoupper('sap-fi-gl'),            
+            'code' => strtoupper('gl'),            
         ]);
         Sap::create([
             'name' => ucwords('asset accounting'),
-            'code' => strtoupper('sap-fi-aa'),            
+            'code' => strtoupper('aa'),            
         ]); 
         Sap::create([
             'name' => ucwords('treasury and risk management'),
-            'code' => strtoupper('sap-trm'),            
+            'code' => strtoupper('tr'),            
         ]); 
         Sap::create([
             'name' => ucwords('accounts payable'),
-            'code' => strtoupper('sap-fi-ap'),            
+            'code' => strtoupper('ap'),            
         ]);
         Sap::create([
             'name' => ucwords('human capital management'),
-            'code' => strtoupper('sap-hcm'),            
+            'code' => strtoupper('hr'),            
         ]);
         Sap::create([
             'name' => ucwords('funds management'),
-            'code' => strtoupper('sap-psm-fm'),            
+            'code' => strtoupper('fm'),            
         ]);     
         Sap::create([
             'name' => ucwords('material management'),
-            'code' => strtoupper('sap-lo-mm'),            
+            'code' => strtoupper('mm'),            
         ]);
         Sap::create([
             'name' => ucwords('gst-related'),
-            'code' => strtoupper('um-oth-gst'),            
+            'code' => strtoupper('gs'),            
         ]);
         Sap::create([
             'name' => ucwords('basis'),
-            'code' => strtoupper('sap-basis'),            
+            'code' => strtoupper('bs'),            
         ]);
     }
 }
