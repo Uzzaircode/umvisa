@@ -12,6 +12,7 @@ use App\User;
 
 class Ticket extends Model
 {
+    
     protected $fillable = ['subject', 'body', 'sap_id', 'user_id','dept_id','ticket_type','integration','application_id','ticket_number','status'];
 
     public function sap(){

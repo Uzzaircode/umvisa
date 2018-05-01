@@ -10,10 +10,12 @@
                 @include('ticket::components.status')
                 </h3>
           <div class="card-options">
+            @role('HOD')
             @if($ticket->status == 2)
             <button type="submit" name="approve" class="btn btn-md btn-success"><i class="fe fe-check-circle"></i> Approve</button>
             <button type="submit" name="reject" class="btn btn-md btn-danger"><i class="fe fe-x-circle"></i> Reject</button>  
-            @endif          
+            @endif 
+            @endrole         
           </div>
         </div>
         <div class="card-body">
@@ -81,13 +83,14 @@
                   <p class="text-danger">{{ $errors->first('replybody') }}</p>
                   @endif
               </div>
-              @if($ticket->status == 3 || $ticket->status == 4)
+              @if($ticket->status == 2 || $ticket->status == 3 || $ticket->status == 4)
               @can('add_replies')
               <div class="form-group text-right">
                 <button type="submit" class="btn btn-primary btn-md" name="comment"><i class="fe fe-send"></i> Submit Comment</button>
               </div>
-              @endif
               @endcan
+              @endif
+              
               @isset($replies)
               <ul class="list-group list-card-group">
                   @foreach($replies as $reply)

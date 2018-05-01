@@ -31,7 +31,7 @@
            @foreach($results as $key => $result)
         <tr>
 
-            <td>{{ ++$key }}</td>
+            <td>{{ $key++ }}</td>
             <td>{{$result->ticket_number}}</td>
             <td>{{ $result->subject }}</td>
             <td>{{ $result->user->name }}</td>

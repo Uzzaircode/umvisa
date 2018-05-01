@@ -18,7 +18,8 @@
     @slot('card_title')<i class="fe fe-tag"></i> {{isset($ticket) ? 'Edit Ticket':'New Ticket'}}  
     @endslot
     {{-- Card Options --}}
-    <div class="card-options">        
+    <div class="card-options"> 
+               
     @if(isset($ticket))
     @if($ticket->status != NULL)
             @if($ticket->status == 2)

@@ -7,6 +7,7 @@ use Modules\Ticket\Entities\Ticket;
 use App\User;
 class Reply extends Model
 {
+    protected $touches = ['ticket'];
     protected $fillable = ['body','user_id','ticket_id'];
 
     public function ticket(){

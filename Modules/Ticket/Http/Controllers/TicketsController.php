@@ -84,21 +84,24 @@ class TicketsController extends Controller
         
         //if the user leaves a remark
         if(!empty($request->replybody)){
-            Reply::create([
+          Reply::create([
                 'body' => $request->replybody,
                 'ticket_id' => $ticket->id,
                 'user_id' => Auth::id()
-            ]);
+            ]);            
         }
         if($request->has('draft')){
             $ticket->status = 1;
+            $ticket->touch();
             $ticket->save();
         }
         
         if($request->has('publish')){
             $ticket->status = 2;
+            $ticket->touch();
             $ticket->save();
         }
+        $ticket->touch();
         $ticket->save();
         Session::flash('success', 'The ' . $this->entity . ' has been created successfully');
         return redirect()->route('tickets.index');
@@ -162,18 +165,21 @@ class TicketsController extends Controller
         }
         //if the user leaves a remark
         if($request->has('replybody') && !empty($request->replybody)){
-            Reply::create([
+            $reply = Reply::create([
                 'body' => $request->replybody,
                 'ticket_id' => $id,
                 'user_id' => Auth::id()
-            ]);                                          
+            ]);
+            $reply->touch();                                         
         }
         if($request->has('draft')){
             $ticket->status = 1;
+            $ticket->touch();
             $ticket->save();
         }        
         if($request->has('publish')){
             $ticket->status = 2;
+            $ticket->touch();
             $ticket->save();
         }
         Session::flash('success', 'The ' . $this->entity . ' has been updated successfully');
@@ -198,7 +204,7 @@ class TicketsController extends Controller
             'body' => $request->replybody,
             'ticket_id'=>$ticket->id,
             'user_id' => Auth::id()
-        ]);
+        ]);        
         if($request->has('approve')){            
             $repo->approve($ticket);
             Session::flash('success','The ticket '.$ticket->ticket_number.' has been approved');
