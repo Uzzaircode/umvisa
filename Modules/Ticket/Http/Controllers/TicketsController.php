@@ -118,7 +118,7 @@ class TicketsController extends Controller
         $apps = Application::all();
         $user_tickets = Auth::user()->tickets;
         $ticket_rn = $repo->ticketNumber();
-        $replies = $ticket->replies();
+        $replies = $ticket->replies->sortByDesc('created_at');
         $status = $ticket->status;
         return view('ticket::show', compact('users', 'saps', 'depts', 'sap_users', 'apps', 'user_tickets', 'ticket_rn', 'ticket','replies','status'));
     }
@@ -136,7 +136,7 @@ class TicketsController extends Controller
         $apps = Application::all();
         $user_tickets = Auth::user()->tickets;
         $ticket_rn = $repo->ticketNumber();
-        $replies = $ticket->replies;
+        $replies = $ticket->replies->sortByDesc('created_at');
         return view('ticket::form', compact('users', 'saps', 'depts', 'sap_users', 'apps', 'user_tickets', 'ticket_rn', 'ticket','replies'));
     }
 
@@ -194,14 +194,20 @@ class TicketsController extends Controller
 
     public function approve(CR $request, TR $repo, $id){
         $ticket = $repo->find($id);
-        if($request->has('approve')){
+        Reply::create([
+            'body' => $request->replybody,
+            'ticket_id'=>$ticket->id,
+            'user_id' => Auth::id()
+        ]);
+        if($request->has('approve')){            
             $repo->approve($ticket);
-            Session::flash('success','The ticket'.$request->ticket_number.'has been approved');
+            Session::flash('success','The ticket '.$ticket->ticket_number.' has been approved');
         }elseif($request->has('reject')){
             $repo->reject($ticket);
-            Session::flash('success','The ticket'.$request->ticket_number.'has been rejected');
-        }
-                
-        return redirect()->route('tickets.index');
+            Session::flash('success','The ticket '.$ticket->ticket_number.' has been rejected');
+        }elseif($request->has('comment')){
+            Session::flash('success','Your comment has been submitted');  
+        }          
+        return redirect()->back();
     }
 }

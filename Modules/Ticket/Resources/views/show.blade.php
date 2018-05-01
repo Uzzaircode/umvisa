@@ -10,23 +10,18 @@
                 @include('ticket::components.status')
                 </h3>
           <div class="card-options">
-              <a href="" class="btn btn-primary btn-sm"><input type="submit" name="approve" class="btn btn-link text-white" value="Approve"></a>
-              <a href="" class="btn btn-danger btn-sm"><input type="submit" name="reject" class="btn btn-link text-white" value="Reject"></a>
+            @if($ticket->status == 2)
+            <button type="submit" name="approve" class="btn btn-md btn-success"><i class="fe fe-check-circle"></i> Approve</button>
+            <button type="submit" name="reject" class="btn btn-md btn-danger"><i class="fe fe-x-circle"></i> Reject</button>  
+            @endif          
           </div>
         </div>
         <div class="card-body">
-            <div class="invoice-w">                
-            {{-- <div class="invoice-heading">
-            <div class="text-right">
-               
-            </div>
-            
-            <div class="invoice-date">{{$ticket->created_at}}</div>
-            </div> --}}
+            <div class="invoice-w">                           
             <div class="invoice-body">
                 <div class="invoice-desc">
                     <div class="desc-label"><h4>Ticket Created At</h4></div>
-                    <div class="desc-value"><p>{{$ticket->created_at}}</p></div>
+                    <div class="desc-value"><p>{{$ticket->created_at->toDayDateTimeString()}}</p></div>
                     <br>
                     <div class="desc-label"><h4>Ticket #</h4></div>
                     <div class="desc-value"><p>{{$ticket->ticket_number}}</p></div>
@@ -71,11 +66,51 @@
       </div>            
     
     </div>
-    <div class="col-md-4">
-          @can('add_replies')  
-            @include('ticket::reply')
-          @endcan
-    </div>
+    <div class="col-md-4" >
+      <div class="card">
+              @cardHeader 
+              @slot('card_title')
+              <i class="fe fe-message-circle"></i> Remarks @endslot 
+              @endcardHeader 
+              @cardBody   
+              <div class="form-group" @if ($errors->has('replybody')) has-error @endif>
+                  <label for="" class="form-label">Leave a remark</label>
+              <textarea name="replybody" id="" cols="30" rows="5" class="form-control"></textarea>
+
+                  @if ($errors->has('replybody'))
+                  <p class="text-danger">{{ $errors->first('replybody') }}</p>
+                  @endif
+              </div>
+              @if($ticket->status == 3 || $ticket->status == 4)
+              @can('add_replies')
+              <div class="form-group text-right">
+                <button type="submit" class="btn btn-primary btn-md" name="comment"><i class="fe fe-send"></i> Submit Comment</button>
+              </div>
+              @endif
+              @endcan
+              @isset($replies)
+              <ul class="list-group list-card-group">
+                  @foreach($replies as $reply)
+                      <li class="list-group-item py-5">
+                              <div class="media">
+                                <div class="media-object avatar avatar-md mr-4" style="background-image: url({{asset($reply->user->profile->avatar)}})"></div>
+                                <div class="media-body">
+                                  <div class="media-heading">                                          
+                                    <h5>{{$reply->user->name}}</h5>                                          
+                                  </div>
+                                  <div>
+                                    {{$reply->body}}                                          
+                                  </div>
+                                  <small class="text-muted">{{$reply->created_at->toDayDateTimeString()}}</small>
+                                </div>
+                              </div>
+                            </li>
+                  @endforeach
+              </ul>
+              @endisset  
+              @endcardBody
+          </div>
+</div>
 </div>
 </form>
 @endsection
@@ -83,6 +118,9 @@
 @section('page-css')
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ekko-lightbox/5.3.0/ekko-lightbox.css">
 <style>
+  .card-options  .btn:first-child{
+    margin-right:10px !important;
+  }
 .invoice-w {  
   background: white;
   max-width: 800px;

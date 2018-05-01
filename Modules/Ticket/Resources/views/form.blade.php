@@ -177,13 +177,13 @@
                                     <div class="media">
                                       <div class="media-object avatar avatar-md mr-4" style="background-image: url({{asset($reply->user->profile->avatar)}})"></div>
                                       <div class="media-body">
-                                        <div class="media-heading">
-                                          <small class="float-right text-muted">{{$reply->created_at->diffForHumans(date('Y/m/d H:i:sa'))}}</small>
-                                          <h5>{{$reply->user->name}}</h5>
+                                        <div class="media-heading">                                          
+                                          <h5>{{$reply->user->name}}</h5>                                          
                                         </div>
                                         <div>
-                                          {{$reply->body}}
+                                          {{$reply->body}}                                          
                                         </div>
+                                        <small class="text-muted">{{$reply->created_at->toDayDateTimeString()}}</small>
                                       </div>
                                     </div>
                                   </li>
