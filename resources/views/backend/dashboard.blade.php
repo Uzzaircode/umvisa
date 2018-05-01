@@ -16,7 +16,7 @@
                     </span>
                     <div>
                     <h4 class="m-0"><a href="{{route('tickets.index')}}">{{$tickets->count()}} <small>Tickets</small></a></h4>
-                      <small class="text-muted">{{$tickets->where('status',3)->count()}} tickets closed</small>
+                      <small class="text-muted">{{$tickets->where('status',5)->count()}} tickets closed</small>
                     </div>
                   </div>
                 </div>
