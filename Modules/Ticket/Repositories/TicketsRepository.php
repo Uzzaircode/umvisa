@@ -14,7 +14,7 @@ class TicketsRepository extends AbstractRepository implements TicketRepoInterfac
 	public function allTickets(){
 				
 		if(Auth::user()->hasRole('Admin')){
-        	return $this->modelClassName::orderBy('updated_at','desc');
+        	return $this->modelClassName::all();
 		}elseif(Auth::user()->hasRole('HOD')){
 			$user = Auth::user();
 			$dept_id = $user->profile->department->id;
