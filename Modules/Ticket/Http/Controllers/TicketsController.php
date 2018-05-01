@@ -17,6 +17,7 @@ use Modules\Ticket\Http\Requests\CreateTicketRequest as CTR;
 use Modules\Ticket\Repositories\TicketsRepository as TR;
 use Modules\Ticket\Entities\Reply;
 use Modules\Ticket\Http\Requests\CreateReplies as CR;
+use App\Mailers\AppMailer;
 use Session;
 
 class TicketsController extends Controller
@@ -61,14 +62,14 @@ class TicketsController extends Controller
      * @param  Request $request
      * @return Response
      */
-    public function store(TR $repo, CTR $request)
+    public function store(TR $repo, CTR $request, AppMailer $mailer)
     {
         // dd($request->replybody);
-        $ticket = $repo->create($request->all());
+        $ticket = $repo->create($request->except('ticket_number'));
         $sap_id = $request->sap_id;
         $sap_code = Sap::find($sap_id)->code;
-        $tn = $request->ticket_number;
-        $ticket->ticket_number = 'UM' . date('Y') . '-' . $sap_code . '-' . $tn;
+        $ticket_rn = $request->ticket_number;
+        
         
         // if there is attachment
         if ($request->hasFile('files')) {
@@ -98,10 +99,12 @@ class TicketsController extends Controller
         
         if($request->has('publish')){
             $ticket->status = 2;
+            $ticket->ticket_number = 'UM' . date('Y') . '-' . $sap_code . '-' . $ticket_rn;
             $ticket->touch();
+            $mailer->sendTicketInformation(Auth::user(), $ticket);
             $ticket->save();
         }
-        $ticket->touch();
+        // $ticket->touch();
         $ticket->save();
         Session::flash('success', 'The ' . $this->entity . ' has been created successfully');
         return redirect()->route('tickets.index');

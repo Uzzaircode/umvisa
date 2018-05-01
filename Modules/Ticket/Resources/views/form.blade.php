@@ -37,10 +37,9 @@
         <div class="form-group"  @if ($errors->has('subject')) has-error @endif>
                 <label for="" class="form-label">Subject</label>
                 <input type="hidden" name="user_id" value="{{Auth::id()}}">
-                @if(!isset($ticket))
+               
                 <input type="hidden" name="ticket_number" 
-                value="{{isset($ticket) ? $ticket->ticket_number : $ticket_rn}}">
-                @endif
+                value="{{isset($ticket) ? $ticket->ticket_number : $ticket_rn}}">               
                 <input type="text" class="form-control" name="subject" value="{{old('subject',$ticket->subject ?? null)}}">
                 @if ($errors->has('subject'))
                         <p class="text-danger">{{ $errors->first('subject') }}</p> 
