@@ -3,7 +3,7 @@
   <div class="row">
     <div class="col col-login mx-auto">
       <div class="text-center mb-6">
-        <img src="{{asset('img/logo.png')}}" class="h-6" alt="">
+        <img src="{{asset('img/logo.png')}}" class="h-8" alt="">
       </div>
       <form class="card" method="POST" action="{{ route('login') }}">
         @csrf

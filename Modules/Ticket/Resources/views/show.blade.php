@@ -6,7 +6,7 @@
     <div class="col-md-8">
       <div class="card">
         <div class="card-header">
-            <h3 class="card-title">{{$ticket->subject}} 
+            <h3 class="card-title"><i class="fe fe-tag"></i> {{$ticket->subject}} 
                 @include('ticket::components.status')
                 </h3>
           <div class="card-options">

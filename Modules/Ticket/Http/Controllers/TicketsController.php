@@ -69,6 +69,7 @@ class TicketsController extends Controller
         $sap_id = $request->sap_id;
         $sap_code = Sap::find($sap_id)->code;
         $ticket_rn = $request->ticket_number;
+        $ticket->ticket_number = 'UM' . date('Y') . '-' . $sap_code . '-' . $ticket_rn;
         
         
         // if there is attachment
@@ -89,24 +90,24 @@ class TicketsController extends Controller
                 'body' => $request->replybody,
                 'ticket_id' => $ticket->id,
                 'user_id' => Auth::id()
-            ]);            
+            ]);           
         }
         if($request->has('draft')){
             $ticket->status = 1;
             $ticket->touch();
             $ticket->save();
+            Session::flash('success', 'The ' . $this->entity . ' has been created successfully');
         }
         
         if($request->has('publish')){
-            $ticket->status = 2;
-            $ticket->ticket_number = 'UM' . date('Y') . '-' . $sap_code . '-' . $ticket_rn;
+            $ticket->status = 2;            
             $ticket->touch();
             $mailer->sendTicketInformation(Auth::user(), $ticket);
             $ticket->save();
+            Session::flash('success', 'The ' . $this->entity . ' has been created successfully');
         }
         // $ticket->touch();
-        $ticket->save();
-        Session::flash('success', 'The ' . $this->entity . ' has been created successfully');
+        $ticket->save();        
         return redirect()->route('tickets.index');
     }
 

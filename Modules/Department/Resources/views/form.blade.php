@@ -22,14 +22,10 @@
             @endformGroup
             @formGroup(['form_label'=>''])
                 
-                <button type="submit" class="btn btn-md btn-success">
-                    @if(isset($department->id))
-                        Update
-                    @else
-                        Create 
-                    @endif
+                <button type="submit" class="btn btn-md btn-primary">
+                        <i class="fe {{isset($department) ? 'fe-edit':'fe-save'}}"></i> {{isset($department) ? 'Update':'Create'}}
                 </button>
-            <a href="{{URL::previous()}}" class="btn btn-md btn-secondary">Back</a>  
+            <a href="{{route('departments.index')}}" class="btn btn-md btn-secondary">Back</a>  
             @endformGroup
         @endcardBody
     </form>

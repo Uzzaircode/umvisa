@@ -24,4 +24,5 @@ Route::group( ['middleware' => ['auth']], function() {
     Route::get('myprofile', 'UsersController@myprofile');
 });
 
+Route::view('mail','emails.mail');
 Route::get('/home', 'HomeController@index')->name('home');

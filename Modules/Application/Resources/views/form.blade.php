@@ -19,14 +19,10 @@
             @endformGroup           
             @formGroup(['form_label'=>''])
                 
-                <button type="submit" class="btn btn-md btn-success">
-                    @if(isset($application->id))
-                        Update
-                    @else
-                        Create 
-                    @endif
+                <button type="submit" class="btn btn-md btn-primary">
+                        <i class="fe {{isset($application) ? 'fe-edit':'fe-save'}}"></i> {{isset($application) ? 'Update':'Create'}}
                 </button>
-            <a href="{{URL::previous()}}" class="btn btn-md btn-secondary">Back</a>  
+            <a href="{{route('applications.index')}}" class="btn btn-md btn-secondary">Back</a>  
             @endformGroup
         @endcardBody
     </form>

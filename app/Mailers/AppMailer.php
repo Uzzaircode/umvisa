@@ -22,9 +22,9 @@ class AppMailer {
 
     public function sendTicketInformation($user, Ticket $ticket)
     {
-        $this->to = $user->email;
-        $this->subject = "[Ticket ID: $ticket->ticket_id] $ticket->title";
-        $this->view = 'emails.ticket_info';
+        $this->to = '2d8b1b547b-47c470@inbox.mailtrap.io';
+        $this->subject = "Ticket #: $ticket->ticket_number $ticket->subject";
+        $this->view = 'emails.mail';
         $this->data = compact('user', 'ticket');
 
         return $this->deliver();

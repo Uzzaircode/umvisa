@@ -148,9 +148,9 @@
                 @endforeach
                 </select>
             </div>
-            <div class="form-group"  @if ($errors->has('name')) has-error @endif>                
-                <input type="submit" name="publish" class="btn btn-md btn-primary" value="{{isset($ticket) ? 'Update':'Create'}}">
-                <input type="submit" name="draft" class="btn btn-md btn-secondary" value="Save as Draft">
+            <div class="form-group"  @if ($errors->has('name')) has-error @endif>
+                <button class="btn btn-md btn-primary" name="publish"><i class="fe fe-send"></i> {{isset($ticket) ? 'Submit':'Submit'}}</button>               
+                <button class="btn btn-md btn-secondary" name="draft"><i class="fe fe-save"></i> {{isset($ticket) ? 'Update Draft':'Save As Draft'}}</button>                
                 <a href="{{route('tickets.index')}}" class="btn btn-md btn-secondary">Back</a>  
             </div>
         @endcardBody
