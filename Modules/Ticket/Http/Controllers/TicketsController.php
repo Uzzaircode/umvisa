@@ -75,11 +75,14 @@ class TicketsController extends Controller
      */
     public function store(TR $repo, CTR $request, AppMailer $mailer)
     {
-        // dd($request->replybody);
+
         $ticket = $repo->create($request->except('ticket_number'));
         $sap_id = $request->sap_id;
         $sap_code = Sap::find($sap_id)->code;
+
+        // fetch ticket number
         $ticket_rn = $request->ticket_number;
+        // save ticket number
         $ticket->ticket_number = 'UM' . date('Y') . '-' . $sap_code . '-' . $ticket_rn;                
         // if there is attachment
         if ($request->hasFile('files')) {
@@ -100,6 +103,7 @@ class TicketsController extends Controller
                 'user_id' => Auth::id()
             ]);           
         }
+        // if the user save as draft
         if($request->has('draft')){
             $ticket->status = 1;
             $ticket->touch();
@@ -107,14 +111,15 @@ class TicketsController extends Controller
             Session::flash('success', 'The ' . $this->entity . ' has been created successfully');
         }
         
-        if($request->has('publish')){
+        //if the user publish
+        if($request->has('submit_hod')){
             $ticket->status = 2;            
             $ticket->touch();
             $mailer->sendTicketInformation(Auth::user(), $ticket);
             $ticket->save();
             Session::flash('success', 'The ' . $this->entity . ' has been created successfully');
         }
-        // $ticket->touch();
+
         $ticket->save();        
         return redirect()->route('tickets.index');
     }
@@ -184,11 +189,13 @@ class TicketsController extends Controller
             ]);
             $reply->touch();                                         
         }
+        // if the user save ticket as draft
         if($request->has('draft')){
             $ticket->status = 1;
             $ticket->touch();
             $ticket->save();
-        }        
+        }
+        // if the user submit the ticket      
         if($request->has('publish')){
             $ticket->status = 2;
             $ticket->touch();
@@ -216,14 +223,17 @@ class TicketsController extends Controller
             'body' => $request->replybody,
             'ticket_id'=>$ticket->id,
             'user_id' => Auth::id()
-        ]);        
+        ]);
+
         if($request->has('approve')){            
             $repo->approve($ticket);
             Session::flash('success','The ticket '.$ticket->ticket_number.' has been approved');
-        }elseif($request->has('reject')){
+        }
+        elseif($request->has('reject')){
             $repo->reject($ticket);
             Session::flash('success','The ticket '.$ticket->ticket_number.' has been rejected');
-        }elseif($request->has('comment')){
+        }
+        elseif($request->has('comment')){
             Session::flash('success','Your comment has been submitted');  
         }          
         return redirect()->back();
