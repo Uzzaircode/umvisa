@@ -1,7 +1,7 @@
 @extends('backend.master') 
 @section('content')
 <div class="row">
-    <div class="col-md-8">
+    <div class="col-lg-6 col-md-12">
         {{-- Start Form --}} 
     @if(isset($ticket->id))
     {{-- Edit Form --}}
@@ -150,15 +150,14 @@
             </div>
             <div class="form-group"  @if ($errors->has('name')) has-error @endif>
                 <button class="btn btn-md btn-primary" name="publish"><i class="fe fe-send"></i> {{isset($ticket) ? 'Submit':'Submit'}}</button>
-                @if($ticket->status == 1)               
-                <button class="btn btn-md btn-secondary" name="draft"><i class="fe fe-save"></i> {{isset($ticket) ? 'Update Draft':'Save As Draft'}}</button>      
-                @endif          
+                               
+                <button class="btn btn-md btn-secondary" name="draft"><i class="fe fe-save"></i> {{isset($ticket) ? 'Update Draft':'Save As Draft'}}</button>              
                 <a href="{{route('tickets.index')}}" class="btn btn-md btn-secondary">Back</a>  
             </div>
         @endcardBody
         </div>
     </div>
-    <div class="col-md-4" >
+    <div class="col-lg-6 col-md-12" >
             <div class="card"> 
                     @cardHeader 
                     @slot('card_title')
@@ -173,20 +172,21 @@
                         @endif
                     </div>
                     @isset($replies)
-                    <div class="o-auto" style="height:20rem">
+                    <div class="o-auto" style="{{$replies->count() > 3 ? 'height:17rem':''}}">
                     <ul class="list-group list-card-group">
                         @foreach($replies as $reply)
                             <li class="list-group-item py-5">
                                     <div class="media">
                                       <div class="media-object avatar avatar-md mr-4" style="background-image: url({{asset($reply->user->profile->avatar)}})"></div>
                                       <div class="media-body">
-                                        <div class="media-heading">                                          
+                                        <div class="media-heading">
+                                                <small class="float-right text-muted">{{$reply->created_at->toDayDateTimeString()}}</small>                                          
                                           <h5>{{$reply->user->name}}</h5>                                          
                                         </div>
                                         <div>
                                           {{$reply->body}}                                          
                                         </div>
-                                        <small class="text-muted">{{$reply->created_at->toDayDateTimeString()}}</small>
+                                        
                                       </div>
                                     </div>
                                   </li>

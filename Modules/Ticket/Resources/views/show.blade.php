@@ -3,7 +3,7 @@
 <form action="{{route('tickets.approve', ['id'=>$ticket->id])}}" method="POST">
   {{csrf_field()}}  
 <div class="row">
-    <div class="col-md-8">
+    <div class="col-lg-6 col-md-12">
       <div class="card">
         <div class="card-header">
             <h3 class="card-title"><i class="fe fe-tag"></i> {{$ticket->subject}} 
@@ -68,7 +68,7 @@
       </div>            
     
     </div>
-    <div class="col-md-4" >
+    <div class="col-lg-6 col-md-12" >
       <div class="card">
               @cardHeader 
               @slot('card_title')
@@ -92,20 +92,22 @@
               @endif
               
               @isset($replies)
-              <div class="o-auto" style="height:15rem">
+              <div class="o-auto" style="{{$replies->count() > 3 ? 'height:17rem':''}}">
               <ul class="list-group list-card-group">
                   @foreach($replies as $reply)                 
                       <li class="list-group-item py-5">
                               <div class="media">
                                 <div class="media-object avatar avatar-md mr-4" style="background-image: url({{asset($reply->user->profile->avatar)}})"></div>
                                 <div class="media-body">
-                                  <div class="media-heading">                                          
+                                  <div class="media-heading">
+                                      <small class="float-right text-muted">{{$reply->created_at->toDayDateTimeString()}}</small>                                         
                                     <h5>{{$reply->user->name}}</h5>                                          
                                   </div>
+                                  <br>
                                   <div>
                                     {{$reply->body}}                                          
                                   </div>
-                                  <small class="text-muted">{{$reply->created_at->toDayDateTimeString()}}</small>
+                                  
                                 </div>
                               </div>
                             </li>
@@ -122,7 +124,7 @@
 @include('asset-partials.selectize')
 @section('page-css')
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ekko-lightbox/5.3.0/ekko-lightbox.css">
-<style>
+<style>  
   .card-options  .btn:first-child{
     margin-right:10px !important;
   }

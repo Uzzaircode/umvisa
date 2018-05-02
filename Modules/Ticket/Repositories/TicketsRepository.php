@@ -14,11 +14,11 @@ class TicketsRepository extends AbstractRepository implements TicketRepoInterfac
 	public function allTickets(){
 				
 		if(Auth::user()->hasRole('Admin')){
-        	return $this->modelClassName::all();
+        	return $this->modelClassName::all()->sortByDesc('created_at');
 		}elseif(Auth::user()->hasRole('HOD')){
 			$user = Auth::user();
 			$dept_id = $user->profile->department->id;
-			return $this->modelClassName::where('dept_id',$dept_id)->where('status',2)->where('status',3)->where('status',4)->orderBy('updated_at','desc')->get();
+			return $this->modelClassName::where('dept_id',$dept_id)->where('status',2)->orWhere('status',3)->orderBy('updated_at','desc')->get();
 		}else{
 			return $this->modelClassName::where('user_id',Auth::id())->orderBy('updated_at','desc')->get();			
 		}

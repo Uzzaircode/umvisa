@@ -20,6 +20,17 @@ use Modules\Ticket\Http\Requests\CreateReplies as CR;
 use App\Mailers\AppMailer;
 use Session;
 
+/**
+ * 1 = Draft
+ * 2 = Submitted to HOD
+ * 3 = Approved by HOD
+ * 4 = Rejected by HOD
+ * 5 = Approved by Dasar
+ * 6 = Rejected by Dasar
+ * 7 = Approved by PTM
+ * 8 = Rejected by PTM
+ */
+
 class TicketsController extends Controller
 {
     use Authorizable;

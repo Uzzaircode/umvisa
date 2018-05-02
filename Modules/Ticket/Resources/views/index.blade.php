@@ -45,7 +45,7 @@
                 @can('view_tickets')
 <a href="{{ route('tickets.show',['id'=>$result->id])  }}" class="btn btn-secondary btn-sm"><i class="fe fe-eye"></i> View</a>
 @endcan
-@if($result->status == 1)
+            @if($result->status == 1 || $result->status == 4)
 @can('edit_tickets')
             <a href="{{ route('tickets.edit',['id'=>$result->id])  }}" class="btn btn-secondary btn-sm"><i class="fe fe-edit"></i> Edit</a>
 @endcan
