@@ -149,15 +149,17 @@
                 </select>
             </div>
             <div class="form-group"  @if ($errors->has('name')) has-error @endif>
-                <button class="btn btn-md btn-primary" name="publish"><i class="fe fe-send"></i> {{isset($ticket) ? 'Submit':'Submit'}}</button>               
-                <button class="btn btn-md btn-secondary" name="draft"><i class="fe fe-save"></i> {{isset($ticket) ? 'Update Draft':'Save As Draft'}}</button>                
+                <button class="btn btn-md btn-primary" name="publish"><i class="fe fe-send"></i> {{isset($ticket) ? 'Submit':'Submit'}}</button>
+                @if($ticket->status == 1)               
+                <button class="btn btn-md btn-secondary" name="draft"><i class="fe fe-save"></i> {{isset($ticket) ? 'Update Draft':'Save As Draft'}}</button>      
+                @endif          
                 <a href="{{route('tickets.index')}}" class="btn btn-md btn-secondary">Back</a>  
             </div>
         @endcardBody
         </div>
     </div>
     <div class="col-md-4" >
-            <div class="card">
+            <div class="card"> 
                     @cardHeader 
                     @slot('card_title')
                     <i class="fe fe-message-circle"></i> Remarks @endslot 
@@ -171,6 +173,7 @@
                         @endif
                     </div>
                     @isset($replies)
+                    <div class="o-auto" style="height:20rem">
                     <ul class="list-group list-card-group">
                         @foreach($replies as $reply)
                             <li class="list-group-item py-5">
@@ -189,6 +192,7 @@
                                   </li>
                         @endforeach
                     </ul>
+                </div>
                     @endisset  
                     @endcardBody
                 </div>

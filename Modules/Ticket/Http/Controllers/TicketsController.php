@@ -69,21 +69,18 @@ class TicketsController extends Controller
         $sap_id = $request->sap_id;
         $sap_code = Sap::find($sap_id)->code;
         $ticket_rn = $request->ticket_number;
-        $ticket->ticket_number = 'UM' . date('Y') . '-' . $sap_code . '-' . $ticket_rn;
-        
-        
+        $ticket->ticket_number = 'UM' . date('Y') . '-' . $sap_code . '-' . $ticket_rn;                
         // if there is attachment
         if ($request->hasFile('files')) {
             foreach ($request->file('files') as $file) {
-                $filename = trim(Auth::user()->name) . time() . $file->getClientOriginalName();
+                $filename = $ticket->ticket_number. '-' . time() . $file->getClientOriginalName();
                 $file->move('uploads/attachments', $filename);
                 TicketAttachment::create([
                     'ticket_id' => $ticket->id,
                     'path' => 'uploads/attachments/' . $filename,
                 ]);
             }
-        }
-        
+        }        
         //if the user leaves a remark
         if(!empty($request->replybody)){
           Reply::create([
@@ -159,7 +156,7 @@ class TicketsController extends Controller
         if ($request->hasFile('files')) {
             if (isset($ticket)){
             foreach ($request->file('files') as $file) {
-                $filename = trim(Auth::user()->name) . time() . $file->getClientOriginalName();
+                $$filename = $ticket->ticket_number. '-' . time() . $file->getClientOriginalName();;
                 $file->move('uploads/attachments', $filename);
                 $ticket->attachments->ticket_id = $ticket->id;
                 $ticket->attachments->path = 'uploads/attachments'.$filename;

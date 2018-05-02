@@ -92,8 +92,9 @@
               @endif
               
               @isset($replies)
+              <div class="o-auto" style="height:15rem">
               <ul class="list-group list-card-group">
-                  @foreach($replies as $reply)
+                  @foreach($replies as $reply)                 
                       <li class="list-group-item py-5">
                               <div class="media">
                                 <div class="media-object avatar avatar-md mr-4" style="background-image: url({{asset($reply->user->profile->avatar)}})"></div>
@@ -110,6 +111,7 @@
                             </li>
                   @endforeach
               </ul>
+            </div>
               @endisset  
               @endcardBody
           </div>
