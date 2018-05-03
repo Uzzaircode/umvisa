@@ -22,6 +22,11 @@ class TicketsRepository extends AbstractRepository implements TicketRepoInterfac
 			// HOD can see ticket with submmited, approved and rejected status
 			return $this->modelClassName::where('dept_id',$dept_id)->where('status',2)->orWhere('status',3)->orderBy('updated_at','desc')->get();
 		}//if user is normal user, normal user can only see his tickets
+		elseif(Auth::user()->hasRole('Dasar')){
+			$user = Auth::user();			
+			// HOD can see ticket with submmited, approved and rejected status
+			return $this->modelClassName::where('status',2)->orWhere('status',3)->orderBy('updated_at','desc')->get();
+		}
 		else{
 			return $this->modelClassName::where('user_id',Auth::id())->orderBy('updated_at','desc')->get();			
 		}
@@ -29,7 +34,7 @@ class TicketsRepository extends AbstractRepository implements TicketRepoInterfac
 	
 	// Generate ticket running numbers
 	public function ticketNumber(){
-		
+
 		$lastTicket = $this->modelClassName::orderBy('id', 'desc')->first();
         if(!$lastTicket ){        
             $number = 0;
@@ -40,13 +45,32 @@ class TicketsRepository extends AbstractRepository implements TicketRepoInterfac
 	}
 
 
-	public function approve($ticket){		
+	public function approve_hod($ticket){		
 		$ticket->status = 3;
+		$ticket->approve_hod_date = timestamp();
 		$ticket->save();
 	}
 
-	public function reject($ticket){		
+	public function reject_hod($ticket){		
 		$ticket->status = 4;
 		$ticket->save();
 	}
+	public function approve_dasar($ticket){		
+		$ticket->status = 6;
+		$ticket->save();
+	}
+
+	public function reject_dasar($ticket){		
+		$ticket->status = 7;
+		$ticket->save();
+	}
+	public function approve_ptm($ticket){		
+		$ticket->status = 9;
+		$ticket->save();
+	}
+
+	public function reject_ptm($ticket){		
+		$ticket->status = 10;
+		$ticket->save();
+	}	
 }

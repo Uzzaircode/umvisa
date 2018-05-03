@@ -21,6 +21,7 @@ use App\Mailers\AppMailer;
 use Session;
 
 /**
+ * Status Codes
  * 1  = Draft - yellow
  * 2  = Submitted to HOD - green
  * 3  = Approved by HOD - blue
@@ -32,6 +33,16 @@ use Session;
  * 9  = Approved by PTM - blue
  * 10 = Rejected by PTM -red
  */
+
+/**
+ * Buttons  
+ * 1. approve_hod = Approve by HOD
+ *  2. reject_hod  = Reject by HOD
+ *  3. approve_dasar = Approve by Dasar
+ *  4. reject_dasar = Reject by Dasar
+ *  5. approve_ptm = Approve by PTM
+ *  6. reject_ptm = Reject by PTM      
+*/
 
 class TicketsController extends Controller
 {
@@ -228,20 +239,37 @@ class TicketsController extends Controller
 
     public function approve(CR $request, TR $repo, $id){
         $ticket = $repo->find($id);
+        // replies are always created, cant be edited or deleted. Exception for Admin
         Reply::create([
             'body' => $request->replybody,
             'ticket_id'=>$ticket->id,
             'user_id' => Auth::id()
         ]);
-
-        if($request->has('approve')){            
-            $repo->approve($ticket);
+        // if HOD has approved the ticket
+        if($request->has('approve_hod')){            
+            $repo->approve_hod($ticket);
             Session::flash('success','The ticket '.$ticket->ticket_number.' has been approved');
-        }
-        elseif($request->has('reject')){
-            $repo->reject($ticket);
+        }// if HOD has rejected the ticket
+        elseif($request->has('reject_hod')){
+            $repo->reject_hod($ticket);
             Session::flash('success','The ticket '.$ticket->ticket_number.' has been rejected');
-        }
+        }// if Dasar has approved the ticket
+        elseif($request->has('approve_dasar')){
+            $repo->approve_dasar($ticket);
+            Session::flash('success','The ticket '.$ticket->ticket_number.' has been rejected');
+        }// if Dasar has rejected the ticket
+        elseif($request->has('reject_dasar')){
+            $repo->reject_dasar($ticket);
+            Session::flash('success','The ticket '.$ticket->ticket_number.' has been rejected');
+        }// if PTM has approved the ticket
+        elseif($request->has('approve_ptm')){
+            $repo->approve_ptm($ticket);
+            Session::flash('success','The ticket '.$ticket->ticket_number.' has been rejected');
+        }// if PTM has rejected the ticket
+        elseif($request->has('reject_ptm')){
+            $repo->reject_ptm($ticket);
+            Session::flash('success','The ticket '.$ticket->ticket_number.' has been rejected');
+        }// if a reply has been submitted
         elseif($request->has('comment')){
             Session::flash('success','Your comment has been submitted');  
         }          
