@@ -21,14 +21,16 @@ use App\Mailers\AppMailer;
 use Session;
 
 /**
- * 1 = Draft
- * 2 = Submitted to HOD
- * 3 = Approved by HOD
- * 4 = Rejected by HOD
- * 5 = Approved by Dasar
- * 6 = Rejected by Dasar
- * 7 = Approved by PTM
- * 8 = Rejected by PTM
+ * 1  = Draft - yellow
+ * 2  = Submitted to HOD - green
+ * 3  = Approved by HOD - blue
+ * 4  = Rejected by HOD - red
+ * 5  = Submitted to Dasar - green
+ * 6  = Approved by Dasar - blue
+ * 7  = Rejected by Dasar - red
+ * 8  = Submitted to PTM - green
+ * 9  = Approved by PTM - blue
+ * 10 = Rejected by PTM -red
  */
 
 class TicketsController extends Controller
@@ -75,20 +77,24 @@ class TicketsController extends Controller
      */
     public function store(TR $repo, CTR $request, AppMailer $mailer)
     {
-
+        // fetch all requests except for ticket number
         $ticket = $repo->create($request->except('ticket_number'));
+        // fetch SAP ID
         $sap_id = $request->sap_id;
+        // then find SAP Code
         $sap_code = Sap::find($sap_id)->code;
-
         // fetch ticket number
         $ticket_rn = $request->ticket_number;
-        // save ticket number
+        // save ticket number into database
         $ticket->ticket_number = 'UM' . date('Y') . '-' . $sap_code . '-' . $ticket_rn;                
-        // if there is attachment
+        // if user upload attachement
         if ($request->hasFile('files')) {
             foreach ($request->file('files') as $file) {
+                // save the attachment with ticket number and time as prefix
                 $filename = $ticket->ticket_number. '-' . time() . $file->getClientOriginalName();
+                // move the attachement to public/uploads/attachments folder
                 $file->move('uploads/attachments', $filename);
+                // create attachement record in database, attach it to Ticket ID
                 TicketAttachment::create([
                     'ticket_id' => $ticket->id,
                     'path' => 'uploads/attachments/' . $filename,
@@ -97,29 +103,29 @@ class TicketsController extends Controller
         }        
         //if the user leaves a remark
         if(!empty($request->replybody)){
+          // create reply record in database, attach it to Ticket ID and Current User ID
           Reply::create([
                 'body' => $request->replybody,
                 'ticket_id' => $ticket->id,
                 'user_id' => Auth::id()
             ]);           
         }
-        // if the user save as draft
+        // if the user save the ticket as draft
         if($request->has('draft')){
             $ticket->status = 1;
             $ticket->touch();
             $ticket->save();
             Session::flash('success', 'The ' . $this->entity . ' has been created successfully');
-        }
-        
-        //if the user publish
+        }        
+        //if the user submit the ticket. The ticket will be submitted to HOD
         if($request->has('submit_hod')){
             $ticket->status = 2;            
             $ticket->touch();
+            // send email to respective HOD, with Current User object and Ticket Information as parameters
             $mailer->sendTicketInformation(Auth::user(), $ticket);
             $ticket->save();
             Session::flash('success', 'The ' . $this->entity . ' has been created successfully');
         }
-
         $ticket->save();        
         return redirect()->route('tickets.index');
     }
@@ -166,9 +172,12 @@ class TicketsController extends Controller
      * @return Response
      */
     public function update(TR $repo, CTR $request, $id)
-    {
+    {   
+        // find ticket
         $ticket = $repo->find($id);
+        // accept all requests
         $ticket->update($request->all());
+        // if user upload attachments
         if ($request->hasFile('files')) {
             if (isset($ticket)){
             foreach ($request->file('files') as $file) {
@@ -189,7 +198,7 @@ class TicketsController extends Controller
             ]);
             $reply->touch();                                         
         }
-        // if the user save ticket as draft
+        // if the user save the ticket as draft
         if($request->has('draft')){
             $ticket->status = 1;
             $ticket->touch();
