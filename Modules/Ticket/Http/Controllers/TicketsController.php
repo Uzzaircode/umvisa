@@ -131,7 +131,7 @@ class TicketsController extends Controller
         //if the user submit the ticket. The ticket will be submitted to HOD
         if($request->has('submit_hod')){
             $ticket->status = 2;            
-            $ticket->touch();
+            $ticket->submitted_hod_date = time();
             // send email to respective HOD, with Current User object and Ticket Information as parameters
             $mailer->sendTicketInformation(Auth::user(), $ticket);
             $ticket->save();

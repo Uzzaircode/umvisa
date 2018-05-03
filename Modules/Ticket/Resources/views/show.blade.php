@@ -24,6 +24,31 @@
 <form action="{{route('tickets.approve', ['id'=>$ticket->id])}}" method="POST">
   {{csrf_field()}}
   <div class="row">
+    <div class="col-lg-12 col-md-12">
+      <div class="card">
+        <div class="card-header">
+          <h3 class="card-title">Ticket Progress</h3>
+          <div class="card-options"></div>
+        </div>
+        <div class="card-body">
+            <div class='container-fluid'> 
+                <div class='htimeline row'>
+                    @if($ticket->created_at != NULL)
+                    <div data-date='{{$ticket->created_at->toDayDateTimeString()}}' class='step col orange'><div>Draft</div></div>
+                    @endif
+                    @if($ticket->submitted_hod_date != NULL)
+                    <div data-date='{{$ticket->submitted_hod_date->toDayDateTimeString()}}' class='step col green'><div>Submitted to HOD</div></div>
+                    @endif
+                    @if($ticket->approved_hod_date != NULL)
+                    <div data-date='{{$ticket->approved_hod_date->toDayDateTimeString()}}' class='step col green'><div>Approved by HOD</div></div>
+                    @endif                    
+                </div>
+                </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row">
     <div class="col-lg-6 col-md-12">
       <div class="card">
         <div class="card-header">
@@ -113,6 +138,28 @@
   .card-options .btn:first-child {
     margin-right: 10px !important;
   }
+  .htimeline { list-style: none; padding: 0; margin: 10px 0 0; }
+
+.htimeline .step { float: left; border-bottom-style: solid; border-bottom-width: 5px; position: relative; margin-bottom: 10px; text-align: left; padding: 0px 0 5px 0px; background-color: #ddd; color: #333; height: 60px; vertical-align: middle; border-right: solid 1px #bbb; transition: all 0.5s ease;}
+.htimeline .step:nth-child(odd) { background-color: #eee; }
+.htimeline .step:first-child { border-left: solid 1px #bbb; }
+.htimeline .step:hover { background-color: #ccc; border-bottom-width: 6px; }
+
+.htimeline .step div { margin: 0 5px; font-size: 14px; vertical-align: top; padding: 0;}
+
+.htimeline .step.green { border-bottom-color: #348F50;}
+.htimeline .step.orange { border-bottom-color: #F09819;}
+.htimeline .step.red { border-bottom-color: #C04848;}
+.htimeline .step.blue { border-bottom-color: #49a09d;}
+
+.htimeline .step::before { width: 15px; height: 15px; border-radius: 50px; content: ' '; background-color: white; position: absolute; bottom: -10px; left: 0px; border-style: solid; border-width: 3px; transition: all 0.5s ease;}
+.htimeline .step:hover::before { width: 18px; height: 18px; bottom: -12px; }
+.htimeline .step.green::before {border-color: #348F50;}
+.htimeline .step.orange::before {border-color: #F09819;}
+.htimeline .step.red::before {border-color: #C04848;}
+.htimeline .step.blue::before {border-color: #49a09d;}
+
+.htimeline .step::after { content: attr(data-date); position: absolute; bottom: 0px; left: 17px; font-size: 11px; font-style: italic; color: #888}
 </style>
 @endsection @section('page-js')
 <script src="https://cdnjs.cloudflare.com/ajax/libs/ekko-lightbox/5.3.0/ekko-lightbox.js"></script>
