@@ -149,9 +149,12 @@
                 </select>
             </div>
             <div class="form-group"  @if ($errors->has('name')) has-error @endif>
-                <button class="btn btn-md btn-primary" name="publish"><i class="fe fe-send"></i> {{isset($ticket) ? 'Submit':'Submit'}}</button>
+                {{-- User can only see the buttons if ticket status == 1 (draft) --}}
+                
+                <button class="btn btn-md btn-primary" name="submit_hod"><i class="fe fe-send"></i> {{isset($ticket) ? 'Submit':'Submit'}}</button>
                                
-                <button class="btn btn-md btn-secondary" name="draft"><i class="fe fe-save"></i> {{isset($ticket) ? 'Update Draft':'Save As Draft'}}</button>              
+                <button class="btn btn-md btn-secondary" name="draft"><i class="fe fe-save"></i> {{isset($ticket) ? 'Update Draft':'Save As Draft'}}</button>       
+                
                 <a href="{{route('tickets.index')}}" class="btn btn-md btn-secondary">Back</a>  
             </div>
         @endcardBody

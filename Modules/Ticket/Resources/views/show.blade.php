@@ -34,7 +34,7 @@
             <div class='container-fluid'> 
                 <div class='htimeline row'>
                     @if($ticket->created_at != NULL)
-                    <div data-date='{{$ticket->created_at->toDayDateTimeString()}}' class='step col orange'><div>Draft</div></div>
+                    <div data-date='{{$ticket->created_at->toDayDateTimeString()}}' class='step col orange'><div>Created</div></div>
                     @endif
                     @if($ticket->submitted_hod_date != NULL)
                     <div data-date='{{$ticket->submitted_hod_date->toDayDateTimeString()}}' class='step col green'><div>Submitted to HOD</div></div>

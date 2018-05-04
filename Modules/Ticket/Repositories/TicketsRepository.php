@@ -14,7 +14,7 @@ class TicketsRepository extends AbstractRepository implements TicketRepoInterfac
 	public function allTickets(){
 		// if user is admin, admin can see all tickets
 		if(Auth::user()->hasRole('Admin')){
-        	return $this->modelClassName::all()->sortByDesc('created_at');
+        	return $this->modelClassName::orderBy('created_at','desc')->get();
 		}//if user is HOD
 		elseif(Auth::user()->hasRole('HOD')){
 			$user = Auth::user();
@@ -47,30 +47,35 @@ class TicketsRepository extends AbstractRepository implements TicketRepoInterfac
 
 	public function approve_hod($ticket){		
 		$ticket->status = 3;
-		$ticket->approve_hod_date = timestamp();
+		$ticket->approved_hod_date = timestamp();
 		$ticket->save();
 	}
 
 	public function reject_hod($ticket){		
 		$ticket->status = 4;
+		$ticket->rejected_hod_date = timestamp();
 		$ticket->save();
 	}
 	public function approve_dasar($ticket){		
 		$ticket->status = 6;
+		$ticket->approved_dasar_date = timestamp();
 		$ticket->save();
 	}
 
 	public function reject_dasar($ticket){		
 		$ticket->status = 7;
+		$ticket->rejected_dasar_date = timestamp();
 		$ticket->save();
 	}
 	public function approve_ptm($ticket){		
 		$ticket->status = 9;
+		$ticket->approved_ptm_date = timestamp();
 		$ticket->save();
 	}
 
 	public function reject_ptm($ticket){		
 		$ticket->status = 10;
+		$ticket->rejected_ptm_date = timestamp();
 		$ticket->save();
 	}	
 }

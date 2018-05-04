@@ -19,6 +19,7 @@ use Modules\Ticket\Entities\Reply;
 use Modules\Ticket\Http\Requests\CreateReplies as CR;
 use App\Mailers\AppMailer;
 use Session;
+use Modules\Ticket\Events\HODEvents;
 
 /**
  * Status Codes
@@ -124,14 +125,13 @@ class TicketsController extends Controller
         // if the user save the ticket as draft
         if($request->has('draft')){
             $ticket->status = 1;
-            $ticket->touch();
             $ticket->save();
             Session::flash('success', 'The ' . $this->entity . ' has been created successfully');
         }        
         //if the user submit the ticket. The ticket will be submitted to HOD
         if($request->has('submit_hod')){
-            $ticket->status = 2;            
-            $ticket->submitted_hod_date = time();
+            // trigger submitToHOD listener
+            event(new HODEvents($ticket));            
             // send email to respective HOD, with Current User object and Ticket Information as parameters
             $mailer->sendTicketInformation(Auth::user(), $ticket);
             $ticket->save();
@@ -206,23 +206,24 @@ class TicketsController extends Controller
                 'body' => $request->replybody,
                 'ticket_id' => $id,
                 'user_id' => Auth::id()
-            ]);
-            $reply->touch();                                         
+            ]);                                     
         }
         // if the user save the ticket as draft
         if($request->has('draft')){
             $ticket->status = 1;
-            $ticket->touch();
             $ticket->save();
+            Session::flash('success', 'The ' . $this->entity . ' has been updated successfully');
+            return redirect()->back();
         }
         // if the user submit the ticket      
-        if($request->has('publish')){
-            $ticket->status = 2;
-            $ticket->touch();
+        if($request->has('submit_hod')){
+            event(new HODEvents($ticket));
             $ticket->save();
+            Session::flash('success', 'The ' . $this->entity . ' has been submitted to HOD successfully');
+            return redirect()->route('tickets.index');
         }
-        Session::flash('success', 'The ' . $this->entity . ' has been updated successfully');
-        return redirect()->back();
+        
+        
     }
 
     /**
@@ -250,29 +251,38 @@ class TicketsController extends Controller
             $repo->approve_hod($ticket);
             Session::flash('success','The ticket '.$ticket->ticket_number.' has been approved');
         }// if HOD has rejected the ticket
-        elseif($request->has('reject_hod')){
+        if($request->has('reject_hod')){
             $repo->reject_hod($ticket);
             Session::flash('success','The ticket '.$ticket->ticket_number.' has been rejected');
         }// if Dasar has approved the ticket
-        elseif($request->has('approve_dasar')){
+        if($request->has('approve_dasar')){
             $repo->approve_dasar($ticket);
             Session::flash('success','The ticket '.$ticket->ticket_number.' has been rejected');
         }// if Dasar has rejected the ticket
-        elseif($request->has('reject_dasar')){
+        if($request->has('reject_dasar')){
             $repo->reject_dasar($ticket);
             Session::flash('success','The ticket '.$ticket->ticket_number.' has been rejected');
         }// if PTM has approved the ticket
-        elseif($request->has('approve_ptm')){
+        if($request->has('approve_ptm')){
             $repo->approve_ptm($ticket);
             Session::flash('success','The ticket '.$ticket->ticket_number.' has been rejected');
         }// if PTM has rejected the ticket
-        elseif($request->has('reject_ptm')){
+        if($request->has('reject_ptm')){
             $repo->reject_ptm($ticket);
             Session::flash('success','The ticket '.$ticket->ticket_number.' has been rejected');
         }// if a reply has been submitted
-        elseif($request->has('comment')){
+        if($request->has('comment')){
             Session::flash('success','Your comment has been submitted');  
         }          
         return redirect()->back();
+    }
+
+    public function read(Request $request,TR $repo, $id){
+        $ticket = $repo->find($id);
+        if($request->has('readby_hod')){
+            $ticket->readby_hod_date = time();
+            $ticket->save();            
+        }
+        return redirect()->route('tickets.show',['id'=>$ticket->id]);
     }
 }

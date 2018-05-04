@@ -14,7 +14,7 @@
 @if($status == 1)
 <a href="#" class="btn btn-warning btn-sm text-white">Draft</a>
 @elseif($status == 2)
-<a href="#" class="btn btn-success btn-sm text-white">Submitted to HOD</a>
+<a href="#" class="btn btn-success btn-sm text-white">Submitted to HOD on {{$ticket->submitted_hod_date->toDayDateTimeString()}}</a>
 @elseif($status == 3)
 <a href="#" class="btn btn-primary btn-sm text-white">Approved by HOD</a>
 @elseif($status == 4)

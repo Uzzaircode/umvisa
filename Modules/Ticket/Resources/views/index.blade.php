@@ -40,8 +40,21 @@
                     </a>
                     <div class="dropdown-menu dropdown-menu-right">
                         @can('view_tickets')
-                        <a href="{{ route('tickets.show',['id'=>$result->id])  }}" class="dropdown-item">
-                            <i class="fe fe-eye"></i> View</a>
+                            @if(Auth::user()->hasAnyRole(['Admin','User']))                        
+                                <a href="{{route('tickets.show',['id'=>$result->id])}}" class="dropdown-item"><i class="fe fe-eye"></i> View</a>
+                            @endif
+                            <form action="{{route('tickets.read', ['id'=>$result->id])}}" style="display:inline" method="POST">
+                                @csrf
+                                @role('HOD')
+                                <button type="submit" class="btn btn-secondary dropdown-item" name="readby_hod"><i class="fe fe-eye"></i> View</button>
+                                @endrole
+                                @role('Dasar')
+                                <button type="submit" class="btn btn-secondary dropdown-item" name="readby_dasar"><i class="fe fe-eye"></i> View</button>
+                                @endrole
+                                @role('PTM')
+                                <button type="submit" class="btn btn-secondary dropdown-item" name="readby_ptm"><i class="fe fe-eye"></i> View</button>
+                                @endrole
+                            </form>
                         @endcan 
                         @if($result->status == 1 || $result->status == 4) @can('edit_tickets')
                         <a href="{{ route('tickets.edit',['id'=>$result->id])  }}" class="dropdown-item">
