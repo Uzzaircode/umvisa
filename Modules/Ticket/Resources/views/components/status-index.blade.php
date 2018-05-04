@@ -14,9 +14,21 @@
 @if($result->status == 1)
 <span class="status-icon bg-warning"></span> Draft 
 @elseif($result->status == 2)
-<span class="status-icon bg-success"></span> Submitted to HOD 
+<span class="status-icon bg-success"></span> Submitted to {{Auth::user()->hasRole('HOD')?'You':'HOD'}} 
 @elseif($result->status == 3)
-<span class="status-icon bg-primary"></span> Approved by HOD 
+<span class="status-icon bg-primary"></span> Approved by {{Auth::user()->hasRole('HOD')?'You':'HOD'}} 
 @elseif($result->status == 4)
-<span class="status-icon bg-danger"></span> Rejected by HOD 
+<span class="status-icon bg-danger"></span> Rejected by {{Auth::user()->hasRole('HOD')?'You':'HOD'}}
+@elseif($result->status == 5)
+<span class="status-icon bg-green"></span> Submitted to {{Auth::user()->hasRole('Dasar')?'You':'Dasar'}}
+@elseif($result->status == 6)
+<span class="status-icon bg-primary"></span> Approved by {{Auth::user()->hasRole('Dasar')?'You':'Dasar'}}
+@elseif($result->status == 7)
+<span class="status-icon bg-danger"></span> Rejected by {{Auth::user()->hasRole('Dasar')?'You':'Dasar'}}
+@elseif($result->status == 8)
+<span class="status-icon bg-green"></span> Submitted to {{Auth::user()->hasRole('PTM')?'You':'PTM'}}
+@elseif($result->status == 9)
+<span class="status-icon bg-primary"></span> Approved by {{Auth::user()->hasRole('PTM')?'You':'PTM'}}
+@elseif($result->status == 10)
+<span class="status-icon bg-danger"></span> Rejected by {{Auth::user()->hasRole('PTM')?'You':'PTM'}}
 @endif

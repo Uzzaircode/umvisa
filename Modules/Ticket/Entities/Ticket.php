@@ -9,6 +9,7 @@ use Modules\Ticket\Entities\TicketAttachment;
 use Modules\Application\Entities\Application;
 use Modules\Ticket\Entities\Reply;
 use App\User;
+use Carbon\Carbon;
 
 class Ticket extends Model
 {
@@ -43,4 +44,72 @@ class Ticket extends Model
     public function assigned_to(){
         return $this->belongsTo(User::class,'assigned_to');
     }
+
+    // Dates Accessors
+    public function getCreatedAtAttribute($value) {
+        if($value != NULL){
+        return Carbon::parse($value)->toDayDateTimeString();
+        }
+    }
+    public function getReadbyHodDateAttribute($value) {
+        if($value != NULL){
+        return Carbon::parse($value)->toDayDateTimeString();
+        }
+    }
+    public function getSubmittedHodDateAttribute($value) {
+        if($value != NULL){
+        return Carbon::parse($value)->toDayDateTimeString();
+        }
+    }
+    public function getApprovedHodDateAttribute($value) {
+        if($value != NULL){
+        return Carbon::parse($value)->toDayDateTimeString();
+        }
+    }
+    public function getRejectedHodDateAttribute($value) {
+        if($value != NULL){
+        return Carbon::parse($value)->toDayDateTimeString();
+        }
+    }
+    public function getReadbyDasarDateAttribute($value) {
+        if($value != NULL){
+        return Carbon::parse($value)->toDayDateTimeString();
+        }
+    }
+    public function getSubmittedDasarDateAttribute($value) {
+        if($value != NULL){
+        return Carbon::parse($value)->toDayDateTimeString();
+        }
+    }
+    public function getApprovedDasarDateAttribute($value) {
+        if($value != NULL){
+        return Carbon::parse($value)->toDayDateTimeString();
+        }
+    }
+    public function getRejectedDasarDateAttribute($value) {
+        if($value != NULL){
+        return Carbon::parse($value)->toDayDateTimeString();
+        }
+    }
+    public function getReadbyPtmDateAttribute($value) {
+        if($value != NULL){
+        return Carbon::parse($value)->toDayDateTimeString();
+        }
+    }
+    public function getSubmittedPtmDateAttribute($value) {
+        if($value != NULL){
+        return Carbon::parse($value)->toDayDateTimeString();
+        }
+    }
+    public function getApprovedPtmDateAttribute($value) {
+        if($value != NULL){
+        return Carbon::parse($value)->toDayDateTimeString();
+        }
+    }
+    public function getRejectedPtmDateAttribute($value) {
+        if($value != NULL){
+        return Carbon::parse($value)->toDayDateTimeString();
+        }
+    }
+
 }

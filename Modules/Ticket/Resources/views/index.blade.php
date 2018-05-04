@@ -30,7 +30,7 @@
             <td>
                 @include('ticket::components.status-index')
             </td>
-            <td>{{$result->created_at->toDayDateTimeString()}}</td>
+            <td>{{$result->created_at}}</td>
 
             @can('edit_tickets')
             <td class="text-center">
@@ -56,7 +56,8 @@
                                 @endrole
                             </form>
                         @endcan 
-                        @if($result->status == 1 || $result->status == 4) @can('edit_tickets')
+                        @if($result->status == 1 || $result->status == 4) 
+                        @can('edit_tickets')
                         <a href="{{ route('tickets.edit',['id'=>$result->id])  }}" class="dropdown-item">
                             <i class="fe fe-edit"></i> Edit</a>
                         @endcan 

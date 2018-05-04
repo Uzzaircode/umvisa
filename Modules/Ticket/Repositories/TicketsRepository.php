@@ -47,35 +47,35 @@ class TicketsRepository extends AbstractRepository implements TicketRepoInterfac
 
 	public function approve_hod($ticket){		
 		$ticket->status = 3;
-		$ticket->approved_hod_date = timestamp();
+		$ticket->approved_hod_date = time();
 		$ticket->save();
 	}
 
 	public function reject_hod($ticket){		
 		$ticket->status = 4;
-		$ticket->rejected_hod_date = timestamp();
+		$ticket->rejected_hod_date = time();
 		$ticket->save();
 	}
 	public function approve_dasar($ticket){		
 		$ticket->status = 6;
-		$ticket->approved_dasar_date = timestamp();
+		$ticket->approved_dasar_date = time();
 		$ticket->save();
 	}
 
 	public function reject_dasar($ticket){		
 		$ticket->status = 7;
-		$ticket->rejected_dasar_date = timestamp();
+		$ticket->rejected_dasar_date = time();
 		$ticket->save();
 	}
 	public function approve_ptm($ticket){		
 		$ticket->status = 9;
-		$ticket->approved_ptm_date = timestamp();
+		$ticket->approved_ptm_date = time();
 		$ticket->save();
 	}
 
 	public function reject_ptm($ticket){		
 		$ticket->status = 10;
-		$ticket->rejected_ptm_date = timestamp();
+		$ticket->rejected_ptm_date = time();
 		$ticket->save();
 	}	
 }

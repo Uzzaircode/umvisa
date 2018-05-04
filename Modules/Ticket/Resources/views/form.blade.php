@@ -21,16 +21,8 @@
     <div class="card-options"> 
                
     @if(isset($ticket))
-    @if($ticket->status != NULL)
-            @if($ticket->status == 2)
-                <a href="#" class="btn btn-success btn-sm text-white"> Submitted To HOD</a>
-            @elseif($ticket->status == 1)
-                <a href="#" class="btn btn-warning btn-sm text-white"> Draft</a>
-            @endif
-        @endif        
-        <a href="#" class="btn btn-sm btn-primary text-white"># {{$ticket->ticket_number}}
-        </a>
-    @endif        
+        @include('ticket::components.status')
+    @endif     
     </div>
     @endcardHeader                
         @cardBody                                           

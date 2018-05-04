@@ -30,21 +30,7 @@
           <h3 class="card-title">Ticket Progress</h3>
           <div class="card-options"></div>
         </div>
-        <div class="card-body">
-            <div class='container-fluid'> 
-                <div class='htimeline row'>
-                    @if($ticket->created_at != NULL)
-                    <div data-date='{{$ticket->created_at->toDayDateTimeString()}}' class='step col orange'><div>Created</div></div>
-                    @endif
-                    @if($ticket->submitted_hod_date != NULL)
-                    <div data-date='{{$ticket->submitted_hod_date->toDayDateTimeString()}}' class='step col green'><div>Submitted to HOD</div></div>
-                    @endif
-                    @if($ticket->approved_hod_date != NULL)
-                    <div data-date='{{$ticket->approved_hod_date->toDayDateTimeString()}}' class='step col green'><div>Approved by HOD</div></div>
-                    @endif                    
-                </div>
-                </div>
-        </div>
+        @include('ticket::layouts.progress')
       </div>
     </div>
   </div>
@@ -73,7 +59,7 @@
             </tr>
             <tr>
               <td class="font-weight-bold">Ticket Created At</td>
-              <td>{{$ticket->created_at->toDayDateTimeString()}}</td>
+              <td>{{$ticket->created_at}}</td>
             </tr>
             <tr>
               <td class="font-weight-bold">Ticket Type</td>

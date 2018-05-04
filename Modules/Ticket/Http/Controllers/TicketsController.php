@@ -19,7 +19,6 @@ use Modules\Ticket\Entities\Reply;
 use Modules\Ticket\Http\Requests\CreateReplies as CR;
 use App\Mailers\AppMailer;
 use Session;
-use Modules\Ticket\Events\HODEvents;
 
 /**
  * Status Codes
@@ -131,7 +130,8 @@ class TicketsController extends Controller
         //if the user submit the ticket. The ticket will be submitted to HOD
         if($request->has('submit_hod')){
             // trigger submitToHOD listener
-            event(new HODEvents($ticket));            
+            $ticket->status = 2;            
+            $ticket->submitted_hod_date = time();            
             // send email to respective HOD, with Current User object and Ticket Information as parameters
             $mailer->sendTicketInformation(Auth::user(), $ticket);
             $ticket->save();
@@ -147,7 +147,7 @@ class TicketsController extends Controller
      */
     public function show(TR $repo, $id)
     {
-
+        
         $ticket = $repo->find($id);
         $saps = Sap::pluck('name', 'id');
         $sap_users = Auth::user()->saps;
@@ -157,6 +157,12 @@ class TicketsController extends Controller
         $ticket_rn = $repo->ticketNumber();
         $replies = $ticket->replies->sortByDesc('created_at');
         $status = $ticket->status;
+        $dates = [$ticket->created_at,
+                  $ticket->submitted_hod_date];
+        foreach($dates as $d){
+            $curDate = strtotime($d);
+
+        }
         return view('ticket::show', compact('users', 'saps', 'depts', 'sap_users', 'apps', 'user_tickets', 'ticket_rn', 'ticket','replies','status'));
     }
 
@@ -217,7 +223,8 @@ class TicketsController extends Controller
         }
         // if the user submit the ticket      
         if($request->has('submit_hod')){
-            event(new HODEvents($ticket));
+            $ticket->status = 2;            
+            $ticket->submitted_hod_date = time();
             $ticket->save();
             Session::flash('success', 'The ' . $this->entity . ' has been submitted to HOD successfully');
             return redirect()->route('tickets.index');
