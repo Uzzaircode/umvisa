@@ -160,47 +160,58 @@ class TicketsController extends Controller
         $date_arr = [
 [
     'status' => 'Created At',
-    'timestamp' => $ticket->created_at
+    'timestamp' => $ticket->created_at,
+    'color' => 'orange'
 ],
 [
     'status' => 'Read by HOD',
-    'timestamp' => $ticket->readby_hod_date
+    'timestamp' => $ticket->readby_hod_date,
+    'color' => 'green'
 ],
 [
     'status' => 'Submitted to HOD',
-    'timestamp' => $ticket->submitted_hod_date
+    'timestamp' => $ticket->submitted_hod_date,
+    'color' => 'green'
 ],
 [
     'status' => 'Approved by HOD',
-    'timestamp' => $ticket->approved_hod_date
+    'timestamp' => $ticket->approved_hod_date,
+    'color' => 'blue'
 ],
 [
     'status' => 'Rejected by HOD',
     'timestamp' => $ticket->rejected_hod_date,
+    'color' => 'red'
 ],
 [
     'status' => 'Submitted to  Dasar',
     'timestamp' => $ticket->submitted_dasar_date,
+    'color' => 'green'
 ],
 [
     'status' => 'Approved by Dasar',
-    'timestamp' => $ticket->approved_dasar_date
+    'timestamp' => $ticket->approved_dasar_date,
+    'color' => 'blue'
 ],
 [
     'status' => 'Rejected by Dasar',
-    'timestamp' => $ticket->rejected_dasar_date
+    'timestamp' => $ticket->rejected_dasar_date,
+    'color' => 'red'
 ],
 [
     'status' => 'Submitted to PTM',
-    'timestamp' => $ticket->submitted_ptm_date
+    'timestamp' => $ticket->submitted_ptm_date,
+    'color' => 'green'
 ],
 [
     'status' => 'Approved by PTM',
-    'timestamp' => $ticket->approved_ptm_date
+    'timestamp' => $ticket->approved_ptm_date,
+    'color' => 'blue'
 ],
 [
     'status' => 'Rejected by PTM',
-    'timestamp' => $ticket->rejected_ptm_date
+    'timestamp' => $ticket->rejected_ptm_date,
+    'color' => 'red'
 ],
 ];
         usort($date_arr, array($this,"date_sort"));

@@ -36,7 +36,7 @@
                 @endif                  --}}
                 @foreach($date_arr as $d)
                     @if($d['timestamp'] != NULL)
-                        <div data-date='{!! $d['timestamp'] !!}' class='step col'>{!! $d['status'] !!}<div></div></div>
+                <div data-date="{!! $d['timestamp'] !!}" class="step col {!! $d['color']!!}"><div>{!! $d['status'] !!}</div></div>
                     @endif
                 @endforeach
             </div>
