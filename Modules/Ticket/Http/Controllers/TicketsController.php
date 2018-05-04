@@ -157,13 +157,61 @@ class TicketsController extends Controller
         $ticket_rn = $repo->ticketNumber();
         $replies = $ticket->replies->sortByDesc('created_at');
         $status = $ticket->status;
-        $dates = [$ticket->created_at,
-                  $ticket->submitted_hod_date];
-        foreach($dates as $d){
-            $curDate = strtotime($d);
+        $date_arr = [
+[
+    'status' => 'Created At',
+    'timestamp' => $ticket->created_at
+],
+[
+    'status' => 'Read by HOD',
+    'timestamp' => $ticket->readby_hod_date
+],
+[
+    'status' => 'Submitted to HOD',
+    'timestamp' => $ticket->submitted_hod_date
+],
+[
+    'status' => 'Approved by HOD',
+    'timestamp' => $ticket->approved_hod_date
+],
+[
+    'status' => 'Rejected by HOD',
+    'timestamp' => $ticket->rejected_hod_date,
+],
+[
+    'status' => 'Submitted to  Dasar',
+    'timestamp' => $ticket->submitted_dasar_date,
+],
+[
+    'status' => 'Approved by Dasar',
+    'timestamp' => $ticket->approved_dasar_date
+],
+[
+    'status' => 'Rejected by Dasar',
+    'timestamp' => $ticket->rejected_dasar_date
+],
+[
+    'status' => 'Submitted to PTM',
+    'timestamp' => $ticket->submitted_ptm_date
+],
+[
+    'status' => 'Approved by PTM',
+    'timestamp' => $ticket->approved_ptm_date
+],
+[
+    'status' => 'Rejected by PTM',
+    'timestamp' => $ticket->rejected_ptm_date
+],
+];
+        usort($date_arr, array($this,"date_sort"));
+        // var_dump($date_arr);
+        
 
-        }
-        return view('ticket::show', compact('users', 'saps', 'depts', 'sap_users', 'apps', 'user_tickets', 'ticket_rn', 'ticket','replies','status'));
+        return view('ticket::show', compact('users', 'saps', 'depts', 'sap_users', 'apps', 'user_tickets', 'ticket_rn', 'ticket','replies','status','date_arr'));
+    }
+
+    public function date_sort($a,$b){
+        return strtotime($a['timestamp']) - strtotime($b['timestamp']); 
     }
 
     /**
@@ -291,5 +339,9 @@ class TicketsController extends Controller
             $ticket->save();            
         }
         return redirect()->route('tickets.show',['id'=>$ticket->id]);
+    }
+    public function datesCompared(TR $repo, $id){
+        $ticket = $repo->find($id);
+        
     }
 }

@@ -1,7 +1,7 @@
 <div class="card-body">
         <div class='container-fluid'> 
             <div class='htimeline row'>
-                @if($ticket->created_at != NULL)
+                {{-- @if($ticket->created_at != NULL)
                 <div data-date='{{$ticket->created_at}}' class='step col orange'><div>Created</div></div>
                 @endif
                 @if($ticket->submitted_hod_date != NULL)
@@ -33,7 +33,12 @@
                 @endif
                 @if($ticket->rejected_ptm_date != NULL)
                 <div data-date='{{$ticket->rejected_ptm_date}}' class='step col green'><div>Rejected by PTM</div></div>
-                @endif                 
+                @endif                  --}}
+                @foreach($date_arr as $d)
+                    @if($d['timestamp'] != NULL)
+                        <div data-date='{!! $d['timestamp'] !!}' class='step col'>{!! $d['status'] !!}<div></div></div>
+                    @endif
+                @endforeach
             </div>
             </div>
     </div>
