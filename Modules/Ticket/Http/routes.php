@@ -3,7 +3,7 @@ use Modules\Sap\Entities\Sap;
 use Illuminate\Support\Facades\Input;
 use Modules\Ticket\Http\Controllers\TicketsController;
 
-Route::group(['middleware' => 'web','namespace' => 'Modules\Ticket\Http\Controllers'], function()
+Route::group(['middleware' => ['web','timeout'],'namespace' => 'Modules\Ticket\Http\Controllers'], function()
 {
     Route::resource('tickets', 'TicketsController');
     Route::post('tickets/{ticket}',['uses'=>'TicketsController@approve','as'=>'tickets.approve']);

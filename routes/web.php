@@ -18,7 +18,7 @@ Auth::routes();
 Route::get('login/{provider}',          'Auth\SocialAccountsController@redirectToProvider');
 Route::get('login/{provider}/callback', 'Auth\SocialAccountsController@handleProviderCallback');
 
-Route::group( ['middleware' => ['auth']], function() {
+Route::group( ['middleware' => ['auth','timeout']], function() {
     Route::resource('users', 'UsersController');
     Route::resource('roles', 'RolesController');
     Route::get('myprofile', 'UsersController@myprofile');
