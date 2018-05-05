@@ -89,20 +89,29 @@ class TicketsRepository extends AbstractRepository implements TicketRepoInterfac
 	}
 	// Save HOD read ticket record timestamp
     public function readby_hod($ticket)
-    {   $ticket->status = 11;
+    {   
+        if($ticket->readby_hod_date == NULL){
+        $ticket->status = 11;
         $ticket->readby_hod_date = time();
         $ticket->save();
+        }
 	}
 	// Save Dasar read ticket record timestamp
     public function readby_dasar($ticket)
-    {   $ticket->status = 12;
+    {   
+        if($ticket->readby_dasar_date == NULL){
+        $ticket->status = 12;
         $ticket->readby_dasar_date = time();
         $ticket->save();
+        }
 	}
 	// Save PTM read ticket record timestamp
     public function readby_ptm($ticket)
-    {   $ticket->status = 13;
+    {   
+        if($ticket->readby_ptm_date == NULL){
+        $ticket->status = 13;
         $ticket->readby_ptm_date = time();
         $ticket->save();
+        }
     }
 }
