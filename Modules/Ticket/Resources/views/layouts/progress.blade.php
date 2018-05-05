@@ -1,44 +1,22 @@
-<div class="card-body">
-        <div class='container-fluid'> 
-            <div class='htimeline row'>
-                {{-- @if($ticket->created_at != NULL)
-                <div data-date='{{$ticket->created_at}}' class='step col orange'><div>Created</div></div>
-                @endif
-                @if($ticket->submitted_hod_date != NULL)
-                <div data-date='{{$ticket->submitted_hod_date}}' class='step col green'><div>Submitted to HOD</div></div>
-                @endif
-                @if($ticket->readby_hod_date != NULL)
-                <div data-date='{{$ticket->readby_hod_date}}' class='step col green'><div>Read by HOD</div></div>
-                @endif
-                @if($ticket->approved_hod_date != NULL)
-                <div data-date='{{$ticket->approved_hod_date}}' class='step col green'><div>Approved by HOD</div></div>
-                @endif 
-                @if($ticket->rejected_hod_date != NULL)
-                <div data-date='{{$ticket->rejected_hod_date}}' class='step col green'><div>Rejected by HOD</div></div>
-                @endif 
-                @if($ticket->submitted_dasar_date != NULL)
-                <div data-date='{{$ticket->submitted_dasar_date}}' class='step col green'><div>Submitted to Dasar</div></div>
-                @endif 
-                @if($ticket->approved_dasar_date != NULL)
-                <div data-date='{{$ticket->approved_dasar_date}}' class='step col green'><div>Approved by Dasar</div></div>
-                @endif
-                @if($ticket->rejected_dasar_date != NULL)
-                <div data-date='{{$ticket->rejected_dasar_date}}' class='step col green'><div>Rejected by Dasar</div></div>
-                @endif
-                @if($ticket->submitted_ptm_date != NULL)
-                <div data-date='{{$ticket->submitted_ptm_date}}' class='step col green'><div>Submitted to PTM</div></div>
-                @endif
-                @if($ticket->approved_ptm_date != NULL)
-                <div data-date='{{$ticket->approved_ptm_date}}' class='step col green'><div>Approved by PTM</div></div>
-                @endif
-                @if($ticket->rejected_ptm_date != NULL)
-                <div data-date='{{$ticket->rejected_ptm_date}}' class='step col green'><div>Rejected by PTM</div></div>
-                @endif                  --}}
-                @foreach($date_arr as $d)
-                    @if($d['timestamp'] != NULL)
-                <div data-date="{!! $d['timestamp'] !!}" class="step col {!! $d['color']!!}"><div>{!! $d['status'] !!}</div></div>
-                    @endif
-                @endforeach
+<div class="col-lg-12 col-md-12">
+    <div class="card">
+        <div class="card-header">
+            <h3 class="card-title">
+                <i class="fe fe-activity"></i> Ticket Progress</h3>
+            <div class="card-options"></div>
+        </div>
+        <div class="card-body">
+            <div class='container-fluid'>
+                <div class='htimeline row'>
+                    @foreach($date_arr as $d) 
+                        @if($d['timestamp'] != NULL)
+                <div data-date="{!! $d['timestamp'] !!}" class="step col {!! $d['color']!!}">
+                            <div>{!! $d['status'] !!} @if($d['code'] == $ticket->status) <i class="fe fe-check">@endif</i></div>
+                        </div>
+                        @endif 
+                    @endforeach
+                </div>
             </div>
-            </div>
+        </div>
     </div>
+</div>

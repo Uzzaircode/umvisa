@@ -161,61 +161,83 @@ class TicketsController extends Controller
 [
     'status' => 'Created At',
     'timestamp' => $ticket->created_at,
-    'color' => 'orange'
+    'color' => 'orange',
+    'code' => 1
 ],
 [
     'status' => 'Read by HOD',
     'timestamp' => $ticket->readby_hod_date,
-    'color' => 'green'
+    'color' => 'green',
+    'code' => 11
 ],
 [
     'status' => 'Submitted to HOD',
     'timestamp' => $ticket->submitted_hod_date,
-    'color' => 'green'
+    'color' => 'green',
+    'code' => 2
 ],
 [
     'status' => 'Approved by HOD',
     'timestamp' => $ticket->approved_hod_date,
-    'color' => 'blue'
+    'color' => 'blue',
+    'code' => 3
 ],
 [
     'status' => 'Rejected by HOD',
     'timestamp' => $ticket->rejected_hod_date,
-    'color' => 'red'
+    'color' => 'red',
+    'code' => 4
+],
+[
+    'status' => 'Read by Dasar',
+    'timestamp' => $ticket->readby_dasar_date,
+    'color' => 'green',
+    'code' => 12
 ],
 [
     'status' => 'Submitted to  Dasar',
     'timestamp' => $ticket->submitted_dasar_date,
-    'color' => 'green'
+    'color' => 'green',
+    'code' => 5
 ],
 [
     'status' => 'Approved by Dasar',
     'timestamp' => $ticket->approved_dasar_date,
-    'color' => 'blue'
+    'color' => 'blue',
+    'code' => 6
 ],
 [
     'status' => 'Rejected by Dasar',
     'timestamp' => $ticket->rejected_dasar_date,
-    'color' => 'red'
+    'color' => 'red',
+    'code' => 7
 ],
 [
     'status' => 'Submitted to PTM',
     'timestamp' => $ticket->submitted_ptm_date,
-    'color' => 'green'
+    'color' => 'green',
+    'code' => 8
+],
+[
+    'status' => 'Read by PTM',
+    'timestamp' => $ticket->readby_ptm_date,
+    'color' => 'green',
+    'code' => 13
 ],
 [
     'status' => 'Approved by PTM',
     'timestamp' => $ticket->approved_ptm_date,
-    'color' => 'blue'
+    'color' => 'blue',
+    'code' => 9
 ],
 [
     'status' => 'Rejected by PTM',
     'timestamp' => $ticket->rejected_ptm_date,
-    'color' => 'red'
+    'color' => 'red',
+    'code' => 10
 ],
 ];
         usort($date_arr, array($this,"date_sort"));
-        // var_dump($date_arr);
         
 
         return view('ticket::show', compact('users', 'saps', 'depts', 'sap_users', 'apps', 'user_tickets', 'ticket_rn', 'ticket','replies','status','date_arr'));
@@ -345,14 +367,17 @@ class TicketsController extends Controller
 
     public function read(Request $request,TR $repo, $id){
         $ticket = $repo->find($id);
+        
         if($request->has('readby_hod')){
-            $ticket->readby_hod_date = time();
-            $ticket->save();            
+            $repo->readby_hod($ticket);
+        }
+        if($request->has('readby_dasar')){
+            $repo->readby_dasar($ticket);
+        }
+        if($request->has('readby_ptm')){
+            $repo->readby_ptm($ticket);
         }
         return redirect()->route('tickets.show',['id'=>$ticket->id]);
-    }
-    public function datesCompared(TR $repo, $id){
-        $ticket = $repo->find($id);
-        
-    }
+    }    
+
 }
