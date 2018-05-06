@@ -357,7 +357,7 @@ class TicketsController extends Controller
         }// if PTM has approved the ticket
         if($request->has('submit_to_ptm')){            
             $repo->submit_to_ptm($ticket);
-            Session::flash('success','The ticket '.$ticket->ticket_number.' has been submitted to Dasar');
+            Session::flash('success','The ticket '.$ticket->ticket_number.' has been submitted to PTM');
         }
         if($request->has('approve_ptm')){
             $repo->approve_ptm($ticket);

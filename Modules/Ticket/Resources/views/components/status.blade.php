@@ -31,4 +31,10 @@
 <a href="#" class="btn btn-primary btn-sm text-white">{{Auth::user()->hasRole('PTM')?'You have approved this ticket':'Approved by PTM'}} on {{$ticket->approved_ptm_date}}</a>
 @elseif($ticket->status == 10)
 <a href="#" class="btn btn-danger btn-sm text-white">{{Auth::user()->hasRole('PTM')?'You have rejected this ticket':'Rejected by PTM'}} on {{$ticket->rejected_ptm_date}}</a>
+@elseif($ticket->status == 11)
+<a href="#" class="btn btn-info btn-sm text-white">{{Auth::user()->hasRole('HOD')?'You have read this ticket':'Read by HOD'}} on {{$ticket->readby_hod_date}}</a>
+@elseif($ticket->status == 12)
+<a href="#" class="btn btn-info btn-sm text-white">{{Auth::user()->hasRole('Dasar')?'You have read this ticket':'Rejected by PTM'}} on {{$ticket->readby_dasar_date}}</a>
+@elseif($ticket->status == 13)
+<a href="#" class="btn btn-info btn-sm text-white">{{Auth::user()->hasRole('PTM')?'You have read this ticket':'Read by PTM'}} on {{$ticket->readby_ptm_date}}</a>
 @endif

@@ -21,11 +21,11 @@ class TicketsRepository extends AbstractRepository implements TicketRepoInterfac
             $user = Auth::user();
             $dept_id = $user->profile->department->id;
             // HOD can see ticket with submmited, approved and rejected status
-            return $this->modelClassName::where('dept_id', $dept_id)->where('status', 2)->orWhere('status', 3)->orWhere('status', 5)->orWhere('status', 11)->orderBy('updated_at', 'desc')->get();
+            return $this->modelClassName::where('dept_id', $dept_id)->where('status', 2)->orWhere('status', 3)->orWhere('status', 4)->orWhere('status', 5)->orWhere('status', 6)->orWhere('status', 7)->orWhere('status', 8)->orWhere('status', 9)->orWhere('status', 10)->orWhere('status', 11)->orderBy('updated_at', 'desc')->get();
         } //if user is normal user, normal user can only see his tickets
         elseif (Auth::user()->hasRole('Dasar')) {            
             // HOD can see ticket with submmited, approved and rejected status
-            return $this->modelClassName::where('status', 5)->orWhere('status', 12)->orderBy('updated_at', 'desc')->get();
+            return $this->modelClassName::where('status', 5)->orWhere('status', 6)->orWhere('status', 7)->orWhere('status', 8)->orWhere('status', 9)->orWhere('status', 10)->orderBy('updated_at', 'desc')->get();
         }elseif (Auth::user()->hasRole('PTM')) {            
             // HOD can see ticket with submmited, approved and rejected status
             return $this->modelClassName::where('status', 8)->orWhere('status', 9)->orWhere('status', 10)->orWhere('status', 13)->orderBy('updated_at', 'desc')->get();
