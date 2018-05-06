@@ -26,15 +26,18 @@
             <i class="fe fe-edit"></i> Edit</a>
         @endcan 
         @endif
+        
+        @can('delete_tickets')
+        @if($result->user_id == Auth::id())
         <div class="dropdown-divider"></div>
-        @can('delete_tickets') 
         {!! Form::open( ['method' => 'delete', 'url' => route('tickets.destroy', ['id'=>$result->id]), 'style'
         => 'display: inline', 'onSubmit' => 'return confirm("Are yous sure wanted to delete this ticket?")'])
         !!}
         <button type="submit" class="dropdown-item">
             <i class="fe fe-trash"></i> Delete
         </button>
-        {!! Form::close() !!} 
+        {!! Form::close() !!}
+        @endif 
         @endcan
     </div>
 </div>
