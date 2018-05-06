@@ -18,6 +18,13 @@ class CreateReplies extends FormRequest
         ];
     }
 
+    public function messages()
+{
+    return [
+        'replybody.required' => 'You have to leave a comment',        
+    ];
+}
+
     /**
      * Determine if the user is authorized to make this request.
      *

@@ -34,7 +34,7 @@
 @elseif($result->status == 11)
 <span class="status-icon bg-success"></span> Read by {{Auth::user()->hasRole('HOD')?'You':'HOD'}}
 @elseif($result->status == 12)
-<span class="status-icon bg-success"></span> Rejected by {{Auth::user()->hasRole('Dasar')?'You':'Dasar'}}
+<span class="status-icon bg-success"></span> Read by {{Auth::user()->hasRole('Dasar')?'You':'Dasar'}}
 @elseif($result->status == 13)
-<span class="status-icon bg-success"></span> Rejected by {{Auth::user()->hasRole('PTM')?'You':'PTM'}}
+<span class="status-icon bg-success"></span> Read by {{Auth::user()->hasRole('PTM')?'You':'PTM'}}
 @endif

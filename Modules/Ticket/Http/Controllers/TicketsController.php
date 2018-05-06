@@ -333,7 +333,7 @@ class TicketsController extends Controller
             'body' => $request->replybody,
             'ticket_id'=>$ticket->id,
             'user_id' => Auth::id()
-        ]);
+        ]);        
         // if HOD has approved the ticket
         if($request->has('approve_hod')){            
             $repo->approve_hod($ticket);
@@ -342,18 +342,26 @@ class TicketsController extends Controller
         if($request->has('reject_hod')){
             $repo->reject_hod($ticket);
             Session::flash('success','The ticket '.$ticket->ticket_number.' has been rejected');
+        }// if HOD submit to Dasar
+        if($request->has('submit_to_dasar')){            
+            $repo->submit_to_dasar($ticket);
+            Session::flash('success','The ticket '.$ticket->ticket_number.' has been submitted to Dasar');
         }// if Dasar has approved the ticket
         if($request->has('approve_dasar')){
             $repo->approve_dasar($ticket);
-            Session::flash('success','The ticket '.$ticket->ticket_number.' has been rejected');
+            Session::flash('success','The ticket '.$ticket->ticket_number.' has been approved');
         }// if Dasar has rejected the ticket
         if($request->has('reject_dasar')){
             $repo->reject_dasar($ticket);
             Session::flash('success','The ticket '.$ticket->ticket_number.' has been rejected');
         }// if PTM has approved the ticket
+        if($request->has('submit_to_ptm')){            
+            $repo->submit_to_ptm($ticket);
+            Session::flash('success','The ticket '.$ticket->ticket_number.' has been submitted to Dasar');
+        }
         if($request->has('approve_ptm')){
             $repo->approve_ptm($ticket);
-            Session::flash('success','The ticket '.$ticket->ticket_number.' has been rejected');
+            Session::flash('success','The ticket '.$ticket->ticket_number.' has been approved');
         }// if PTM has rejected the ticket
         if($request->has('reject_ptm')){
             $repo->reject_ptm($ticket);

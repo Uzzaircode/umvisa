@@ -37,7 +37,7 @@
                 <td>{{ $user->name }}</td>
                 <td>{{ $user->email }}</td>
                 <td>{{ $user->roles->implode('name', ', ') }}</td>
-                <td>{{ $user->created_at->toFormattedDateString() }}</td>
+                <td>{{ $user->created_at->toDayDateTimeString() }}</td>
             
                 @can('edit_users')
                 <td class="text-center">

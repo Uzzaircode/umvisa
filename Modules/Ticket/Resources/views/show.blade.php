@@ -51,6 +51,10 @@
               <td>{{$ticket->subject}}</td>
             </tr>
             <tr>
+                <td class="font-weight-bold">Ticket Created By</td>
+                <td>{{$ticket->user->name}}</td>
+              </tr>
+            <tr>
               <td class="font-weight-bold">Ticket Created At</td>
               <td>{{$ticket->created_at}}</td>
             </tr>

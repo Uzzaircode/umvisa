@@ -40,9 +40,7 @@ class UsersController extends Controller
             'name' => 'bail|required|min:2',
             'email' => 'required|email|unique:users',
             'password' => 'required|min:6',
-            'roles' => 'required|min:1',
-            'depts'=>'required',
-            'saps' => 'required'
+            'roles' => 'required|min:1'            
         ]);
         
 
@@ -62,12 +60,17 @@ class UsersController extends Controller
                 $avatar = $request->avatar;
                 $avatar_new_name = $request->name. time() . $avatar->getClientOriginalName();
                 $avatar->move('uploads/avatars', $avatar_new_name);
-            }   
-            $profile = Profile::create([
-                'user_id' => $user->id,
-                'avatar' => 'uploads/avatars/'.$avatar_new_name,
-                'hod_id' => $request->hod_id
-            ]);        
+            }
+            $profile = new Profile;
+            $profile->user_id = $user->id;
+            if(!empty($avatar_new_name)){
+                $profile->avatar = 'uploads/avatars/'.$avatar_new_name;
+            }else{
+                $profile->avatar = 'uploads/avatars/default.svg';
+            }
+            $profile->hod_id = $request->hod_id;
+            $profile->save();
+
             Session::flash('success','User has been created.');
         } else {
             Session::flash('fail','Unable to create user.');
