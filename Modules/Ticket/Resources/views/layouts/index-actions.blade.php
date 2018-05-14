@@ -20,7 +20,7 @@
                 @endrole
             </form>
         @endcan 
-        @if($result->status == 1 || $result->status == 4) 
+        @if($result->status == 1 || $result->status == 4 || $result->status == 7 || $result->status == 10 ) 
         @can('edit_tickets')
         <a href="{{ route('tickets.edit',['id'=>$result->id])  }}" class="dropdown-item">
             <i class="fe fe-edit"></i> Edit</a>

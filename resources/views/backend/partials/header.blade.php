@@ -5,19 +5,32 @@
                 <img src="{{asset('img/logo.png')}}" class="header-brand-img" alt="brillante logo">
             </a>
             <div class="d-flex order-lg-2 ml-auto">
+                @if(Auth::user()->hasRole(['Admin','User']))
                 <div class="nav-item d-none d-md-flex">
                     <a href="{{route('tickets.create')}}" class="btn btn-sm btn-outline-primary">
                         <i class="fe fe-plus-circle"></i> New Ticket</a>
                 </div>
+                @endif
                 <div class="dropdown d-none d-md-flex">
                     <a class="nav-link icon" data-toggle="dropdown">
                         <i class="fe fe-bell"></i>
                         <span class="nav-unread"></span>
                     </a>
                     <div class="dropdown-menu dropdown-menu-right dropdown-menu-arrow">
-                        @if(App\Repositories\NotificationsRepository::allNotifications()->count() > 0) 
+                        @if(App\Repositories\NotificationsRepository::allNotifications()->count() > 0)
+                        
                         @foreach(App\Repositories\NotificationsRepository::allNotifications() as $n)
-                        <a href="#" class="dropdown-item d-flex">
+                        <form action="{{route('tickets.read', ['id'=>$n->ticket_id])}}" style="display:inline" method="POST">
+                        @csrf
+                        <button type="submit" href="{{route('tickets.read',['id'=>$n->ticket_id])}}" class="dropdown-item d-flex btn btn-link"  
+                            @if(Auth::user()->hasRole('HOD')) 
+                                name="readby_hod"
+                             @elseif(Auth::user()->hasRole('Dasar'))
+                             name="readby_dasar"
+                             @elseif(Auth::user()->hasRole('PTM'))
+                                name="readby_ptm"
+                             @endif
+                             >
                             <span class="avatar mr-3 align-self-center" style="background-image: url({{asset($n->user->profile->avatar)}})"></span>
                             <div>
                                 <strong>{{$n->user->name}}</strong>
@@ -29,12 +42,13 @@
                                 rejected a ticket
                                 @endif {!! '#'.$n->ticket->ticket_number !!}
                             <div class="small text-muted">{{$n->ticket->created_at->diffForHumans()}}</div>
-                            </div>
-                            <div class="dropdown-divider"></div>
-                        <a href="{{route('notifications')}}" class="dropdown-item text-center text-muted-dark">View All Notifications</a>
-                        </a>
+                            </div>                                               
+                        </button>
+                        </form>
                         @endforeach 
-                        @endif                       
+                        @endif
+                        <div class="dropdown-divider"></div> 
+                        <a href="{{route('notifications')}}" class="dropdown-item text-center text-muted-dark">View All Notifications</a>                       
                     </div>
                 </div>
                 <div class="dropdown">
