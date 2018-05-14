@@ -30,7 +30,7 @@
             <td>
                 @include('ticket::components.status-index')
             </td>
-            <td>{{$result->created_at}}</td>
+            <td>{{$result->created_at->toDayDateTimeString()}}</td>
 
             @can('edit_tickets')
             <td class="text-center">

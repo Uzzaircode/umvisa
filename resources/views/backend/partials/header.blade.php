@@ -1,42 +1,40 @@
 <div class="header py-4">
     <div class="container">
         <div class="d-flex">
-        <a class="header-brand" href="{{route('home')}}">
-            <img src="{{asset('img/logo.png')}}" class="header-brand-img" alt="brillante logo">
+            <a class="header-brand" href="{{route('home')}}">
+                <img src="{{asset('img/logo.png')}}" class="header-brand-img" alt="brillante logo">
             </a>
             <div class="d-flex order-lg-2 ml-auto">
-                    <div class="nav-item d-none d-md-flex">                       
-                            <a href="{{route('tickets.create')}}" class="btn btn-sm btn-outline-primary"> <i class="fe fe-plus-circle"></i> New Ticket</a>
-                    </div>               
+                <div class="nav-item d-none d-md-flex">
+                    <a href="{{route('tickets.create')}}" class="btn btn-sm btn-outline-primary">
+                        <i class="fe fe-plus-circle"></i> New Ticket</a>
+                </div>
                 <div class="dropdown d-none d-md-flex">
                     <a class="nav-link icon" data-toggle="dropdown">
                         <i class="fe fe-bell"></i>
                         <span class="nav-unread"></span>
                     </a>
                     <div class="dropdown-menu dropdown-menu-right dropdown-menu-arrow">
+                        @if(App\Repositories\NotificationsRepository::allNotifications()->count() > 0) 
+                        @foreach(App\Repositories\NotificationsRepository::allNotifications() as $n)
                         <a href="#" class="dropdown-item d-flex">
-                            <span class="avatar mr-3 align-self-center" style="background-image: url(demo/faces/male/41.jpg)"></span>
+                            <span class="avatar mr-3 align-self-center" style="background-image: url({{asset($n->user->profile->avatar)}})"></span>
                             <div>
-                                <strong>Nathan</strong> pushed new commit: Fix page load performance issue.
-                                <div class="small text-muted">10 minutes ago</div>
+                                <strong>{{$n->user->name}}</strong>
+                                @if($n->action_id == 1)
+                                submitted a new ticket
+                                @elseif($n->action_id == 2)
+                                approved the ticket
+                                @elseif($n->action_id == 3)
+                                rejected a ticket
+                                @endif {!! '#'.$n->ticket->ticket_number !!}
+                            <div class="small text-muted">{{$n->ticket->created_at->diffForHumans()}}</div>
                             </div>
+                            <div class="dropdown-divider"></div>
+                        <a href="{{route('notifications')}}" class="dropdown-item text-center text-muted-dark">View All Notifications</a>
                         </a>
-                        <a href="#" class="dropdown-item d-flex">
-                            <span class="avatar mr-3 align-self-center" style="background-image: url(demo/faces/female/1.jpg)"></span>
-                            <div>
-                                <strong>Alice</strong> started new task: Tabler UI design.
-                                <div class="small text-muted">1 hour ago</div>
-                            </div>
-                        </a>
-                        <a href="#" class="dropdown-item d-flex">
-                            <span class="avatar mr-3 align-self-center" style="background-image: url(demo/faces/female/18.jpg)"></span>
-                            <div>
-                                <strong>Rose</strong> deployed new version of NodeJS REST Api V3
-                                <div class="small text-muted">2 hours ago</div>
-                            </div>
-                        </a>
-                        <div class="dropdown-divider"></div>
-                        <a href="#" class="dropdown-item text-center text-muted-dark">Mark all as read</a>
+                        @endforeach 
+                        @endif                       
                     </div>
                 </div>
                 <div class="dropdown">
@@ -44,18 +42,17 @@
                         <span class="avatar" style="background-image: url({{asset(Auth::user()->profile->avatar)}})"></span>
                         <span class="ml-2 d-none d-lg-block">
                             <span class="text-default">{{Auth::user()->name}}</span>
-                        <small class="text-muted d-block mt-1">{{Auth::user()->roles()->pluck('name')->first()}}
-                        @if(!empty(Auth::user()->profile->department->name))
-                            {{Auth::user()->profile->department->name}}
-                            @endif</small>
+                            <small class="text-muted d-block mt-1">{{Auth::user()->roles()->pluck('name')->first()}} @if(!empty(Auth::user()->profile->department->name))                                   
+                                    {!! wordwrap(Auth::user()->profile->department->name,30,"<br>\n")!!} @endif 
+                            </small>                            
                         </span>
                     </a>
                     <div class="dropdown-menu dropdown-menu-right dropdown-menu-arrow">
                         @can('edit_profiles')
-                    <a class="dropdown-item" href="/myprofile">
+                        <a class="dropdown-item" href="/myprofile">
                             <i class="dropdown-icon fe fe-user"></i> Profile
-                    </a>
-                    @endcan
+                        </a>
+                        @endcan
                         <a class="dropdown-item" href="#">
                             <i class="dropdown-icon fe fe-settings"></i> Settings
                         </a>
@@ -64,13 +61,13 @@
                                 <span class="badge badge-primary">6</span>
                             </span>
                             <i class="dropdown-icon fe fe-mail"></i> Inbox
-                        </a>                       
-                        <div class="dropdown-divider"></div>                        
+                        </a>
+                        <div class="dropdown-divider"></div>
                         <a class="dropdown-item" href="{{ route('logout') }}" onclick="event.preventDefault();
                                                      document.getElementById('logout-form').submit();">
                             <i class="dropdown-icon fe fe-log-out"></i> {{ __('Logout') }}
                             <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
-                                        @csrf
+                                @csrf
                             </form>
                         </a>
                     </div>
@@ -83,53 +80,53 @@
     </div>
 </div>
 <div class="header collapse d-lg-flex p-0" id="headerMenuCollapse">
-          <div class="container">
-            <div class="row align-items-center">
-              <div class="col-lg-3 ml-auto">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-3 ml-auto">
                 <form class="input-icon my-3 my-lg-0">
-                  <input type="search" class="form-control header-search" placeholder="Search&hellip;" tabindex="1">
-                  <div class="input-icon-addon">
-                    <i class="fe fe-search"></i>
-                  </div>
+                    <input type="search" class="form-control header-search" placeholder="Search&hellip;" tabindex="1">
+                    <div class="input-icon-addon">
+                        <i class="fe fe-search"></i>
+                    </div>
                 </form>
-              </div>
-              <div class="col-lg order-lg-first">
-                <ul class="nav nav-tabs border-0 flex-column flex-lg-row">
-                  <li class="nav-item">
-                  <a href="{{route('home')}}" class="nav-link"><i class="fe fe-home"></i> Home</a>
-                  </li>
-                  @can('view_tickets')
-                  <li class="nav-item">
-                  <a href="{{route('tickets.index')}}" class="nav-link"><i class="fe fe-tag"></i>{{Auth::user()->hasRole('Admin') ? 'Tickets':'My Tickets'}}</a>
-                      </li>
-                  @endcan                               
-                  @role('Admin') {{-- Laravel-permission blade helper --}}               
-                  <li class="nav-item dropdown">
-                    <a href="javascript:void(0)" class="nav-link" data-toggle="dropdown"><i class="fe fe-package"></i> Modules</a>
-                    <div class="dropdown-menu dropdown-menu-arrow">
-                        @can('view_saps')<a href="{{route('saps.index')}}" class="dropdown-item">SAP Modules</a>
-                        @endcan
-                    @can('view_departments')   
-                    <a href="{{route('departments.index')}}" class="dropdown-item">Departments</a> 
-                    @endcan 
-                    @can('view_applications')   
-                    <a href="{{route('applications.index')}}" class="dropdown-item">Applications</a> 
-                    @endcan   
-                    </div>
-                  </li>
-                  @endrole                                                       
-                  @role('Admin') {{-- Laravel-permission blade helper --}}               
-                  <li class="nav-item dropdown">
-                    <a href="javascript:void(0)" class="nav-link" data-toggle="dropdown"><i class="fe fe-shield"></i> Administration</a>
-                    <div class="dropdown-menu dropdown-menu-arrow">
-                    <a href="{{route('users.index')}}" class="dropdown-item">Users</a>
-                    <a href="{{route('roles.index')}}" class="dropdown-item">Roles & Permissions</a>    
-                    </div>
-                  </li>
-                  @endrole
-                </ul>
-              </div>
             </div>
-          </div>
-        </div>                                    
-                                       
+            <div class="col-lg order-lg-first">
+                <ul class="nav nav-tabs border-0 flex-column flex-lg-row">
+                    <li class="nav-item">
+                        <a href="{{route('home')}}" class="nav-link">
+                            <i class="fe fe-home"></i> Home</a>
+                    </li>
+                    @can('view_tickets')
+                    <li class="nav-item">
+                        <a href="{{route('tickets.index')}}" class="nav-link">
+                            <i class="fe fe-tag"></i>{{Auth::user()->hasRole('Admin') ? 'Tickets':'My Tickets'}}</a>
+                    </li>
+                    @endcan @role('Admin') {{-- Laravel-permission blade helper --}}
+                    <li class="nav-item dropdown">
+                        <a href="javascript:void(0)" class="nav-link" data-toggle="dropdown">
+                            <i class="fe fe-package"></i> Modules</a>
+                        <div class="dropdown-menu dropdown-menu-arrow">
+                            @can('view_saps')
+                            <a href="{{route('saps.index')}}" class="dropdown-item">SAP Modules</a>
+                            @endcan @can('view_departments')
+                            <a href="{{route('departments.index')}}" class="dropdown-item">Departments</a>
+                            @endcan @can('view_applications')
+                            <a href="{{route('applications.index')}}" class="dropdown-item">Applications</a>
+                            @endcan
+                        </div>
+                    </li>
+                    @endrole @role('Admin') {{-- Laravel-permission blade helper --}}
+                    <li class="nav-item dropdown">
+                        <a href="javascript:void(0)" class="nav-link" data-toggle="dropdown">
+                            <i class="fe fe-shield"></i> Administration</a>
+                        <div class="dropdown-menu dropdown-menu-arrow">
+                            <a href="{{route('users.index')}}" class="dropdown-item">Users</a>
+                            <a href="{{route('roles.index')}}" class="dropdown-item">Roles & Permissions</a>
+                        </div>
+                    </li>
+                    @endrole
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>

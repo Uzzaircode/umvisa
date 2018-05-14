@@ -17,8 +17,11 @@ use Modules\Ticket\Http\Requests\CreateTicketRequest as CTR;
 use Modules\Ticket\Repositories\TicketsRepository as TR;
 use Modules\Ticket\Entities\Reply;
 use Modules\Ticket\Http\Requests\CreateReplies as CR;
+use App\Notification;
 use App\Mailers\AppMailer;
+use App\Repositories\NotificationsRepository as NR;
 use Session;
+use App\Profile;
 
 /**
  * Status Codes
@@ -77,7 +80,11 @@ class TicketsController extends Controller
         $depts = Auth::user()->departments;
         $apps = Application::all();
         $user_tickets = Auth::user()->tickets;
-        $ticket_rn = $repo->ticketNumber();
+        if(Ticket::count() < 0){
+            $ticket_rn = 001;
+        }else{
+            $ticket_rn = $repo->ticketNumber();
+        }        
         return view('ticket::form', compact('users', 'saps', 'depts', 'sap_users', 'apps', 'user_tickets', 'ticket_rn'));
     }
 
@@ -86,7 +93,7 @@ class TicketsController extends Controller
      * @param  Request $request
      * @return Response
      */
-    public function store(TR $repo, CTR $request, AppMailer $mailer)
+    public function store(TR $repo, CTR $request, AppMailer $mailer,NR $nrepo)
     {
         // fetch all requests except for ticket number
         $ticket = $repo->create($request->except('ticket_number'));
@@ -95,7 +102,7 @@ class TicketsController extends Controller
         // then find SAP Code
         $sap_code = Sap::find($sap_id)->code;
         // fetch ticket number
-        $ticket_rn = $request->ticket_number;
+        $ticket_rn = $request->ticket_number;      
         // save ticket number into database
         $ticket->ticket_number = 'UM' . date('Y') . '-' . $sap_code . '-' . $ticket_rn;                
         // if user upload attachement
@@ -121,6 +128,7 @@ class TicketsController extends Controller
                 'user_id' => Auth::id()
             ]);           
         }
+        $ticket->save();
         // if the user save the ticket as draft
         if($request->has('draft')){
             $ticket->status = 1;
@@ -133,11 +141,19 @@ class TicketsController extends Controller
             $ticket->status = 2;            
             $ticket->submitted_hod_date = time();            
             // send email to respective HOD, with Current User object and Ticket Information as parameters
-            $mailer->sendTicketInformation(Auth::user(), $ticket);
+            // $mailer->sendTicketInformation(Auth::user(), $ticket);
             $ticket->save();
             Session::flash('success', 'The ' . $this->entity . ' has been created successfully');
         }
-        $ticket->save();        
+                
+        // Find HOD based on Dept ID
+        $user_id = Auth::id();        
+        $dept_id = $request->dept_id;
+        $hod_user = Profile::where('hod_id',$dept_id)->get();
+        $receiver_id = $hod_user->first()->user_id;
+        $ticket_id = $ticket->id;       
+        $nrepo->createNew($user_id,$ticket_id,$receiver_id);
+
         return redirect()->route('tickets.index');
     }
 

@@ -18,27 +18,27 @@ class DeptTableSeedersTableSeeder extends Seeder
         
         Department::create([
             'name' => ucwords('bahagian akaun dan pelaburan'),
-            'email' => 'akaun@brillante.com'
+            'email' => 'akaun@um.com'
         ]);
         Department::create([
             'name' => ucwords('bahagian pembayaran dan perbelanjaan'),
-            'email' => 'bayar@brillante.com'
+            'email' => 'bayar@um.com'
         ]);
         Department::create([
             'name' => ucwords('bahagian pengurusan pembayaran kewangan dan staf'),
-            'email' => 'urusakaun@brillante.com'
+            'email' => 'urusakaun@um.com'
         ]);
         Department::create([
             'name' => ucwords('bahagian belanjawan dan kewangan korporat'),
-            'email' => 'belanjawan@brillante.com'
+            'email' => 'belanjawan@um.com'
         ]);
         Department::create([
             'name' => ucwords('bahagian perolehan'),
-            'email' => 'oleh@brillante.com'
+            'email' => 'oleh@um.com'
         ]);
         Department::create([
             'name' => ucwords('unit pentadbiran dan kewangan am'),
-            'email' => 'tadbir@brillante.com'
+            'email' => 'tadbir@um.com'
         ]);        
     }
 }

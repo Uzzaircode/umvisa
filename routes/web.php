@@ -22,6 +22,7 @@ Route::group( ['middleware' => ['auth','timeout']], function() {
     Route::resource('users', 'UsersController');
     Route::resource('roles', 'RolesController');
     Route::get('myprofile', 'UsersController@myprofile');
+    Route::get('notifications','NotificationsController@index')->name('notifications');
 });
 
 Route::view('mail','emails.mail');

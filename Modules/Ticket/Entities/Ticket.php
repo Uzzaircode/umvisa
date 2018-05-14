@@ -10,6 +10,7 @@ use Modules\Department\Entities\Department;
 use Modules\Sap\Entities\Sap;
 use Modules\Ticket\Entities\Reply;
 use Modules\Ticket\Entities\TicketAttachment;
+use App\Notification;
 
 class Ticket extends Model
 {
@@ -53,12 +54,12 @@ class Ticket extends Model
     }
 
     // Dates Accessors
-    public function getCreatedAtAttribute($value)
-    {
-        if ($value != null) {
-            return Carbon::parse($value)->toDayDateTimeString();
-        }
-    }
+    // public function getCreatedAtAttribute($value)
+    // {
+    //     if ($value != null) {
+    //         return Carbon::parse($value)->toDayDateTimeString();
+    //     }
+    // }
     public function getReadbyHodDateAttribute($value)
     {
         if ($value != null) {
@@ -130,6 +131,11 @@ class Ticket extends Model
         if ($value != null) {
             return Carbon::parse($value)->toDayDateTimeString();
         }
+    }
+    
+
+    public function notifications(){
+        return $this->hasMany(Notification::class);
     }
 
 }

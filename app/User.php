@@ -11,6 +11,7 @@ use Modules\Ticket\Entities\Ticket;
 use Modules\Sap\Entities\Sap;
 use Modules\Ticket\Entities\Reply;
 use App\Profile;
+use App\Notification;
 use Cache;
 
 class User extends Authenticatable
@@ -67,6 +68,9 @@ class User extends Authenticatable
     }
     public function replies(){
         return $this->hasMany(Reply::class);
+    }
+    public function notifications(){
+        return $this->hasMany(Notification::class);
     }
     
    

@@ -31,18 +31,18 @@ class DatabaseSeeder extends Seeder
         }
         $this->command->info('Default Permissions dah ditambah.');
         // Confirm roles needed
-        if ($this->command->confirm('Create Roles untuk user, default ialah administrator dan user? [y|N]', true)) {
+        if ($this->command->confirm('Create Roles untuk user, default ialah Admin dan User? [y|N]', true)) {
             // Ask for roles from input
-            $input_roles = $this->command->ask('Enter roles in comma separate format.', 'Administrator,User');
+            $input_roles = $this->command->ask('Enter roles in comma separate format.', 'Admin,User');
             // Explode roles
             $roles_array = explode(',', $input_roles);
             // add roles
             foreach($roles_array as $role) {
                 $role = Role::firstOrCreate(['name' => trim($role)]);
-                if( $role->name == 'Administrator' ) {
+                if( $role->name == 'Admin' ) {
                     // assign all permissions
                     $role->syncPermissions(Permission::all());
-                    $this->command->info('Administrator dapat semua permission');
+                    $this->command->info('Admin dapat semua permission');
                 } else {
                     // for others by default only read access
                     $role->syncPermissions(Permission::where('name', 'LIKE', 'view_%')->get());
@@ -67,7 +67,7 @@ class DatabaseSeeder extends Seeder
     {
         $user = factory(User::class)->create();
         $user->assignRole($role->name);
-        if( $role->name == 'Administrator') {
+        if( $role->name == 'Admin') {
             $this->command->info('Here is your admin details to login:');
             $this->command->warn($user->email);
             $this->command->warn('Password is "secret"');
