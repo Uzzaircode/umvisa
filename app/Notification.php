@@ -8,7 +8,7 @@ use App\User;
 
 class Notification extends Model
 {
-    protected $fillable = ['ticket_id','user_id','read_status','receiver_id'];
+    protected $fillable = ['ticket_id','user_id','read_status','receiver_id','action_id'];
 
     public function ticket(){
         return $this->belongsTo(Ticket::class);
