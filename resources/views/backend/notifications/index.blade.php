@@ -16,7 +16,7 @@
                 <th>Sent By</th>
                 <th></th>                
                 <th>Received At</th>
-                <th>Status</th>
+                <th>Message</th>
                 <th>Actions</th>               
             </thead>
             <tbody>
@@ -28,7 +28,18 @@
                   </div></td>
                 <td>{{ $result->user->name }}</td>
                 <td>{{ $result->created_at->toDayDateTimeString() }}</td>
-                <td>{{$result->read_status ? 'Read':'Unread'}}</td>
+                <td>
+                    <span>{{ $result->user->name }}
+                            @if($result->action_id == 1)
+                            has submitted a new ticket
+                            @elseif($result->action_id == 2)
+                            has approved the ticket
+                            @elseif($result->action_id == 3)
+                            has rejected the ticket
+                            @endif {!! '#'.$result->ticket->ticket_number !!}
+                    </span>
+
+                </td>
                 <td><a href="{{route('tickets.show',['id'=>$result->ticket_id])}}" class="btn btn-secondary btn-sm"><i class="fe fe-eye"></i> View</a></td>              
             </tr>
             @endforeach             
