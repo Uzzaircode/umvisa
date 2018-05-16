@@ -66,6 +66,8 @@ class TicketsRepository extends AbstractRepository implements TicketRepoInterfac
     {
         $ticket->status = 4;
         $ticket->rejected_hod_date = time();
+        $ticket->submitted_hod_date = NULL;
+        $ticket->readby_hod_date = NULL;
         $ticket->save();
     }
     public function submit_to_dasar($ticket)
@@ -86,6 +88,11 @@ class TicketsRepository extends AbstractRepository implements TicketRepoInterfac
     {
         $ticket->status = 7;
         $ticket->rejected_dasar_date = time();
+        $ticket->submitted_hod_date = NULL;
+        $ticket->approved_hod_date = NULL;
+        $ticket->readby_hod_date = NULL;
+        $ticket->submitted_dasar_date = NULL;
+        $ticket->readby_dasar_date = NULL;
         $ticket->save();
     }
     public function submit_to_ptm($ticket)
@@ -106,6 +113,12 @@ class TicketsRepository extends AbstractRepository implements TicketRepoInterfac
     {
         $ticket->status = 10;
         $ticket->rejected_ptm_date = time();
+        $ticket->submitted_hod_date = NULL;
+        $ticket->approved_hod_date = NULL;
+        $ticket->readby_hod_date = NULL;
+        $ticket->submitted_dasar_date = NULL;
+        $ticket->readby_dasar_date = NULL;
+        $ticket->approved_dasar_date = NULL;
         $ticket->save();
 	}
 	// Save HOD read ticket record timestamp

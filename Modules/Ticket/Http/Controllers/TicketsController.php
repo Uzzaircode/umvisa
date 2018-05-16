@@ -253,7 +253,7 @@ class TicketsController extends Controller
             ],
         ];
 
-        uasort($date_arr, array($this, "date_sort"));
+        usort($date_arr, array($this, "date_sort"));
 
         return view('ticket::show', compact('users', 'saps', 'depts', 'sap_users', 'apps', 'user_tickets', 'ticket_rn', 'ticket', 'replies', 'status', 'date_arr'));
     }
@@ -353,6 +353,8 @@ class TicketsController extends Controller
         $ticket = $repo->find($id);
         $user_id = Auth::id();        
         $ticket_id = $ticket->id;
+        $dasar_id = User::role('Dasar')->get()->first()->id;             
+        $ptm_id = User::role('PTM')->get()->first()->id;  
         // replies are always created, cant be edited or deleted. Exception for Admin
         if(!empty($request->replybody) && $request->has('replybody')){
         Reply::create([
@@ -365,7 +367,7 @@ class TicketsController extends Controller
         if ($request->has('approve_hod')) {
             $repo->approve_hod($ticket);
             $receiver_id = $ticket->user->id;
-            $nrepo->approveNotification($user_id, $ticket_id, $receiver_id);
+            $nrepo->approveNotification($user_id, $ticket_id, $receiver_id);            
             Session::flash('success', 'The ticket ' . $ticket->ticket_number . ' has been approved');
         } // if HOD has rejected the ticket
         if ($request->has('reject_hod')) {
@@ -377,7 +379,7 @@ class TicketsController extends Controller
         if ($request->has('submit_to_dasar')) {
             $repo->submit_to_dasar($ticket);
             $receiver_id = $ticket->user->id;
-            $nrepo->createNew($user_id, $ticket_id, $receiver_id);
+            $nrepo->createNew($user_id, $ticket_id, $dasar_id);
             Session::flash('success', 'The ticket ' . $ticket->ticket_number . ' has been submitted to Dasar');
         } // if Dasar has approved the ticket
         if ($request->has('approve_dasar')) {
@@ -393,9 +395,8 @@ class TicketsController extends Controller
             Session::flash('success', 'The ticket ' . $ticket->ticket_number . ' has been rejected');
         } // if PTM has approved the ticket
         if ($request->has('submit_to_ptm')) {
-            $repo->submit_to_ptm($ticket);
-            $receiver_id = $ticket->user->id;
-            $nrepo->createNew($user_id, $ticket_id, $receiver_id);
+            $repo->submit_to_ptm($ticket);            
+            $nrepo->createNew($user_id, $ticket_id,$ptm_id);
             Session::flash('success', 'The ticket ' . $ticket->ticket_number . ' has been submitted to PTM');
         }
         if ($request->has('approve_ptm')) {
