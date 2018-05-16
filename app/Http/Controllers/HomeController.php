@@ -24,8 +24,7 @@ class HomeController extends Controller
      */
     public function index(TR $trepo, UR $urepo)
     {   
-        $tickets = $trepo->allTickets();
-        $users = $urepo->allUsers();    
-        return view('backend.dashboard',compact('tickets','users'));
+        // $tickets = $trepo->allTickets();            
+        return redirect()->route('tickets.index');
     }
 }

@@ -1,13 +1,17 @@
+{{-- @if($ticket->status == 1 || $ticket->status == 4 || $ticket->status == 7 || $ticket->status == 10 || $ticket->status == 11 || $ticket->status == 12 ||$ticket->status == 13) --}}
 <div class="card">
-        @cardHeader @slot('card_title')
+        @cardHeader 
+        @slot('card_title')
         <i class="fe fe-message-circle"></i> Comments @endslot @endcardHeader @cardBody
+
         <div class="form-group" @if ($errors->has('replybody')) has-error @endif>
-          <label for="" class="form-label">Leave a remark</label>
+          <label for="" class="form-label">Leave a comment</label>
           <textarea name="replybody" id="" cols="30" rows="5" class="form-control"></textarea>
           @if ($errors->has('replybody'))
           <p class="text-danger">{{ $errors->first('replybody') }}</p>
           @endif
         </div>
+       
         @if($ticket->status == 2 || $ticket->status == 3 || $ticket->status == 4) 
         @can('add_replies')
         <div class="form-group text-right">
@@ -41,3 +45,4 @@
         </div>
         @endisset @endcardBody
       </div>
+      {{-- @endif --}}

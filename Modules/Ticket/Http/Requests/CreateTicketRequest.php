@@ -16,7 +16,7 @@ class CreateTicketRequest extends FormRequest
         return [
             'subject' => 'min:5|max:150',
             'body' => 'min:10|max:500',
-            'dept_id' => 'required',
+            'dept_id' => 'required',            
             'sap_id' => 'required',
             'ticket_type' => 'required'
         ];

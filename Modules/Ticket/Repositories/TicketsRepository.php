@@ -111,11 +111,11 @@ class TicketsRepository extends AbstractRepository implements TicketRepoInterfac
 	// Save HOD read ticket record timestamp
     public function readby_hod($ticket)
     {   
-        if($ticket->readby_hod_date == NULL){
+        // if($ticket->readby_hod_date == NULL){
         $ticket->status = 11;
         $ticket->readby_hod_date = time();
         $ticket->save();
-        }
+        // }
 	}
 	// Save Dasar read ticket record timestamp
     public function readby_dasar($ticket)

@@ -1,7 +1,7 @@
 <div class="header py-4">
     <div class="container">
         <div class="d-flex">
-            <a class="header-brand" href="{{route('home')}}">
+            <a class="header-brand" href="{{route('tickets.index')}}">
                 <img src="{{asset('img/logo.png')}}" class="header-brand-img" alt="brillante logo">
             </a>
             <div class="d-flex order-lg-2 ml-auto">
@@ -14,10 +14,11 @@
                 <div class="dropdown d-none d-md-flex">
                     <a class="nav-link icon" data-toggle="dropdown">
                         <i class="fe fe-bell"></i>
-                        <span class="nav-unread"></span>
+                        <span class="badge badge-pill badge-primary">{{App\Repositories\NotificationsRepository::allNotifications()->count()}}</span>
                     </a>
+                    @if(App\Repositories\NotificationsRepository::allNotifications()->count() > 0)
                     <div class="dropdown-menu dropdown-menu-right dropdown-menu-arrow">
-                        @if(App\Repositories\NotificationsRepository::allNotifications()->count() > 0)
+                        
                         
                         @foreach(App\Repositories\NotificationsRepository::allNotifications() as $n)
                         <form action="{{route('tickets.read', ['id'=>$n->ticket_id])}}" style="display:inline" method="POST">
@@ -35,21 +36,23 @@
                             <div>
                                 <strong>{{$n->user->name}}</strong>
                                 @if($n->action_id == 1)
-                                submitted a new ticket
+                                has submitted a new ticket
                                 @elseif($n->action_id == 2)
-                                approved the ticket
+                                has approved the ticket
                                 @elseif($n->action_id == 3)
-                                rejected a ticket
+                                has rejected the ticket
                                 @endif {!! '#'.$n->ticket->ticket_number !!}
-                            <div class="small text-muted">{{$n->ticket->created_at->diffForHumans()}}</div>
+                            <div class="small text-muted">{{$n->created_at->diffForHumans()}}</div>
                             </div>                                               
                         </button>
                         </form>
-                        @endforeach 
-                        @endif
+                        @endforeach
                         <div class="dropdown-divider"></div> 
-                        <a href="{{route('notifications')}}" class="dropdown-item text-center text-muted-dark">View All Notifications</a>                       
+                        <a href="{{route('notifications')}}" class="dropdown-item text-center text-muted-dark">View All Notifications</a>
                     </div>
+                        @endif                       
+                                               
+                    
                 </div>
                 <div class="dropdown">
                     <a href="#" class="nav-link pr-0 leading-none" data-toggle="dropdown">
@@ -106,10 +109,10 @@
             </div>
             <div class="col-lg order-lg-first">
                 <ul class="nav nav-tabs border-0 flex-column flex-lg-row">
-                    <li class="nav-item">
+                    {{-- <li class="nav-item">
                         <a href="{{route('home')}}" class="nav-link">
                             <i class="fe fe-home"></i> Home</a>
-                    </li>
+                    </li> --}}
                     @can('view_tickets')
                     <li class="nav-item">
                         <a href="{{route('tickets.index')}}" class="nav-link">

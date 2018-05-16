@@ -34,4 +34,15 @@ class NotificationsRepository extends AbstractRepository implements Notification
             'action_id' => 2
         ]);
     }
+
+    public function rejectNotification($user_id,$ticket_id,$receiver_id)
+    {
+        return $this->modelClassName::create([
+            'user_id' => $user_id,
+            'ticket_id'=> $ticket_id,
+            'read_status'=> 0,
+            'receiver_id' => $receiver_id,
+            'action_id' => 3
+        ]);
+    }
 }

@@ -33,8 +33,7 @@
         <div class="card-header">
           <h3 class="card-title">
             <i class="fe fe-tag"></i> 
-            {{$ticket->subject}} 
-            @include('ticket::components.status')
+            {{$ticket->subject}}             
           </h3>
           <div class="card-options">
             @include('ticket::components.approve-reject-buttons')

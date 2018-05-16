@@ -14,7 +14,7 @@ class CreateReplies extends FormRequest
     public function rules()
     {
         return [
-            'replybody' => 'required|min:5'
+            'replybody' => ''
         ];
     }
 

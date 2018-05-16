@@ -34,7 +34,7 @@
 @elseif($ticket->status == 11)
 <a href="#" class="btn btn-info btn-sm text-white">{{Auth::user()->hasRole('HOD')?'You have read this ticket':'Read by HOD'}} on {{$ticket->readby_hod_date}}</a>
 @elseif($ticket->status == 12)
-<a href="#" class="btn btn-info btn-sm text-white">{{Auth::user()->hasRole('Dasar')?'You have read this ticket':'Rejected by PTM'}} on {{$ticket->readby_dasar_date}}</a>
+<a href="#" class="btn btn-info btn-sm text-white">{{Auth::user()->hasRole('Dasar')?'You have read this ticket':'Read by Dasar'}} on {{$ticket->readby_dasar_date}}</a>
 @elseif($ticket->status == 13)
 <a href="#" class="btn btn-info btn-sm text-white">{{Auth::user()->hasRole('PTM')?'You have read this ticket':'Read by PTM'}} on {{$ticket->readby_ptm_date}}</a>
 @endif
