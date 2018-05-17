@@ -49,8 +49,11 @@
 <button type="submit" name="reject_ptm" class="btn btn-sm btn-danger">
     <i class="fe fe-x-circle"></i> Reject</button>
 @endif
+@endrole
+
+@role('User')
 @if($ticket->status == 9) 
-<button type="submit" name="submit_to_ptm" class="btn btn-sm btn-success">
+<button type="submit" name="close_ticket" class="btn btn-sm btn-success">
         <i class="fe fe-send"></i> Close Ticket</button>
 @endif
 @endrole
