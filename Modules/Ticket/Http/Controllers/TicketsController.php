@@ -302,9 +302,13 @@ class TicketsController extends Controller
                 foreach ($request->file('files') as $file) {
                     $filename = $ticket->ticket_number . '-' . time() . $file->getClientOriginalName();
                     $file->move('uploads/attachments', $filename);
-                    $ticket->attachments->ticket_id = $ticket->id;
-                    $ticket->attachments->path = 'uploads/attachments' . $filename;
-                    $ticket->attachments->save();
+                    TicketAttachment::create([
+                        'ticket_id' => $ticket->id,
+                        'path' => 'uploads/attachments/' . $filename,
+                    ]);
+                    // $ticket->attachments->ticket_id = $ticket->id;
+                    // $ticket->attachments->path = 'uploads/attachments' . $filename;
+                    // $ticket->attachments->save();
                 }
             }
         }

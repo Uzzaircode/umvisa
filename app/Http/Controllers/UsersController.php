@@ -58,7 +58,7 @@ class UsersController extends Controller
             // user's avatar
             if ($request->hasFile('avatar')) {
                 $avatar = $request->avatar;
-                $avatar_new_name = $request->name. time() . $avatar->getClientOriginalName();
+                $avatar_new_name = time() . $avatar->getClientOriginalName();
                 $avatar->move('uploads/avatars', $avatar_new_name);
             }
             $profile = new Profile;
@@ -113,9 +113,9 @@ class UsersController extends Controller
         if ($request->hasFile('avatar')) {
             
             $avatar = $request->avatar;
-            $avatar_new_name = $request->name. time() . $avatar->getClientOriginalName();
+            $avatar_new_name = time() . $avatar->getClientOriginalName();
             $avatar->move('uploads/avatars', $avatar_new_name);
-            $user->avatar->profile = 'uploads/avatars'.$avatar_new_name;
+            $user->profile->avatar = 'uploads/avatars/'.$avatar_new_name;
         }     
         if($request->has('hod_id')){
             $user->profile->hod_id = $request->hod_id;
@@ -171,10 +171,11 @@ class UsersController extends Controller
 
     public function myprofile(){
         $user = User::find(Auth::id());
+        $user_id = Auth::id();
         $roles = Role::pluck('name', 'id');
         $permissions = Permission::all('name', 'id');
         $depts = Department::pluck('name','id');
         $saps = Sap::pluck('name', 'id');
-        return view('backend.users.edit', compact('user', 'roles', 'permissions','depts','saps'));
+        return view('backend.users.edit', compact('user', 'roles', 'permissions','depts','saps','id'));
     }
 }

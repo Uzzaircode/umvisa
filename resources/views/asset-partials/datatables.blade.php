@@ -7,7 +7,11 @@
 <script src="https://cdn.datatables.net/1.10.16/js/dataTables.bootstrap4.min.js"></script>
 <script>
     $(document).ready( function () {
-    $('#datatable').DataTable();
+    $('#datatable').DataTable({
+        "language":{
+            "emptyTable": "No available records found"
+        }
+    });
 } );
 </script>
 @endsection
