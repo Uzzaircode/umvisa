@@ -119,6 +119,8 @@ class TicketsRepository extends AbstractRepository implements TicketRepoInterfac
         $ticket->submitted_dasar_date = NULL;
         $ticket->readby_dasar_date = NULL;
         $ticket->approved_dasar_date = NULL;
+        $ticket->submitted_ptm_date = NULL;
+        $ticket->readby_ptm_date = NULL;
         $ticket->save();
 	}
 	// Save HOD read ticket record timestamp
