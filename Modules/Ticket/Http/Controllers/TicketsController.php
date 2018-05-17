@@ -140,7 +140,7 @@ class TicketsController extends Controller
             $ticket->status = 2;
             $ticket->submitted_hod_date = time();
             // send email to respective HOD, with Current User object and Ticket Information as parameters
-            // $mailer->sendTicketInformation(Auth::user(), $ticket);
+            $mailer->sendTicketInformation(Auth::user(), $ticket);
             $ticket->save();
             Session::flash('success', 'The ' . $this->entity . ' has been created successfully');
         }
@@ -352,13 +352,14 @@ class TicketsController extends Controller
         return redirect()->back();
     }
 
-    public function approve(CR $request, TR $repo, $id, NR $nrepo)
+    public function approve(CR $request, TR $repo, $id, NR $nrepo, AppMailer $mailer)
     {
         $ticket = $repo->find($id);
         $user_id = Auth::id();        
         $ticket_id = $ticket->id;
         $dasar_id = User::role('Dasar')->get()->first()->id;             
-        $ptm_id = User::role('PTM')->get()->first()->id;  
+        $ptm_id = User::role('PTM')->get()->first()->id;
+        $receiver_id = $ticket->user->id;  
         // replies are always created, cant be edited or deleted. Exception for Admin
         if(!empty($request->replybody) && $request->has('replybody')){
         Reply::create([
@@ -369,49 +370,44 @@ class TicketsController extends Controller
         }
         // if HOD has approved the ticket
         if ($request->has('approve_hod')) {
-            $repo->approve_hod($ticket);
-            $receiver_id = $ticket->user->id;
+            $repo->approve_hod($ticket);            
             $nrepo->approveNotification($user_id, $ticket_id, $receiver_id);            
             Session::flash('success', 'The ticket ' . $ticket->ticket_number . ' has been approved');
         } // if HOD has rejected the ticket
         if ($request->has('reject_hod')) {
-            $repo->reject_hod($ticket);
-            $receiver_id = $ticket->user->id;
+            $repo->reject_hod($ticket);            
             $nrepo->rejectNotification($user_id, $ticket_id, $receiver_id);
             Session::flash('success', 'The ticket ' . $ticket->ticket_number . ' has been rejected');
         } // if HOD submit to Dasar
         if ($request->has('submit_to_dasar')) {
-            $repo->submit_to_dasar($ticket);
-            $receiver_id = $ticket->user->id;
+            $repo->submit_to_dasar($ticket);            
             $nrepo->createNew($user_id, $ticket_id, $dasar_id);
+            $mailer->sendTicketInformation(Auth::user(), $ticket);
             Session::flash('success', 'The ticket ' . $ticket->ticket_number . ' has been submitted to Dasar');
         } // if Dasar has approved the ticket
         if ($request->has('approve_dasar')) {
-            $repo->approve_dasar($ticket);
-            $receiver_id = $ticket->user->id;
+            $repo->approve_dasar($ticket);            
             $nrepo->approveNotification($user_id, $ticket_id, $receiver_id);
             Session::flash('success', 'The ticket ' . $ticket->ticket_number . ' has been approved');
         } // if Dasar has rejected the ticket
         if ($request->has('reject_dasar')) {
             $repo->reject_dasar($ticket);
-            $receiver_id = $ticket->user->id;
             $nrepo->rejectNotification($user_id, $ticket_id, $receiver_id);
             Session::flash('success', 'The ticket ' . $ticket->ticket_number . ' has been rejected');
         } // if PTM has approved the ticket
         if ($request->has('submit_to_ptm')) {
             $repo->submit_to_ptm($ticket);            
             $nrepo->createNew($user_id, $ticket_id,$ptm_id);
+            $mailer->sendTicketInformation(Auth::user(), $ticket);
             Session::flash('success', 'The ticket ' . $ticket->ticket_number . ' has been submitted to PTM');
         }
         if ($request->has('approve_ptm')) {
             $repo->approve_ptm($ticket);
-            $receiver_id = $ticket->user->id;
             $nrepo->approveNotification($user_id, $ticket_id, $receiver_id);
             Session::flash('success', 'The ticket ' . $ticket->ticket_number . ' has been approved');
         } // if PTM has rejected the ticket
         if ($request->has('reject_ptm')) {
             $repo->reject_ptm($ticket);
-            $receiver_id = $ticket->user->id;
             $nrepo->rejectNotification($user_id, $ticket_id, $receiver_id);
             Session::flash('success', 'The ticket ' . $ticket->ticket_number . ' has been rejected');
         } // if a reply has been submitted
