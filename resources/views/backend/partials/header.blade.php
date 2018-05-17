@@ -59,8 +59,10 @@
                         <span class="avatar" style="background-image: url({{asset(Auth::user()->profile->avatar)}})"></span>
                         <span class="ml-2 d-none d-lg-block">
                             <span class="text-default">{{Auth::user()->name}}</span>
-                            <small class="text-muted d-block mt-1">{{Auth::user()->roles()->pluck('name')->first()}} @if(!empty(Auth::user()->profile->department->name))                                   
-                                    {!! wordwrap(Auth::user()->profile->department->name,30,"<br>\n")!!} @endif 
+                            <small class="text-muted d-block mt-1">{{Auth::user()->roles()->pluck('name')->first()}} @if(!empty(Auth::user()->profile->department->name))                                   @role('Hod')
+                                    {!! wordwrap(Auth::user()->profile->department->name,30,"<br>\n")!!} 
+                                    @endrole
+                                    @endif 
                             </small>                            
                         </span>
                     </a>
