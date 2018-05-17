@@ -55,7 +55,7 @@
               </tr>
             <tr>
               <td class="font-weight-bold">Ticket Created At</td>
-              <td>{{$ticket->created_at}}</td>
+              <td>{{$ticket->created_at->toDayDateTimeString()}}</td>
             </tr>
             <tr>
               <td class="font-weight-bold">Ticket Type</td>
