@@ -2,8 +2,11 @@
 <div class="card">
         @cardHeader 
         @slot('card_title')
-        <i class="fe fe-message-circle"></i> Comments @endslot @endcardHeader @cardBody
+        <i class="fe fe-message-circle"></i> Comments 
+        @endslot 
+        @endcardHeader 
 
+        @cardBody
         <div class="form-group" @if ($errors->has('replybody')) has-error @endif>
           <label for="" class="form-label">Leave a comment</label>
           <textarea name="replybody" id="" cols="30" rows="5" class="form-control"></textarea>
@@ -20,13 +23,15 @@
         </div>
         @endcan 
         @endif 
+
         @isset($replies)
         <div class="o-auto" style="{{$replies->count() > 3 ? 'height:17rem':''}}">
           <ul class="list-group list-card-group">
             @foreach($replies as $reply)
             <li class="list-group-item py-5">
               <div class="media">
-                <div class="media-object avatar avatar-md mr-4" style="background-image: url({{asset($reply->user->profile->avatar)}})"></div>
+                <div class="media-object avatar avatar-md mr-4" 
+                style="background-image: url({{asset($reply->user->profile->avatar)}})"></div>
                 <div class="media-body">
                   <div class="media-heading">
                     <small class="float-right text-muted">{{$reply->created_at->toDayDateTimeString()}}</small>

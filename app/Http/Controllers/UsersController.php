@@ -18,11 +18,16 @@ use Illuminate\Support\Facades\Storage;
 class UsersController extends Controller
 {
     use Authorizable;
-    
+    protected $urepo;
+
+    public function __construct(UR $urepo)
+    {
+        $this->urepo = $urepo;
+    }
+
     public function index(UR $repo)
     {   
-        $result = $repo->allUsers();
-
+        $result = $repo->all();
         return view('backend.users.index', compact('result'));
     }
 

@@ -7,5 +7,5 @@ use Modules\Application\Repositories\AppRepoInterface;
 
 class AppsRepository extends AbstractRepository implements AppRepoInterface
 {
-	protected $modelClassName = 'Modules\Application\Entities\Application';	    
+	protected $modelClassName = 'Modules\Application\Entities\Application';
 }

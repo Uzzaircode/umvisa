@@ -7,5 +7,6 @@ use Modules\Sap\Repositories\SapRepoInterface;
 
 class SapsRepository extends AbstractRepository implements SapRepoInterface
 {
-	protected $modelClassName = 'Modules\Sap\Entities\Sap';	    
+	protected $modelClassName = 'Modules\Sap\Entities\Sap';
+		
 }

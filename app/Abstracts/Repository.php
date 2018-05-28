@@ -3,6 +3,7 @@
 namespace App\Abstracts;
 
 use App\Repositories\RepositoryInterface;
+use Auth;
 /**
  * The Abstract Repository provides default implementations of the methods defined
  * in the base repository interface. These simply delegate static function calls 
@@ -34,4 +35,14 @@ abstract class Repository implements RepositoryInterface {
 	{
 		return call_user_func_array("{$this->modelClassName}::destroy", array($ids));
 	}
+
+	public function pluck($column1, $column2)
+	{
+		return call_user_func("{$this->modelClassName}::pluck",$column1, $column2);
+	}
+
+	public function count()
+	{
+		return call_user_func("{$this->modelClassName}::count");
+	}	
 }

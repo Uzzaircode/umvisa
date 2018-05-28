@@ -3,24 +3,26 @@
 namespace Modules\Ticket\Http\Controllers;
 
 use App\Authorizable;
+use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use App\Http\Controllers\Controller;
 use App\Mailers\AppMailer;
 use App\Profile;
-use App\Repositories\NotificationsRepository as NR;
-use App\User;
-use Illuminate\Http\Request;
-use Illuminate\Http\Response;
-use Illuminate\Support\Facades\Auth;
-use Modules\Application\Entities\Application;
-use Modules\Department\Entities\Department;
-use Modules\Sap\Entities\Sap;
-use Modules\Ticket\Entities\Reply;
-use Modules\Ticket\Entities\Ticket;
-use Modules\Ticket\Entities\TicketAttachment;
+use Auth;
 use Modules\Ticket\Http\Requests\CreateReplies as CR;
+use App\Notifications\TicketSubmitted as NTS;
 use Modules\Ticket\Http\Requests\CreateTicketRequest as CTR;
 use Modules\Ticket\Repositories\TicketsRepository as TR;
+use Modules\Ticket\Repositories\TicketsAttachmentRepository as TAR;
+use Modules\Ticket\Repositories\RepliesRepository as RR;
+use Modules\Department\Repositories\DeptsRepository as DR;
+use Modules\Application\Repositories\AppsRepository as AR;
+use Modules\Sap\Repositories\SapsRepository as SR;
+use App\Repositories\UsersRepository as UR;
+use Modules\Ticket\Entities\TicketStatus as TS;
+use Modules\Ticket\Entities\TicketsStatusArray as TSA;
 use Session;
+use App\Notifications\TicketSubmitted;
 
 /**
  * Status Codes
@@ -49,40 +51,48 @@ use Session;
 class TicketsController extends Controller
 {
     use Authorizable;
-
-    private $entity;
-    protected $model;
-
-    public function __construct()
+    
+    public function __construct(UR $users, TR $tickets, SR $saps, AR $apps, Auth $auth, DR $depts, TAR $ticketsAttachment, TSA $ticketStatusArray, NTS $notifications, TS $ticketStatus, RR $replies, Profile $profile)
     {
         $this->entity = 'ticket';
+        $this->users = $users;
+        $this->tickets = $tickets;
+        $this->saps = $saps;
+        $this->apps = $apps;
+        $this->auth = $auth;
+        $this->depts = $depts;
+        $this->ticketsAttachment = $ticketsAttachment;
+        $this->ticketStatusArray = $ticketStatusArray;
+        $this->ticketStatus = $ticketStatus;
+        $this->notifications = $notifications;
+        $this->replies = $replies;
+        $this->profile = $profile;
     }
     /**
      * Display a listing of the resource.
      * @return Response
      */
-    public function index(TR $repo)
+    public function index()
     {
-        $results = $repo->allTickets();
-        return view('ticket::index', compact('results'));
+        return view('ticket::index', ['results'=> $this->tickets->allTickets()]);
     }
 
     /**
      * Show the form for creating a new resource.
      * @return Response
      */
-    public function create(TR $repo)
+    public function create()
     {
-        $users = User::pluck('name', 'id');
-        $saps = Sap::pluck('name', 'id');
-        $sap_users = Auth::user()->saps;
-        $depts = Auth::user()->departments;
-        $apps = Application::all();
-        $user_tickets = Auth::user()->tickets;
-        if (Ticket::count() < 0) {
+        $users = $this->users->pluck('name', 'id');
+        $saps = $this->saps->pluck('name', 'id');
+        $sap_users = $this->auth::user()->saps;
+        $depts = $this->depts->fetchUsersDept($this->auth::user());
+        $apps = $this->apps->all();
+        $user_tickets = $this->auth::user()->tickets;
+        if ($this->tickets->count() < 0) {
             $ticket_rn = 001;
         } else {
-            $ticket_rn = $repo->ticketNumber();
+            $ticket_rn = $this->tickets->ticketNumber();
         }
         return view('ticket::form', compact('users', 'saps', 'depts', 'sap_users', 'apps', 'user_tickets', 'ticket_rn'));
     }
@@ -92,36 +102,37 @@ class TicketsController extends Controller
      * @param  Request $request
      * @return Response
      */
-    public function store(TR $repo, CTR $request, AppMailer $mailer, NR $nrepo)
+    public function store(CTR $request, AppMailer $mailer)
     {
         // fetch all requests except for ticket number
-        $ticket = $repo->create($request->except('ticket_number'));
+        $ticket = $this->tickets->create($request->except('ticket_number'));
         // fetch SAP ID
         $sap_id = $request->sap_id;
         // then find SAP Code
-        $sap_code = Sap::find($sap_id)->code;
+        $sap_code = $this->saps->find($sap_id)->code;
         // fetch ticket number
         $ticket_rn = $request->ticket_number;
         // save ticket number into database
-        $ticket->ticket_number = 'UM' . date('Y') . '-' . $sap_code . '-' . $ticket_rn;
+        $ticket->ticket_number = $this->tickets->ticketNumberFormat($sap_code, $ticket_rn);
         // if user upload attachement
         if ($request->hasFile('files')) {
+            // $repo->uploadFiles(['files'], $ticket);
             foreach ($request->file('files') as $file) {
                 // save the attachment with ticket number and time as prefix
                 $filename = $ticket->ticket_number . '-' . time() . $file->getClientOriginalName();
                 // move the attachement to public/uploads/attachments folder
                 $file->move('uploads/attachments', $filename);
                 // create attachement record in database, attach it to Ticket ID
-                TicketAttachment::create([
-                    'ticket_id' => $ticket->id,
-                    'path' => 'uploads/attachments/' . $filename,
-                ]);
+                $this->ticketsAttachment->create([
+                    'ticket_id'=>$ticket->id,
+                    'path'=>'uploads/attachments/'.$filename
+                    ]);
             }
         }
         //if the user leaves a remark
         if (!empty($request->replybody)) {
             // create reply record in database, attach it to Ticket ID and Current User ID
-            Reply::create([
+            $this->replies->create([
                 'body' => $request->replybody,
                 'ticket_id' => $ticket->id,
                 'user_id' => Auth::id(),
@@ -130,29 +141,28 @@ class TicketsController extends Controller
         $ticket->save();
         // if the user save the ticket as draft
         if ($request->has('draft')) {
-            $ticket->status = 1;
+            $ticket->status = $this->ticketStatus::DRAFT;
             $ticket->save();
             Session::flash('success', 'The ' . $this->entity . ' has been created successfully');
         }
         //if the user submit the ticket. The ticket will be submitted to HOD
         if ($request->has('submit_hod')) {
             // trigger submitToHOD listener
-            $ticket->status = 2;
+            $ticket->status = $this->ticketStatus::SUBMITTED_TO_HOD;
             $ticket->submitted_hod_date = time();
             // send email to respective HOD, with Current User object and Ticket Information as parameters
-            $mailer->sendTicketInformation(Auth::user(), $ticket);
+            $mailer->sendTicketInformation($this->auth::user(), $ticket);
             $ticket->save();
             Session::flash('success', 'The ' . $this->entity . ' has been created successfully');
         }
 
         // Find HOD based on Dept ID
-        $user_id = Auth::id();
+        $sender_id = $this->auth::id();        
         $dept_id = $request->dept_id;
-        $hod_user = Profile::where('hod_id', $dept_id)->get();
-        $receiver_id = $hod_user->first()->user_id;
-        $ticket_id = $ticket->id;
-        $nrepo->createNew($user_id, $ticket_id, $receiver_id);
-
+        $receiver_id = $this->profile::where('hod_id',$dept_id)->first()->user_id;
+        // $hod_user = Profile::where('hod_id', $dept_id)->get();
+        // $receiver_id = $hod_user->first()->user_id;        
+        $this->users->find($receiver_id)->notify(new TicketSubmitted($ticket));
         return redirect()->route('tickets.index');
     }
 
@@ -160,123 +170,39 @@ class TicketsController extends Controller
      * Show the specified resource.
      * @return Response
      */
-    public function show(TR $repo, $id)
+    public function show($id)
     {
-
-        $ticket = $repo->find($id);
-        $saps = Sap::pluck('name', 'id');
-        $sap_users = Auth::user()->saps;
-        $depts = Department::all();
-        $apps = Application::all();
+        $ticket = $this->tickets->find($id);
+        $saps = $this->saps->pluck('name', 'id');
+        $sap_users = $this->auth::user()->saps;
+        $depts = $this->depts->all();
+        $apps = $this->apps->all();
         $user_tickets = Auth::user()->tickets;
-        $ticket_rn = $repo->ticketNumber();
+        $ticket_rn = $this->tickets->ticketNumber();
         $replies = $ticket->replies->sortByDesc('created_at');
         $status = $ticket->status;
-        $date_arr = [
-            [
-                'status' => 'Created At',
-                'timestamp' => $ticket->created_at->toDayDateTimeString(),
-                'color' => 'orange',
-                'code' => 1,
-            ],
-            [
-                'status' => 'Submitted to HOD',
-                'timestamp' => $ticket->submitted_hod_date,
-                'color' => 'green',
-                'code' => 2,
-            ],
-            [
-                'status' => 'Read by HOD',
-                'timestamp' => $ticket->readby_hod_date,
-                'color' => 'green',
-                'code' => 11,
-            ],
-            [
-                'status' => 'Approved by HOD',
-                'timestamp' => $ticket->approved_hod_date,
-                'color' => 'blue',
-                'code' => 3,
-            ],
-            [
-                'status' => 'Rejected by HOD',
-                'timestamp' => $ticket->rejected_hod_date,
-                'color' => 'red',
-                'code' => 4,
-            ],
-            [
-                'status' => 'Submitted to  Dasar',
-                'timestamp' => $ticket->submitted_dasar_date,
-                'color' => 'green',
-                'code' => 5,
-            ],
-            [
-                'status' => 'Read by Dasar',
-                'timestamp' => $ticket->readby_dasar_date,
-                'color' => 'green',
-                'code' => 12,
-            ],
-            [
-                'status' => 'Approved by Dasar',
-                'timestamp' => $ticket->approved_dasar_date,
-                'color' => 'blue',
-                'code' => 6,
-            ],
-            [
-                'status' => 'Rejected by Dasar',
-                'timestamp' => $ticket->rejected_dasar_date,
-                'color' => 'red',
-                'code' => 7,
-            ],
-            [
-                'status' => 'Submitted to PTM',
-                'timestamp' => $ticket->submitted_ptm_date,
-                'color' => 'green',
-                'code' => 8,
-            ],
-            [
-                'status' => 'Read by PTM',
-                'timestamp' => $ticket->readby_ptm_date,
-                'color' => 'green',
-                'code' => 13,
-            ],
-            [
-                'status' => 'Approved by PTM',
-                'timestamp' => $ticket->approved_ptm_date,
-                'color' => 'blue',
-                'code' => 9,
-            ],
-            [
-                'status' => 'Rejected by PTM',
-                'timestamp' => $ticket->rejected_ptm_date,
-                'color' => 'red',
-                'code' => 10,
-            ],
-        ];
-
+        $date_arr = $this->ticketStatusArray->createDateArray($ticket);
         usort($date_arr, array($this, "date_sort"));
 
         return view('ticket::show', compact('users', 'saps', 'depts', 'sap_users', 'apps', 'user_tickets', 'ticket_rn', 'ticket', 'replies', 'status', 'date_arr'));
     }
-
-    public function date_sort($a, $b)
-    {
-        return strtotime($a['timestamp']) - strtotime($b['timestamp']);
-    }
+    
 
     /**
      * Show the form for editing the specified resource.
      * @return Response
      */
-    public function edit(TR $repo, $id)
+    public function edit($id)
     {
-        $ticket = $repo->find($id);
-        $saps = Sap::pluck('name', 'id');
-        $sap_users = Auth::user()->saps;
-        $depts = Department::all();
-        $apps = Application::all();
-        $user_tickets = Auth::user()->tickets;
-        $ticket_rn = $repo->ticketNumber();
+        $ticket = $this->tickets->find($id);
+        $saps = $this->saps->pluck('name', 'id');
+        $sap_users = $this->auth::user()->saps;
+        $depts = $this->depts->all();
+        $apps = $this->apps->all();
+        $user_tickets = $this->auth::user()->tickets;
+        $ticket_rn = $this->tickets->ticketNumber();
         $replies = $ticket->replies->sortByDesc('created_at');
+
         return view('ticket::form', compact('users', 'saps', 'depts', 'sap_users', 'apps', 'user_tickets', 'ticket_rn', 'ticket', 'replies'));
     }
 
@@ -285,10 +211,10 @@ class TicketsController extends Controller
      * @param  Request $request
      * @return Response
      */
-    public function update(TR $repo, CTR $request, $id,NR $nrepo)
+    public function update(CTR $request, $id, NR $nrepo)
     {
         // find ticket
-        $ticket = $repo->find($id);
+        $ticket = $this->tickets->find($id);
         $user_id = Auth::id();
         $dept_id = $request->dept_id;
         $hod_user = Profile::where('hod_id', $dept_id)->get();
@@ -302,19 +228,16 @@ class TicketsController extends Controller
                 foreach ($request->file('files') as $file) {
                     $filename = $ticket->ticket_number . '-' . time() . $file->getClientOriginalName();
                     $file->move('uploads/attachments', $filename);
-                    TicketAttachment::create([
-                        'ticket_id' => $ticket->id,
-                        'path' => 'uploads/attachments/' . $filename,
-                    ]);
-                    // $ticket->attachments->ticket_id = $ticket->id;
-                    // $ticket->attachments->path = 'uploads/attachments' . $filename;
-                    // $ticket->attachments->save();
+                    $this->ticketsAttachment->create([
+                        'ticket_id'=>$ticket->id,
+                        'path'=>'uploads/attachments/'.$filename
+                        ]);
                 }
             }
         }
         //if the user leaves a remark
-        if (!empty($request->replybody)) {            
-            $reply = Reply::create([
+        if (!empty($request->replybody)) {
+            $reply = $this->replies->create([
                 'body' => $request->replybody,
                 'ticket_id' => $id,
                 'user_id' => Auth::id(),
@@ -322,22 +245,17 @@ class TicketsController extends Controller
         }
         // if the user save the ticket as draft
         if ($request->has('draft')) {
-            $ticket->status = 1;
-            $ticket->save();
+            $this->tickets->draft($ticket);
             Session::flash('success', 'The ' . $this->entity . ' has been updated successfully');
             return redirect()->back();
         }
         // if the user submit the ticket
         if ($request->has('submit_hod')) {
-            $ticket->status = 2;
-            $ticket->submitted_hod_date = time();
-            $ticket->save();            
-            $nrepo->createNew($user_id, $ticket_id, $receiver_id);
+            $this->tickets->submit_to_hod($ticket);
+            $this->notifications->createNew($user_id, $ticket_id, $receiver_id);
             Session::flash('success', 'The ' . $this->entity . ' has been submitted to HOD successfully');
             return redirect()->route('tickets.index');
         }
-
-        
     }
 
     /**
@@ -352,63 +270,65 @@ class TicketsController extends Controller
         return redirect()->back();
     }
 
-    public function approve(CR $request, TR $repo, $id, NR $nrepo, AppMailer $mailer)
+    public function approve(CR $request, $id, AppMailer $mailer)
     {
-        $ticket = $repo->find($id);
-        $user_id = Auth::id();        
+        $ticket = $this->tickets->find($id);
+        $user_id = Auth::id();
         $ticket_id = $ticket->id;
-        $dasar_id = User::role('Dasar')->get()->first()->id;             
+        $dasar_id = User::role('Dasar')->get()->first()->id;
         $ptm_id = User::role('PTM')->get()->first()->id;
-        $receiver_id = $ticket->user->id;  
+        $receiver_id = $ticket->user->id;
+        
         // replies are always created, cant be edited or deleted. Exception for Admin
-        if(!empty($request->replybody) && $request->has('replybody')){
-        Reply::create([
+        if (!empty($request->replybody) && $request->has('replybody')) {
+            $this->reply->create([
             'body' => $request->replybody,
             'ticket_id' => $ticket->id,
-            'user_id' => Auth::id(),
+            'user_id' => $this->auth::id(),
         ]);
         }
+        
         // if HOD has approved the ticket
         if ($request->has('approve_hod')) {
-            $repo->approve_hod($ticket);            
-            $nrepo->approveNotification($user_id, $ticket_id, $receiver_id);            
+            $this->tickets->approve_hod($ticket);
+            $this->notifications->approveNotification($user_id, $ticket_id, $receiver_id);
             Session::flash('success', 'The ticket ' . $ticket->ticket_number . ' has been approved');
         } // if HOD has rejected the ticket
         if ($request->has('reject_hod')) {
-            $repo->reject_hod($ticket);            
-            $nrepo->rejectNotification($user_id, $ticket_id, $receiver_id);
+            $this->tickets->reject_hod($ticket);
+            $this->notifications->rejectNotification($user_id, $ticket_id, $receiver_id);
             Session::flash('success', 'The ticket ' . $ticket->ticket_number . ' has been rejected');
         } // if HOD submit to Dasar
         if ($request->has('submit_to_dasar')) {
-            $repo->submit_to_dasar($ticket);            
-            $nrepo->createNew($user_id, $ticket_id, $dasar_id);
+            $this->tickets->submit_to_dasar($ticket);
+            $this->notifications->createNew($user_id, $ticket_id, $dasar_id);
             $mailer->sendTicketInformation(Auth::user(), $ticket);
             Session::flash('success', 'The ticket ' . $ticket->ticket_number . ' has been submitted to Dasar');
         } // if Dasar has approved the ticket
         if ($request->has('approve_dasar')) {
-            $repo->approve_dasar($ticket);            
-            $nrepo->approveNotification($user_id, $ticket_id, $receiver_id);
+            $this->tickets->approve_dasar($ticket);
+            $this->notifications->approveNotification($user_id, $ticket_id, $receiver_id);
             Session::flash('success', 'The ticket ' . $ticket->ticket_number . ' has been approved');
         } // if Dasar has rejected the ticket
         if ($request->has('reject_dasar')) {
-            $repo->reject_dasar($ticket);
-            $nrepo->rejectNotification($user_id, $ticket_id, $receiver_id);
+            $this->tickets->reject_dasar($ticket);
+            $this->notifications->rejectNotification($user_id, $ticket_id, $receiver_id);
             Session::flash('success', 'The ticket ' . $ticket->ticket_number . ' has been rejected');
         } // if PTM has approved the ticket
         if ($request->has('submit_to_ptm')) {
-            $repo->submit_to_ptm($ticket);            
-            $nrepo->createNew($user_id, $ticket_id,$ptm_id);
+            $this->tickets->submit_to_ptm($ticket);
+            $this->notifications->createNew($user_id, $ticket_id, $ptm_id);
             $mailer->sendTicketInformation(Auth::user(), $ticket);
             Session::flash('success', 'The ticket ' . $ticket->ticket_number . ' has been submitted to PTM');
         }
         if ($request->has('approve_ptm')) {
-            $repo->approve_ptm($ticket);
-            $nrepo->approveNotification($user_id, $ticket_id, $receiver_id);
+            $this->tickets->approve_ptm($ticket);
+            $this->notifications->approveNotification($user_id, $ticket_id, $receiver_id);
             Session::flash('success', 'The ticket ' . $ticket->ticket_number . ' has been approved');
         } // if PTM has rejected the ticket
         if ($request->has('reject_ptm')) {
-            $repo->reject_ptm($ticket);
-            $nrepo->rejectNotification($user_id, $ticket_id, $receiver_id);
+            $this->tickets->reject_ptm($ticket);
+            $this->notifications->rejectNotification($user_id, $ticket_id, $receiver_id);
             Session::flash('success', 'The ticket ' . $ticket->ticket_number . ' has been rejected');
         } // if a reply has been submitted
         if ($request->has('comment')) {
@@ -433,4 +353,8 @@ class TicketsController extends Controller
         return redirect()->route('tickets.show', ['id' => $ticket->id]);
     }
 
+    public function date_sort($a, $b)
+    {
+        return strtotime($a['timestamp']) - strtotime($b['timestamp']);
+    }
 }

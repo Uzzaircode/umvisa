@@ -11,10 +11,12 @@
                         <i class="fe fe-plus-circle"></i> New Ticket</a>
                 </div>
                 @endif
-                <div class="dropdown d-none d-md-flex">
+                {{-- <div class="dropdown d-none d-md-flex">
                     <a class="nav-link icon" data-toggle="dropdown">
                         <i class="fe fe-bell"></i>
-                        <span class="badge badge-pill badge-primary">{{App\Repositories\NotificationsRepository::allNotifications()->count()}}</span>
+                        <span class="badge badge-pill badge-primary">
+                            {{App\Repositories\NotificationsRepository::allNotifications()->count()}}
+                        </span>
                     </a>
                     @if(App\Repositories\NotificationsRepository::allNotifications()->count() > 0)
                     <div class="dropdown-menu dropdown-menu-right dropdown-menu-arrow">
@@ -53,7 +55,7 @@
                         @endif                       
                                                
                     
-                </div>
+                </div> --}}
                 <div class="dropdown">
                     <a href="#" class="nav-link pr-0 leading-none" data-toggle="dropdown">
                         <span class="avatar" style="background-image: url({{asset(Auth::user()->profile->avatar)}})"></span>

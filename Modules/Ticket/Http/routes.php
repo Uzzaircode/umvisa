@@ -2,6 +2,7 @@
 use Modules\Sap\Entities\Sap;
 use Illuminate\Support\Facades\Input;
 use Modules\Ticket\Http\Controllers\TicketsController;
+use App\Notifications\TicketSubmitted;
 
 Route::group(['middleware' => ['web','timeout'],'namespace' => 'Modules\Ticket\Http\Controllers'], function()
 {

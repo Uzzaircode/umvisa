@@ -25,7 +25,7 @@
 
             <td>{{ ++$key }}</td>
             <td>{{$result->ticket_number or 'Not generated yet'}}</td>
-            <td>{{ $result->subject }}</td>
+            <td>{{ str_limit($result->subject, 20, $end="...") }}</td>
             <td>{{ $result->user->name }}</td>
             <td>
                 @include('ticket::components.status-index')
