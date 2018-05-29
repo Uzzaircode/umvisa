@@ -25,6 +25,7 @@ use Modules\Ticket\Entities\TicketsStatusArray as TSA;
 use Session;
 use App\Notifications\TicketSubmitted;
 use App\Notifications\TicketApproved;
+use App\Notifications\TicketRejected;
 
 /**
  * Status Codes
@@ -137,6 +138,8 @@ class TicketsController extends Controller
         $ticket_rn = $request->ticket_number;
         // save ticket number into database
         $ticket->ticket_number = $this->tickets->ticketNumberFormat($sap_code, $ticket_rn);
+        // Auth user
+        $user = $this->auth::user();
         // if user upload attachement
         if ($request->hasFile('files')) {
             // $repo->uploadFiles(['files'], $ticket);
@@ -172,16 +175,11 @@ class TicketsController extends Controller
         if ($request->has('submit_hod')) {
             // trigger submitToHOD listener
             $ticket->status = $this->ticketStatus::SUBMITTED_TO_HOD;
-            $ticket->submitted_hod_date = time();
-            // send email to respective HOD, with Current User object and Ticket Information as parameters
-            // $mailer->sendTicketInformation($this->auth::user(), $ticket);
+            $ticket->submitted_hod_date = time();           
             $ticket->save();
             // Find HOD based on Dept ID
-            $sender_id = $this->auth::id();
             $dept_id = $request->dept_id;
-            $receiver_id = $this->profile::where('hod_id', $dept_id)->first()->user_id;
-            // $hod_user = Profile::where('hod_id', $dept_id)->get();
-            // $receiver_id = $hod_user->first()->user_id;
+            $receiver_id = $this->profile::where('hod_id', $dept_id)->first()->user_id;            
             $this->users->find($receiver_id)->notify(new TicketSubmitted($ticket,Auth::user()));
             Session::flash('success', 'The ' . $this->entity . ' has been created successfully');
         }
@@ -202,7 +200,7 @@ class TicketsController extends Controller
         $ticket = $this->tickets->find($id);
         $saps = $this->saps->pluck('name', 'id');
         $sap_users = $this->auth::user()->saps;
-        $depts = $this->depts->all();
+        $depts = $this->auth::user()->departments;
         $apps = $this->apps->all();
         $user_tickets = $this->auth::user()->tickets;
         $ticket_rn = $this->tickets->ticketNumber();
@@ -216,14 +214,14 @@ class TicketsController extends Controller
      * @param  Request $request
      * @return Response
      */
-    public function update(CTR $request, $id, NR $nrepo)
+    public function update($id, CTR $request)
     {
         // find ticket
-        $ticket = $this->tickets->find($id);
-        $user_id = Auth::id();
+        $ticket = $this->tickets->find($id);        
         $dept_id = $request->dept_id;
         $receiver_id = $this->profile::where('hod_id', $dept_id)->first()->user_id;
         $ticket_id = $ticket->id;
+        $user = $this->auth::user();
         // accept all requests
         $ticket->update($request->all());
         // if user upload attachments
@@ -244,7 +242,7 @@ class TicketsController extends Controller
             $reply = $this->replies->create([
                 'body' => $request->replybody,
                 'ticket_id' => $id,
-                'user_id' => Auth::id(),
+                'user_id' => $this->auth::user()->id,
             ]);
         }
         // if the user save the ticket as draft
@@ -256,7 +254,7 @@ class TicketsController extends Controller
         // if the user submit the ticket
         if ($request->has('submit_hod')) {
             $this->tickets->submit_to_hod($ticket);
-            $this->users->find($receiver_id)->notify(new TicketSubmitted($ticket));
+            $this->users->find($receiver_id)->notify(new TicketSubmitted($ticket,$user));
             Session::flash('success', 'The ' . $this->entity . ' has been submitted to HOD successfully');
             return redirect()->route('tickets.index');
         }
@@ -266,33 +264,29 @@ class TicketsController extends Controller
      * Remove the specified resource from storage.
      * @return Response
      */
-    public function destroy(TR $repo, Request $request, $id)
+    public function destroy($id, Request $request)
     {
-        $ticket = $repo->find($id);
-        $ticket->delete();
+        $this->tickets->find($id)->delete();
         Session::flash('success', 'The ' . $this->entity . ' has been deleted successfully');
         return redirect()->back();
     }
 
     public function approve(CR $request, $id, AppMailer $mailer)
     {
-        $ticket = $this->tickets->find($id);
-        $user_id = Auth::id();
-        $user = Auth::user();
+        $ticket = $this->tickets->find($id);        
+        $user = $this->auth::user();
         $ticket_id = $ticket->id;
         $dasar_id = User::role('Dasar')->get()->first()->id;
         $ptm_id = User::role('PTM')->get()->first()->id;
-        $receiver_id = $ticket->user->id;
-        
-        // replies are always created, cant be edited or deleted. Exception for Admin
+
+        // replies are always created, can't be edited or deleted. Exception for Admin
         if (!empty($request->replybody) && $request->has('replybody')) {
             $this->replies->create([
             'body' => $request->replybody,
             'ticket_id' => $ticket->id,
             'user_id' => $this->auth::id(),
         ]);
-        }
-        
+        }        
         // if HOD has approved the ticket
         if ($request->has('approve_hod')) {
             $this->tickets->approve_hod($ticket);
@@ -304,39 +298,39 @@ class TicketsController extends Controller
         } // if HOD has rejected the ticket
         if ($request->has('reject_hod')) {
             $this->tickets->reject_hod($ticket);
-            $this->notifications->rejectNotification($user_id, $ticket_id, $receiver_id);
+            $this->users->find($ticket->user->id)->notify(new TicketRejected($ticket,$user));       
             Session::flash('success', 'The ticket ' . $ticket->ticket_number . ' has been rejected');
         } // if HOD submit to Dasar
         if ($request->has('submit_to_dasar')) {
             $this->tickets->submit_to_dasar($ticket);
-            $this->notifications->createNew($user_id, $ticket_id, $dasar_id);
-            $mailer->sendTicketInformation(Auth::user(), $ticket);
+            $this->users->find($dasar_id)->notify(new TicketSubmitted($ticket,$user));            
             Session::flash('success', 'The ticket ' . $ticket->ticket_number . ' has been submitted to Dasar');
         } // if Dasar has approved the ticket
         if ($request->has('approve_dasar')) {
             $this->tickets->approve_dasar($ticket);
-            $this->notifications->approveNotification($user_id, $ticket_id, $receiver_id);
+            $this->users->find($ticket->user->id)->notify(new TicketApproved($ticket,$user));
+            $this->users->find($ptm_id)->notify(new TicketSubmitted($ticket,$user));
             Session::flash('success', 'The ticket ' . $ticket->ticket_number . ' has been approved');
         } // if Dasar has rejected the ticket
         if ($request->has('reject_dasar')) {
             $this->tickets->reject_dasar($ticket);
-            $this->notifications->rejectNotification($user_id, $ticket_id, $receiver_id);
+            $this->users->find($ticket->user->id)->notify(new TicketRejected($ticket,$user)); 
             Session::flash('success', 'The ticket ' . $ticket->ticket_number . ' has been rejected');
         } // if PTM has approved the ticket
         if ($request->has('submit_to_ptm')) {
             $this->tickets->submit_to_ptm($ticket);
-            $this->notifications->createNew($user_id, $ticket_id, $ptm_id);
+            $this->users->find($dasar_id)->notify(new TicketSubmitted($ticket,$user));
             $mailer->sendTicketInformation(Auth::user(), $ticket);
             Session::flash('success', 'The ticket ' . $ticket->ticket_number . ' has been submitted to PTM');
         }
         if ($request->has('approve_ptm')) {
             $this->tickets->approve_ptm($ticket);
-            $this->notifications->approveNotification($user_id, $ticket_id, $receiver_id);
+            $this->users->find($ticket->user->id)->notify(new TicketApproved($ticket,$user));
             Session::flash('success', 'The ticket ' . $ticket->ticket_number . ' has been approved');
         } // if PTM has rejected the ticket
         if ($request->has('reject_ptm')) {
             $this->tickets->reject_ptm($ticket);
-            $this->notifications->rejectNotification($user_id, $ticket_id, $receiver_id);
+            $this->users->find($ticket->user->id)->notify(new TicketRejected($ticket,$user));
             Session::flash('success', 'The ticket ' . $ticket->ticket_number . ' has been rejected');
         } // if a reply has been submitted
         if ($request->has('comment')) {

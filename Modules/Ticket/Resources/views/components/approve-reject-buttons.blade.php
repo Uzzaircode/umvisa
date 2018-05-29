@@ -22,8 +22,8 @@
 @endif
 {{-- if have approved by HOD, make it submit to ptm --}}
 @if($ticket->status == 3)
-<button type="submit" name="submit_to_dasar" class="btn btn-sm btn-success">
-    <i class="fe fe-send"></i> Submit to Dasar</button>
+{{-- <button type="submit" name="submit_to_dasar" class="btn btn-sm btn-success">
+    <i class="fe fe-send"></i> Submit to Dasar</button> --}}
 @endif
 @endrole
 
@@ -36,8 +36,8 @@
 @endif
 {{-- if have approved by Dasar, make it submit to ptm --}}
 @if($ticket->status == 6)
-    <button type="submit" name="submit_to_ptm" class="btn btn-sm btn-success">
-            <i class="fe fe-send"></i> Submit to PTM</button>
+    {{-- <button type="submit" name="submit_to_ptm" class="btn btn-sm btn-success">
+            <i class="fe fe-send"></i> Submit to PTM</button> --}}
 @endif
 @endrole
 

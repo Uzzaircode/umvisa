@@ -49,7 +49,7 @@ class TicketsRepository extends AbstractRepository implements TicketRepoInterfac
         } //if user is normal user, normal user can only see his tickets
         elseif ($this->isDasar()) {
             // HOD can see ticket with submmited, approved and rejected status
-            return $this->modelClassName::whereIn('status',[ 5,6,7,8,9,10])->orderBy('updated_at', 'desc')->get();
+            return $this->modelClassName::whereIn('status',[ 4,5,6,7,8,9,10])->orderBy('updated_at', 'desc')->get();
         } elseif ($this->isPTM()) {
             // HOD can see ticket with submmited, approved and rejected status
             return $this->modelClassName::whereIn('status',[ 8, 9,10,13])->orderBy('updated_at', 'desc')->get();
@@ -76,7 +76,7 @@ class TicketsRepository extends AbstractRepository implements TicketRepoInterfac
     }
     
     public function draft($ticket){
-        $ticket->status = $this->ticketStatus::DRAFT;
+        $ticket->status = $this->status::DRAFT;
         $ticket->save();
     }
     // Save HOD approve timestamp and status
@@ -89,7 +89,7 @@ class TicketsRepository extends AbstractRepository implements TicketRepoInterfac
     // Save HOD approve and Submit To Dasar timestamp and status
     public function approve_hod($ticket)
     {
-        $ticket->status = $this->status::APPROVED_BY_HOD;
+        $ticket->status = $this->status::SUBMITTED_TO_DASAR;
         $ticket->approved_hod_date = time();
         $ticket->submitted_dasar_date = time();
         $ticket->save();
@@ -112,8 +112,9 @@ class TicketsRepository extends AbstractRepository implements TicketRepoInterfac
     // Save Dasar approve timestamp and status
     public function approve_dasar($ticket)
     {
-        $ticket->status = $this->status::APPROVED_BY_DASAR;
+        $ticket->status = $this->status::SUBMITTED_TO_PTM;
         $ticket->approved_dasar_date = time();
+        $ticket->submitted_ptm_date = time();
         $ticket->save();
     }
     // Save HOD reject timestamp and status

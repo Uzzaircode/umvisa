@@ -3,10 +3,13 @@ namespace App\Repositories;
 
 use App\Abstracts\Repository as AbstractRepository;
 use App\Repositories\RepositoryInterfaceUserRepoInterface;
+use Spatie\Permission\Traits\HasRoles;
 use Auth;
 
 class UsersRepository extends AbstractRepository implements UserRepoInterface
 {
+	use HasRoles;
+
 	protected $modelClassName = 'App\User';
 	
 	public function allUsers(){
