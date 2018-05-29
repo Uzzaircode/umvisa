@@ -182,7 +182,7 @@ class TicketsController extends Controller
             $receiver_id = $this->profile::where('hod_id', $dept_id)->first()->user_id;
             // $hod_user = Profile::where('hod_id', $dept_id)->get();
             // $receiver_id = $hod_user->first()->user_id;
-            $this->users->find($receiver_id)->notify(new TicketSubmitted($ticket));
+            $this->users->find($receiver_id)->notify(new TicketSubmitted($ticket,Auth::user()));
             Session::flash('success', 'The ' . $this->entity . ' has been created successfully');
         }
 
@@ -278,7 +278,7 @@ class TicketsController extends Controller
     {
         $ticket = $this->tickets->find($id);
         $user_id = Auth::id();
-        $user = $this->auth::user();
+        $user = Auth::user();
         $ticket_id = $ticket->id;
         $dasar_id = User::role('Dasar')->get()->first()->id;
         $ptm_id = User::role('PTM')->get()->first()->id;
@@ -299,7 +299,7 @@ class TicketsController extends Controller
             //notify ticket owner aka user
             $this->users->find($ticket->user->id)->notify(new TicketApproved($ticket,$user));
             //notify Dasar
-            $this->users->find($dasar_id)->notify(new TicketSubmitted($ticket));
+            $this->users->find($dasar_id)->notify(new TicketSubmitted($ticket,$user));
             Session::flash('success', 'The ticket ' . $ticket->ticket_number . ' has been approved');
         } // if HOD has rejected the ticket
         if ($request->has('reject_hod')) {

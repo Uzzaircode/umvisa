@@ -7,6 +7,7 @@ use Illuminate\Notifications\Notification;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use App\User;
+use Modules\Ticket\Entities\TicketStatusCheck;
 use Illuminate\Http\Request;
 use Modules\Ticket\Entities\Ticket;
 
@@ -21,10 +22,10 @@ class TicketApproved extends Notification
      *
      * @return void
      */
-    public function __construct(Ticket $ticket,User $user)
+    public function __construct(Ticket $ticket, User $user)
     {
         $this->user = $user;
-        $this->ticket = $ticket;
+        $this->ticket = $ticket;        
     }
 
     /**
@@ -52,6 +53,7 @@ class TicketApproved extends Notification
                     ->greeting("Hello there, ". $this->user->name ." has Approved your ticket")
                     
                     ->subject("Subject: ". $this->ticket->subject)
+                    ->line("Ticket #: ". $this->ticket->ticket_number)       
                     ->line("Status: ")
                     ->line("Subject: ". $this->ticket->subject)
                     ->line("Created By: ". $this->ticket->user->name)

@@ -10,7 +10,7 @@ use App\User;
 use Illuminate\Http\Request;
 use Modules\Ticket\Entities\Ticket;
 
-class TicketSubmitted extends Notification
+class TicketRejected extends Notification
 {
     use Queueable;
     public $ticket;
@@ -48,7 +48,7 @@ class TicketSubmitted extends Notification
         $mailMessage = new MailMessage();
         $mailMessage
                     ->from($this->user->email)
-                    ->greeting("Hi there, ". $this->user->name ." has submitted a new ticket and would like you to review it")
+                    ->greeting("Hi there, ". $this->user->name ." has rejected your ticket")
                     
                     ->subject("Subject: ". $this->ticket->subject)
                     ->line("Ticket #: ". $this->ticket->ticket_number)
@@ -58,7 +58,7 @@ class TicketSubmitted extends Notification
                     ->line("Department: ". $this->ticket->department->name)
                     ->line("SAP Module: ". $this->ticket->sap->name)
                     ->line("Type: ". $this->ticket->ticket_type);
-        if ($this->ticket->integration == 1) {
+        if ($this->ticket->integration != null) {
             $mailMessage->line("Integration: Yes");
             $mailMessage->line("Application: ". $this->ticket->application->name);
         }
