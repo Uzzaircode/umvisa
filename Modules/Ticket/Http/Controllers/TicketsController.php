@@ -8,6 +8,7 @@ use Illuminate\Http\Response;
 use App\Http\Controllers\Controller;
 use App\Mailers\AppMailer;
 use App\Profile;
+use App\User;
 use Auth;
 use Modules\Ticket\Http\Requests\CreateReplies as CR;
 use App\Notifications\TicketSubmitted as NTS;
@@ -23,6 +24,7 @@ use Modules\Ticket\Entities\TicketStatus as TS;
 use Modules\Ticket\Entities\TicketsStatusArray as TSA;
 use Session;
 use App\Notifications\TicketSubmitted;
+use App\Notifications\TicketApproved;
 
 /**
  * Status Codes
@@ -98,6 +100,27 @@ class TicketsController extends Controller
     }
 
     /**
+     * Show the specified resource.
+     * @return Response
+     */
+    public function show($id)
+    {
+        $ticket = $this->tickets->find($id);
+        $saps = $this->saps->pluck('name', 'id');
+        $sap_users = $this->auth::user()->saps;
+        $depts = $this->depts->all();
+        $apps = $this->apps->all();
+        $user_tickets = Auth::user()->tickets;
+        $ticket_rn = $this->tickets->ticketNumber();
+        $replies = $ticket->replies->sortByDesc('created_at');
+        $status = $ticket->status;
+        $date_arr = $this->ticketStatusArray->createDateArray($ticket);
+        usort($date_arr, array($this, "date_sort"));
+
+        return view('ticket::show', compact('users', 'saps', 'depts', 'sap_users', 'apps', 'user_tickets', 'ticket_rn', 'ticket', 'replies', 'status', 'date_arr'));
+    }
+
+    /**
      * Store a newly created resource in storage.
      * @param  Request $request
      * @return Response
@@ -167,26 +190,7 @@ class TicketsController extends Controller
         return redirect()->route('tickets.index');
     }
 
-    /**
-     * Show the specified resource.
-     * @return Response
-     */
-    public function show($id)
-    {
-        $ticket = $this->tickets->find($id);
-        $saps = $this->saps->pluck('name', 'id');
-        $sap_users = $this->auth::user()->saps;
-        $depts = $this->depts->all();
-        $apps = $this->apps->all();
-        $user_tickets = Auth::user()->tickets;
-        $ticket_rn = $this->tickets->ticketNumber();
-        $replies = $ticket->replies->sortByDesc('created_at');
-        $status = $ticket->status;
-        $date_arr = $this->ticketStatusArray->createDateArray($ticket);
-        usort($date_arr, array($this, "date_sort"));
-
-        return view('ticket::show', compact('users', 'saps', 'depts', 'sap_users', 'apps', 'user_tickets', 'ticket_rn', 'ticket', 'replies', 'status', 'date_arr'));
-    }
+    
     
 
     /**
@@ -218,8 +222,7 @@ class TicketsController extends Controller
         $ticket = $this->tickets->find($id);
         $user_id = Auth::id();
         $dept_id = $request->dept_id;
-        $hod_user = Profile::where('hod_id', $dept_id)->get();
-        $receiver_id = $hod_user->first()->user_id;
+        $receiver_id = $this->profile::where('hod_id', $dept_id)->first()->user_id;
         $ticket_id = $ticket->id;
         // accept all requests
         $ticket->update($request->all());
@@ -253,7 +256,7 @@ class TicketsController extends Controller
         // if the user submit the ticket
         if ($request->has('submit_hod')) {
             $this->tickets->submit_to_hod($ticket);
-            $this->notifications->createNew($user_id, $ticket_id, $receiver_id);
+            $this->users->find($receiver_id)->notify(new TicketSubmitted($ticket));
             Session::flash('success', 'The ' . $this->entity . ' has been submitted to HOD successfully');
             return redirect()->route('tickets.index');
         }
@@ -275,6 +278,7 @@ class TicketsController extends Controller
     {
         $ticket = $this->tickets->find($id);
         $user_id = Auth::id();
+        $user = $this->auth::user();
         $ticket_id = $ticket->id;
         $dasar_id = User::role('Dasar')->get()->first()->id;
         $ptm_id = User::role('PTM')->get()->first()->id;
@@ -282,7 +286,7 @@ class TicketsController extends Controller
         
         // replies are always created, cant be edited or deleted. Exception for Admin
         if (!empty($request->replybody) && $request->has('replybody')) {
-            $this->reply->create([
+            $this->replies->create([
             'body' => $request->replybody,
             'ticket_id' => $ticket->id,
             'user_id' => $this->auth::id(),
@@ -292,7 +296,10 @@ class TicketsController extends Controller
         // if HOD has approved the ticket
         if ($request->has('approve_hod')) {
             $this->tickets->approve_hod($ticket);
-            $this->notifications->approveNotification($user_id, $ticket_id, $receiver_id);
+            //notify ticket owner aka user
+            $this->users->find($ticket->user->id)->notify(new TicketApproved($ticket,$user));
+            //notify Dasar
+            $this->users->find($dasar_id)->notify(new TicketSubmitted($ticket));
             Session::flash('success', 'The ticket ' . $ticket->ticket_number . ' has been approved');
         } // if HOD has rejected the ticket
         if ($request->has('reject_hod')) {

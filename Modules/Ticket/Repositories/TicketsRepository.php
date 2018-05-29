@@ -86,11 +86,12 @@ class TicketsRepository extends AbstractRepository implements TicketRepoInterfac
         $ticket->submitted_hod_date = time();
         $ticket->save();
     }
-    // Save HOD approve timestamp and status
+    // Save HOD approve and Submit To Dasar timestamp and status
     public function approve_hod($ticket)
     {
         $ticket->status = $this->status::APPROVED_BY_HOD;
         $ticket->approved_hod_date = time();
+        $ticket->submitted_dasar_date = time();
         $ticket->save();
     }
     // Save HOD reject timestamp and status

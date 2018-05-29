@@ -10,17 +10,18 @@ use App\User;
 use Illuminate\Http\Request;
 use Modules\Ticket\Entities\Ticket;
 
-class TicketSubmitted extends Notification
+class TicketApproved extends Notification
 {
     use Queueable;
     public $ticket;
     public $user;
+
     /**
      * Create a new notification instance.
      *
      * @return void
      */
-    public function __construct(Ticket $ticket, User $user)
+    public function __construct(Ticket $ticket,User $user)
     {
         $this->user = $user;
         $this->ticket = $ticket;
@@ -48,9 +49,10 @@ class TicketSubmitted extends Notification
         $mailMessage = new MailMessage();
         $mailMessage
                     ->from($this->user->email)
-                    ->greeting("Hi there, ". $this->user->name ." has submitted a new ticket and would like you to review it")
+                    ->greeting("Hello there, ". $this->user->name ." has Approved your ticket")
                     
                     ->subject("Subject: ". $this->ticket->subject)
+                    ->line("Status: ")
                     ->line("Subject: ". $this->ticket->subject)
                     ->line("Created By: ". $this->ticket->user->name)
                     ->line("Created At: ". $this->ticket->created_at->toDayDateTimeString())
@@ -75,7 +77,6 @@ class TicketSubmitted extends Notification
      * @param  mixed  $notifiable
      * @return array
      */
-
     public function toDatabase($notifiable)
     {
         return [
