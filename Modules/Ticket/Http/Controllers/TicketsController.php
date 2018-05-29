@@ -151,18 +151,19 @@ class TicketsController extends Controller
             $ticket->status = $this->ticketStatus::SUBMITTED_TO_HOD;
             $ticket->submitted_hod_date = time();
             // send email to respective HOD, with Current User object and Ticket Information as parameters
-            $mailer->sendTicketInformation($this->auth::user(), $ticket);
+            // $mailer->sendTicketInformation($this->auth::user(), $ticket);
             $ticket->save();
+            // Find HOD based on Dept ID
+            $sender_id = $this->auth::id();
+            $dept_id = $request->dept_id;
+            $receiver_id = $this->profile::where('hod_id', $dept_id)->first()->user_id;
+            // $hod_user = Profile::where('hod_id', $dept_id)->get();
+            // $receiver_id = $hod_user->first()->user_id;
+            $this->users->find($receiver_id)->notify(new TicketSubmitted($ticket));
             Session::flash('success', 'The ' . $this->entity . ' has been created successfully');
         }
 
-        // Find HOD based on Dept ID
-        $sender_id = $this->auth::id();        
-        $dept_id = $request->dept_id;
-        $receiver_id = $this->profile::where('hod_id',$dept_id)->first()->user_id;
-        // $hod_user = Profile::where('hod_id', $dept_id)->get();
-        // $receiver_id = $hod_user->first()->user_id;        
-        $this->users->find($receiver_id)->notify(new TicketSubmitted($ticket));
+        
         return redirect()->route('tickets.index');
     }
 

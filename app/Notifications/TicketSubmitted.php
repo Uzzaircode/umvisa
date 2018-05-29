@@ -22,7 +22,7 @@ class TicketSubmitted extends Notification
     public function __construct(Ticket $ticket)
     {
         // $this->user = $user;
-        $this->ticket = $ticket;       
+        $this->ticket = $ticket;
     }
 
     /**
@@ -46,18 +46,26 @@ class TicketSubmitted extends Notification
     {
         $mailMessage = new MailMessage();
         $mailMessage
-                    ->line($this->ticket->user->name." has submitted a new ticket and would like you to review it")
-                    ->Subject("Subject: ". $this->ticket->subject)                    
-                    ->line("<hr>")
-                    ->line("Created At: ". $this->ticket->created_at->toDayDateTimeString())
-                    ->line("Department: ". $this->ticket->department->name)                
-                    ->line("SAP Module: ". $this->ticket->sap->name);
-                    if($this->ticket->integration != NULL){
-                    $mailMessage->line("Integration: Yes");
-                    $mailMessage->line("Application: ". $this->ticket->application->name);
-                    }
-        return $mailMessage;
+                    ->from($this->ticket->user->email)
+                    ->greeting("Hello there, ". $this->ticket->user->name ." has submitted a new ticket and would like you to review it")
                     
+                    ->subject("Subject: ". $this->ticket->subject)
+                    ->line("Subject: ". $this->ticket->subject)
+                    ->line("Created At: ". $this->ticket->created_at->toDayDateTimeString())
+                    ->line("Department: ". $this->ticket->department->name)
+                    ->line("SAP Module: ". $this->ticket->sap->name)
+                    ->line("Type: ". $this->ticket->ticket_type)
+                    ->line("Issue:")
+                    ->line($this->ticket->body);
+
+        if ($this->ticket->integration != null) {
+            $mailMessage->line("Integration: Yes");
+            $mailMessage->line("Application: ". $this->ticket->application->name);
+        }
+        if ($this->ticket->attachments->count() > 0) {
+            $mailMessage->line("There are attachments included with this ticket, please view it in the system.");
+        }
+        return $mailMessage;
     }
 
     /**
@@ -73,7 +81,8 @@ class TicketSubmitted extends Notification
     //     ];
     // }
 
-    public function toDatabase($notifiable){
+    public function toDatabase($notifiable)
+    {
         return [
             'message' => 'hello',
             'ticket_id' => $this->ticket->id,
