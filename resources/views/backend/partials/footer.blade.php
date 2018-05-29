@@ -5,7 +5,7 @@
               <div class="row align-items-center">
                 <div class="col-auto">
                   <ul class="list-inline list-inline-dots mb-0">
-                    <li class="list-inline-item"><a href="./docs/index.html">Documentation</a></li>                    
+                    {{-- <li class="list-inline-item"><a href="./docs/index.html">Documentation</a></li>                     --}}
                   </ul>
                 </div>                
               </div>
