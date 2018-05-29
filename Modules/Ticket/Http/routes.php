@@ -10,6 +10,7 @@ Route::group(['middleware' => ['web','timeout'],'namespace' => 'Modules\Ticket\H
     Route::post('tickets/{ticket}',['uses'=>'TicketsController@approve','as'=>'tickets.approve']);
     Route::post('tickets/{ticket}/read',['uses'=>'TicketsController@read','as'=>'tickets.read']);
     Route::resource('replies','RepliesController');
-    Route::get('sapcode','RepliesController@getSapCode')->name('sapcode');    
+    Route::get('sapcode','RepliesController@getSapCode')->name('sapcode');
+    Route::delete('/massdelete', ['uses' => 'TicketsController@massdelete', 'as' => 'tickets.massdelete']);    
 });
 

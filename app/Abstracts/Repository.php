@@ -44,5 +44,9 @@ abstract class Repository implements RepositoryInterface {
 	public function count()
 	{
 		return call_user_func("{$this->modelClassName}::count");
-	}	
+	}
+	
+	public function where($key, $column){
+		return call_user_func("{$this->modelClassName}::where",$key, $column);
+	}
 }

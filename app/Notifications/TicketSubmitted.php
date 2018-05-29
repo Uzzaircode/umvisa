@@ -54,14 +54,13 @@ class TicketSubmitted extends Notification
                     ->line("Created At: ". $this->ticket->created_at->toDayDateTimeString())
                     ->line("Department: ". $this->ticket->department->name)
                     ->line("SAP Module: ". $this->ticket->sap->name)
-                    ->line("Type: ". $this->ticket->ticket_type)
-                    ->line("Issue:")
-                    ->line($this->ticket->body);
-
+                    ->line("Type: ". $this->ticket->ticket_type);
         if ($this->ticket->integration != null) {
             $mailMessage->line("Integration: Yes");
             $mailMessage->line("Application: ". $this->ticket->application->name);
         }
+        $mailMessage->line("Issue:");
+        $mailMessage->line($this->ticket->body);
         if ($this->ticket->attachments->count() > 0) {
             $mailMessage->line("There are attachments included with this ticket, please view it in the system.");
         }
@@ -74,19 +73,12 @@ class TicketSubmitted extends Notification
      * @param  mixed  $notifiable
      * @return array
      */
-    // public function toArray($notifiable)
-    // {
-    //     return [
-            
-    //     ];
-    // }
 
     public function toDatabase($notifiable)
     {
         return [
             'message' => 'hello',
             'ticket_id' => $this->ticket->id,
-            // 'sender_id' => $this->sender_id
         ];
     }
 }
