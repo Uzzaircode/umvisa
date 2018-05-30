@@ -89,6 +89,12 @@ class TicketsStatusArray{
             'color' => 'red',
             'code' => $this->status::REJECTED_BY_PTM,
         ],
+        [
+            'status' => 'Assigned to IT Staff',
+            'timestamp' => $ticket->assigned_date->toDayDateTimeString(),
+            'color' => 'blue',
+            'code' => $this->status::ASSIGNED,
+        ]
     ];
    }
   

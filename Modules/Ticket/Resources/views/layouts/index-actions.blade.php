@@ -18,6 +18,9 @@
                 @role('PTM')
                 <button type="submit" class="btn btn-secondary dropdown-item" name="readby_ptm"><i class="fe fe-eye"></i> View</button>
                 @endrole
+                @role('Brillante')
+                <button type="submit" class="btn btn-secondary dropdown-item" name="readby_assigned"><i class="fe fe-eye"></i> View</button>
+                @endrole
             </form>
         @endcan 
         @if($result->status == 1 || $result->status == 4 || $result->status == 7 || $result->status == 10 ) 

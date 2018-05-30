@@ -37,4 +37,6 @@
 <span class="status-icon bg-success"></span> Read by {{Auth::user()->hasRole('Dasar')?'You':'Dasar'}}
 @elseif($result->status == 13)
 <span class="status-icon bg-success"></span> Read by {{Auth::user()->hasRole('PTM')?'You':'PTM'}}
+@elseif($result->status == 99)
+<span class="status-icon bg-success"></span> Assigned to {{Auth::user()->hasRole('Brillante')?'You':'IT Staff'}}
 @endif

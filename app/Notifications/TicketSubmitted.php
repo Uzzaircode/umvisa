@@ -80,7 +80,7 @@ class TicketSubmitted extends Notification
     public function toDatabase($notifiable)
     {
         return [
-            'message' => 'hello',
+            'message' => 'You have received a ticket - '. $this->ticket->ticket_number,
             'ticket_id' => $this->ticket->id,
         ];
     }

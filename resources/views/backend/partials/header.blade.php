@@ -11,21 +11,19 @@
                         <i class="fe fe-plus-circle"></i> New Ticket</a>
                 </div>
                 @endif
-                {{-- <div class="dropdown d-none d-md-flex">
+                <div class="dropdown d-none d-md-flex">
                     <a class="nav-link icon" data-toggle="dropdown">
                         <i class="fe fe-bell"></i>
                         <span class="badge badge-pill badge-primary">
-                            {{App\Repositories\NotificationsRepository::allNotifications()->count()}}
+                            {{Auth::user()->unreadNotifications->count()}}
                         </span>
-                    </a>
-                    @if(App\Repositories\NotificationsRepository::allNotifications()->count() > 0)
-                    <div class="dropdown-menu dropdown-menu-right dropdown-menu-arrow">
-                        
-                        
-                        @foreach(App\Repositories\NotificationsRepository::allNotifications() as $n)
-                        <form action="{{route('tickets.read', ['id'=>$n->ticket_id])}}" style="display:inline" method="POST">
-                        @csrf
-                        <button type="submit" href="{{route('tickets.read',['id'=>$n->ticket_id])}}" class="dropdown-item d-flex btn btn-link"  
+                    </a> 
+                    @if(Auth::user()->unreadNotifications->count() > 0)                                      
+                    <div class="dropdown-menu dropdown-menu-right dropdown-menu-arrow">                        
+                         @foreach ( Auth::user()->unreadNotifications as $notification)
+                        <form action="{{route('tickets.markread', ['id'=>$notification->id,'ticket_id'=>$notification->data['ticket_id']])}}" style="display:inline" method="POST">
+                        @csrf                        
+                        <button type="submit" href="" class="dropdown-item d-flex btn btn-link"  
                             @if(Auth::user()->hasRole('HOD')) 
                                 name="readby_hod"
                              @elseif(Auth::user()->hasRole('Dasar'))
@@ -33,29 +31,19 @@
                              @elseif(Auth::user()->hasRole('PTM'))
                                 name="readby_ptm"
                              @endif
-                             >
-                            <span class="avatar mr-3 align-self-center" style="background-image: url({{asset($n->user->profile->avatar)}})"></span>
+                             >                            
                             <div>
-                                <strong>{{$n->user->name}}</strong>
-                                @if($n->action_id == 1)
-                                has submitted a new ticket
-                                @elseif($n->action_id == 2)
-                                has approved the ticket
-                                @elseif($n->action_id == 3)
-                                has rejected the ticket
-                                @endif {!! '#'.$n->ticket->ticket_number !!}
-                            <div class="small text-muted">{{$n->created_at->diffForHumans()}}</div>
+                                <strong>{{$notification->data['message']}}</strong>                                
+                            <div class="small text-muted">{{$notification->updated_at->diffForHumans()}}</div>
                             </div>                                               
                         </button>
                         </form>
                         @endforeach
-                        <div class="dropdown-divider"></div> 
-                        <a href="{{route('notifications')}}" class="dropdown-item text-center text-muted-dark">View All Notifications</a>
-                    </div>
-                        @endif                       
-                                               
-                    
-                </div> --}}
+                        {{-- <div class="dropdown-divider"></div> 
+                        <a href="{{route('notifications')}}" class="dropdown-item text-center text-muted-dark">View All Notifications</a> --}}
+                    </div> 
+                    @endif                   
+                </div>
                 <div class="dropdown">
                     <a href="#" class="nav-link pr-0 leading-none" data-toggle="dropdown">
                         <span class="avatar" style="background-image: url({{asset(Auth::user()->profile->avatar)}})"></span>

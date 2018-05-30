@@ -36,6 +36,10 @@ class TicketsRepository extends AbstractRepository implements TicketRepoInterfac
     {
         return $this->auth::user()->hasRole('PTM');
     }
+    public function isBrillante()
+    {
+        return $this->auth::user()->hasRole('Brillante');
+    }
 
     public function allTickets()
     {
@@ -49,10 +53,13 @@ class TicketsRepository extends AbstractRepository implements TicketRepoInterfac
         } //if user is normal user, normal user can only see his tickets
         elseif ($this->isDasar()) {
             // HOD can see ticket with submmited, approved and rejected status
-            return $this->modelClassName::whereIn('status',[ 4,5,6,7,8,9,10])->orderBy('updated_at', 'desc')->get();
+            return $this->modelClassName::whereIn('status', [ 4,5,6,7,8,9,10])->orderBy('updated_at', 'desc')->get();
         } elseif ($this->isPTM()) {
             // HOD can see ticket with submmited, approved and rejected status
-            return $this->modelClassName::whereIn('status',[ 8, 9,10,13])->orderBy('updated_at', 'desc')->get();
+            return $this->modelClassName::whereIn('status', [ 8, 9,10,13])->orderBy('updated_at', 'desc')->get();
+        } elseif ($this->isBrillante()) {
+            // HOD can see ticket with submmited, approved and rejected status
+            return $this->modelClassName::whereIn('status', [99])->orderBy('updated_at', 'desc')->get();
         } else {
             return $this->modelClassName::where('user_id', $this->auth::id())->orderBy('updated_at', 'desc')->get();
         }
@@ -75,7 +82,8 @@ class TicketsRepository extends AbstractRepository implements TicketRepoInterfac
         return 'UM' . date('Y') . '-' . $sap_code . '-' . $ticket_rn;
     }
     
-    public function draft($ticket){
+    public function draft($ticket)
+    {
         $ticket->status = $this->status::DRAFT;
         $ticket->save();
     }
@@ -181,6 +189,15 @@ class TicketsRepository extends AbstractRepository implements TicketRepoInterfac
         if ($ticket->readby_ptm_date == null) {
             $ticket->status = $this->status::READ_BY_PTM;
             $ticket->readby_ptm_date = time();
+            $ticket->save();
+        }
+    }
+
+    public function assign_ticket($ticket)
+    {
+        if ($ticket->assigned_date == null) {
+            $ticket->status = $this->status::ASSIGNED;
+            $ticket->assigned_date = time();
             $ticket->save();
         }
     }

@@ -16,4 +16,5 @@ class TicketStatus
     const READ_BY_HOD = 11;
     const READ_BY_DASAR = 12;
     const READ_BY_PTM = 13;
+    const ASSIGNED = 99;
 }

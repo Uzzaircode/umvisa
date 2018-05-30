@@ -80,7 +80,7 @@ class TicketRejected extends Notification
     public function toDatabase($notifiable)
     {
         return [
-            'message' => 'hello',
+            'message' => 'Your ticket has been rejected - '. $this->ticket->ticket_number,
             'ticket_id' => $this->ticket->id,
         ];
     }

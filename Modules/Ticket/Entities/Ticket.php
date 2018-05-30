@@ -16,7 +16,7 @@ class Ticket extends Model
 {
 
     protected $fillable = ['subject', 'body', 'sap_id', 'user_id', 'dept_id', 'ticket_type', 'integration', 'application_id', 'ticket_number', 'status'];
-    protected $dates = ['submitted_hod_date', 'approved_hod_date', 'rejected_hod_date', 'submitted_dasar_date', 'approved_dasar_date', 'rejected_dasar_date', 'submitted_ptm_date', 'approved_ptm_date', 'rejected_ptm_date', 'readby_hod_date', 'readby_dasar_date', 'readby_ptm_date'];
+    protected $dates = ['submitted_hod_date', 'approved_hod_date', 'rejected_hod_date', 'submitted_dasar_date', 'approved_dasar_date', 'rejected_dasar_date', 'submitted_ptm_date', 'approved_ptm_date', 'rejected_ptm_date', 'readby_hod_date', 'readby_dasar_date', 'readby_ptm_date','assigned_date'];
 
     public function sap()
     {

@@ -10,6 +10,7 @@ use App\Mailers\AppMailer;
 use App\Profile;
 use App\User;
 use Auth;
+use App\Notification;
 use Modules\Ticket\Http\Requests\CreateReplies as CR;
 use App\Notifications\TicketSubmitted as NTS;
 use Modules\Ticket\Http\Requests\CreateTicketRequest as CTR;
@@ -26,6 +27,7 @@ use Session;
 use App\Notifications\TicketSubmitted;
 use App\Notifications\TicketApproved;
 use App\Notifications\TicketRejected;
+use App\Notifications\TicketAssigned;
 
 /**
  * Status Codes
@@ -116,9 +118,10 @@ class TicketsController extends Controller
         $replies = $ticket->replies->sortByDesc('created_at');
         $status = $ticket->status;
         $date_arr = $this->ticketStatusArray->createDateArray($ticket);
+        $it_persons = User::role('Brillante')->get();
         usort($date_arr, array($this, "date_sort"));
 
-        return view('ticket::show', compact('users', 'saps', 'depts', 'sap_users', 'apps', 'user_tickets', 'ticket_rn', 'ticket', 'replies', 'status', 'date_arr'));
+        return view('ticket::show', compact('users', 'saps', 'depts', 'sap_users', 'apps', 'user_tickets', 'ticket_rn', 'ticket', 'replies', 'status', 'date_arr','it_persons'));
     }
 
     /**
@@ -278,6 +281,7 @@ class TicketsController extends Controller
         $ticket_id = $ticket->id;
         $dasar_id = User::role('Dasar')->get()->first()->id;
         $ptm_id = User::role('PTM')->get()->first()->id;
+        
 
         // replies are always created, can't be edited or deleted. Exception for Admin
         if (!empty($request->replybody) && $request->has('replybody')) {
@@ -332,25 +336,49 @@ class TicketsController extends Controller
             $this->tickets->reject_ptm($ticket);
             $this->users->find($ticket->user->id)->notify(new TicketRejected($ticket,$user));
             Session::flash('success', 'The ticket ' . $ticket->ticket_number . ' has been rejected');
-        } // if a reply has been submitted
+        } 
+        if($request->has('assign_ticket')){
+            $it_person_id = $request->it_person_id;
+            $this->tickets->assign_ticket($ticket);
+            $this->users->find($it_person_id)->notify(new TicketAssigned($ticket,$user));        Session::flash('success', 'The ticket ' . $ticket->ticket_number . ' has been assigned to '. $this->users->find($it_person_id)->name);   
+        }
+        // if a reply has been submitted
         if ($request->has('comment')) {
             Session::flash('success', 'Your comment has been submitted');
         }
         return redirect()->back();
     }
 
-    public function read(Request $request, TR $repo, $id)
+    public function markread(Request $request, $id,$ticket_id)
     {
-        $ticket = $repo->find($id);
-
+        $notification = Notification::find($id);
+        $ticket = $this->tickets->find($ticket_id);
         if ($request->has('readby_hod')) {
-            $repo->readby_hod($ticket);
+            $this->tickets->readby_hod($ticket);
+            $this->auth::user()->unreadNotifications->where('id',$id)->markAsRead();
         }
         if ($request->has('readby_dasar')) {
-            $repo->readby_dasar($ticket);
+            $this->tickets->readby_dasar($ticket);
+            $this->auth::user()->unreadNotifications->where('id',$id)->markAsRead();
         }
         if ($request->has('readby_ptm')) {
-            $repo->readby_ptm($ticket);
+            $this->tickets->readby_dasar($ticket);
+            $this->auth::user()->unreadNotifications->where('id',$id)->markAsRead();
+        }
+        return redirect()->route('tickets.show', ['id' => $ticket->id]);
+    }
+
+    public function read(Request $request, $id)
+    {        
+        $ticket = $this->tickets->find($id);
+        if ($request->has('readby_hod')) {
+            $this->tickets->readby_hod($ticket);            
+        }
+        if ($request->has('readby_dasar')) {
+            $this->tickets->readby_dasar($ticket);            
+        }
+        if ($request->has('readby_ptm')) {
+            $this->tickets->readby_ptm($ticket);           
         }
         return redirect()->route('tickets.show', ['id' => $ticket->id]);
     }

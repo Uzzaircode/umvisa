@@ -11,7 +11,7 @@ use Modules\Ticket\Entities\TicketStatusCheck;
 use Illuminate\Http\Request;
 use Modules\Ticket\Entities\Ticket;
 
-class TicketApproved extends Notification
+class TicketAssigned extends Notification
 {
     use Queueable;
     public $ticket;
@@ -50,7 +50,7 @@ class TicketApproved extends Notification
         $mailMessage = new MailMessage();
         $mailMessage
                     ->from($this->user->email)
-                    ->greeting("Hello there, ". $this->user->name ." has Approved your ticket")
+                    ->greeting("Hi there a ticket has been assigned to you.")
                     
                     ->subject("Subject: ". $this->ticket->subject)
                     ->line("Ticket #: ". $this->ticket->ticket_number)       
@@ -82,7 +82,7 @@ class TicketApproved extends Notification
     public function toDatabase($notifiable)
     {
         return [
-            'message' => 'Your ticket has been approved - '. $this->ticket->ticket_number,
+            'message' => 'A ticket has been assigned to you - '. $this->ticket->ticket_number,
             'ticket_id' => $this->ticket->id,
         ];
     }
