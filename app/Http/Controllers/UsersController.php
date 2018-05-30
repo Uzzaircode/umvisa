@@ -175,12 +175,40 @@ class UsersController extends Controller
     }
 
     public function myprofile(){
-        $user = User::find(Auth::id());
-        $user_id = Auth::id();
-        $roles = Role::pluck('name', 'id');
-        $permissions = Permission::all('name', 'id');
-        $depts = Department::pluck('name','id');
-        $saps = Sap::pluck('name', 'id');
-        return view('backend.users.edit', compact('user', 'roles', 'permissions','depts','saps','id'));
+        $user = Auth::user();
+        $user_id = Auth::id();        
+        return view('backend.users.profile', compact('user'));
+    }
+
+    public function profileUpdate(Request $request, $id)
+    {
+        $this->validate($request, [
+            'name' => 'bail|required|min:2',
+            'email' => 'required|email|unique:users,email,' . $id,            
+        ]);
+
+        // Get the user
+        $user = User::find($id);              
+        // Update user
+        $user->fill($request->except('password'));
+
+        // check for password change
+        if ($request->get('password')) {
+            $user->password = bcrypt($request->get('password'));
+        }
+        
+        // user's avatar
+        if ($request->hasFile('avatar')) {
+            
+            $avatar = $request->avatar;
+            $avatar_new_name = time() . $avatar->getClientOriginalName();
+            $avatar->move('uploads/avatars', $avatar_new_name);
+            $user->profile->avatar = 'uploads/avatars/'.$avatar_new_name;
+        }     
+
+        $user->save();
+        $user->profile->update();        
+        Session::flash('success','User has been updated.');
+        return redirect()->back();
     }
 }

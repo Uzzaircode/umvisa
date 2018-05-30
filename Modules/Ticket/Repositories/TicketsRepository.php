@@ -49,14 +49,14 @@ class TicketsRepository extends AbstractRepository implements TicketRepoInterfac
         } //if user is HOD
         elseif ($this->isHOD()) {
             // HOD can see ticket with submmited, approved and rejected status
-            return $this->modelClassName::where('dept_id', $this->HODId())->whereIn('status', [2,3,4,5,6,7,8,9,10,11])->orderBy('updated_at', 'desc')->get();
+            return $this->modelClassName::where('dept_id', $this->HODId())->whereIn('status', [2,3,4,5,6,7,8,9,10,11,99])->orderBy('updated_at', 'desc')->get();
         } //if user is normal user, normal user can only see his tickets
         elseif ($this->isDasar()) {
             // HOD can see ticket with submmited, approved and rejected status
-            return $this->modelClassName::whereIn('status', [ 4,5,6,7,8,9,10])->orderBy('updated_at', 'desc')->get();
+            return $this->modelClassName::whereIn('status', [ 4,5,6,7,8,9,10,11,12,99])->orderBy('updated_at', 'desc')->get();
         } elseif ($this->isPTM()) {
             // HOD can see ticket with submmited, approved and rejected status
-            return $this->modelClassName::whereIn('status', [ 8, 9,10,13])->orderBy('updated_at', 'desc')->get();
+            return $this->modelClassName::whereIn('status', [ 8,9,10,11,12,13,99])->orderBy('updated_at', 'desc')->get();
         } elseif ($this->isBrillante()) {
             // HOD can see ticket with submmited, approved and rejected status
             return $this->modelClassName::whereIn('status', [99])->orderBy('updated_at', 'desc')->get();

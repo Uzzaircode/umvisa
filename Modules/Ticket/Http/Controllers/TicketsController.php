@@ -365,6 +365,12 @@ class TicketsController extends Controller
             $this->tickets->readby_dasar($ticket);
             $this->auth::user()->unreadNotifications->where('id',$id)->markAsRead();
         }
+        if ($request->has('readby_user')) {            
+            $this->auth::user()->unreadNotifications->where('id',$id)->markAsRead();
+        }
+        if ($request->has('readby_it')) {            
+            $this->auth::user()->unreadNotifications->where('id',$id)->markAsRead();
+        }
         return redirect()->route('tickets.show', ['id' => $ticket->id]);
     }
 

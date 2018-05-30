@@ -53,14 +53,13 @@ class TicketAssigned extends Notification
                     ->greeting("Hi there a ticket has been assigned to you.")
                     
                     ->subject("Subject: ". $this->ticket->subject)
-                    ->line("Ticket #: ". $this->ticket->ticket_number)       
-                    ->line("Status: ")
+                    ->line("Ticket #: ". $this->ticket->ticket_number)                    
                     ->line("Subject: ". $this->ticket->subject)
                     ->line("Created By: ". $this->ticket->user->name)
                     ->line("Created At: ". $this->ticket->created_at->toDayDateTimeString())
                     ->line("Department: ". $this->ticket->department->name)
                     ->line("SAP Module: ". $this->ticket->sap->name)
-                    ->line("Type: ". $this->ticket->ticket_type);
+                    ->line("Type: ". ucwords($this->ticket->ticket_type));
         if ($this->ticket->integration != null) {
             $mailMessage->line("Integration: Yes");
             $mailMessage->line("Application: ". $this->ticket->application->name);

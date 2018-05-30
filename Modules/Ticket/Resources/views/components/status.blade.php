@@ -37,4 +37,6 @@
 <a href="#" class="btn btn-info btn-sm text-white">{{Auth::user()->hasRole('Dasar')?'You have read this ticket':'Read by Dasar'}} on {{$ticket->readby_dasar_date}}</a>
 @elseif($ticket->status == 13)
 <a href="#" class="btn btn-info btn-sm text-white">{{Auth::user()->hasRole('PTM')?'You have read this ticket':'Read by PTM'}} on {{$ticket->readby_ptm_date}}</a>
+@elseif($ticket->status == 99)
+<a href="#" class="btn btn-info btn-sm text-white">{{Auth::user()->hasRole('Brillante')?'You have been assigned to this ticket':'Assigned to IT Staff'}} on {{$ticket->assigned_date->toDayDateTimeString()}}</a>
 @endif

@@ -17,19 +17,22 @@
                         <span class="badge badge-pill badge-primary">
                             {{Auth::user()->unreadNotifications->count()}}
                         </span>
-                    </a> 
-                    @if(Auth::user()->unreadNotifications->count() > 0)                                      
-                    <div class="dropdown-menu dropdown-menu-right dropdown-menu-arrow">                        
-                         @foreach ( Auth::user()->unreadNotifications as $notification)
-                        <form action="{{route('tickets.markread', ['id'=>$notification->id,'ticket_id'=>$notification->data['ticket_id']])}}" style="display:inline" method="POST">
-                        @csrf                        
-                        <button type="submit" href="" class="dropdown-item d-flex btn btn-link"  
-                            @if(Auth::user()->hasRole('HOD')) 
+                    </a> @if(Auth::user()->unreadNotifications->count() > 0)
+                    <div class="dropdown-menu dropdown-menu-right dropdown-menu-arrow">
+                        @foreach ( Auth::user()->unreadNotifications as $notification)
+                        <form action="{{route('tickets.markread', ['id'=>$notification->id,'ticket_id'=>$notification->data['ticket_id']])}}" style="display:inline"
+                            method="POST">
+                            @csrf
+                            <button type="submit" href="" class="dropdown-item d-flex btn btn-link" @if(Auth::user()->hasRole('HOD')) 
                                 name="readby_hod"
                              @elseif(Auth::user()->hasRole('Dasar'))
                              name="readby_dasar"
                              @elseif(Auth::user()->hasRole('PTM'))
                                 name="readby_ptm"
+                             @elseif(Auth::user()->hasRole('User'))
+                                name="readby_user"
+                             @elseif(Auth::user()->hasRole('Brillante'))
+                                name="readby_it"
                              @endif
                              >                            
                             <div>
@@ -38,11 +41,11 @@
                             </div>                                               
                         </button>
                         </form>
-                        @endforeach
-                        {{-- <div class="dropdown-divider"></div> 
-                        <a href="{{route('notifications')}}" class="dropdown-item text-center text-muted-dark">View All Notifications</a> --}}
-                    </div> 
-                    @endif                   
+                        @endforeach {{--
+                        <div class="dropdown-divider"></div>
+                        <a href="{{route('notifications')}}" class="dropdown-item text-center text-muted-dark">View All Notifications</a>                        --}}
+                    </div>
+                    @endif
                 </div>
                 <div class="dropdown">
                     <a href="#" class="nav-link pr-0 leading-none" data-toggle="dropdown">
@@ -60,8 +63,7 @@
                         @can('edit_profiles')
                         <a class="dropdown-item" href="/myprofile">
                             <i class="dropdown-icon fe fe-user"></i> Profile
-                        </a>
-                        @endcan                                               
+                        </a> @endcan
                         <div class="dropdown-divider"></div>
                         <a class="dropdown-item" href="{{ route('logout') }}" onclick="event.preventDefault();
                                                      document.getElementById('logout-form').submit();">
@@ -92,11 +94,11 @@
             </div>
             <div class="col-lg order-lg-first">
                 <ul class="nav nav-tabs border-0 flex-column flex-lg-row">
-                    {{-- <li class="nav-item">
+                    {{--
+                    <li class="nav-item">
                         <a href="{{route('home')}}" class="nav-link">
                             <i class="fe fe-home"></i> Home</a>
-                    </li> --}}
-                    @can('view_tickets')
+                    </li> --}} @can('view_tickets')
                     <li class="nav-item">
                         <a href="{{route('tickets.index')}}" class="nav-link">
                             <i class="fe fe-tag"></i>{{Auth::user()->hasRole('Admin') ? 'Tickets':'My Tickets'}}</a>
@@ -107,12 +109,9 @@
                             <i class="fe fe-package"></i> Modules</a>
                         <div class="dropdown-menu dropdown-menu-arrow">
                             @can('view_saps')
-                            <a href="{{route('saps.index')}}" class="dropdown-item">SAP Modules</a>
-                            @endcan @can('view_departments')
-                            <a href="{{route('departments.index')}}" class="dropdown-item">Departments</a>
-                            @endcan @can('view_applications')
-                            <a href="{{route('applications.index')}}" class="dropdown-item">Applications</a>
-                            @endcan
+                            <a href="{{route('saps.index')}}" class="dropdown-item">SAP Modules</a> @endcan @can('view_departments')
+                            <a href="{{route('departments.index')}}" class="dropdown-item">Departments</a> @endcan @can('view_applications')
+                            <a href="{{route('applications.index')}}" class="dropdown-item">Applications</a> @endcan
                         </div>
                     </li>
                     @endrole @role('Admin') {{-- Laravel-permission blade helper --}}
