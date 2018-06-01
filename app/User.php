@@ -12,11 +12,14 @@ use Modules\Sap\Entities\Sap;
 use Modules\Ticket\Entities\Reply;
 use App\Profile;
 use Cache;
+use App\Http\Traits\Hashidable;
+
 
 class User extends Authenticatable
 {
     use Notifiable;
     use HasRoles;
+    use Hashidable;
 
     /**
      * The attributes that are mass assignable.
@@ -27,6 +30,13 @@ class User extends Authenticatable
         'name', 'email', 'password',
     ];
 
+    private function getModel($model, $routeKey)
+{
+    $id = \Hashids::connection($model)->decode($routeKey)[0] ?? null;
+    $modelInstance = resolve($model);
+
+    return  $modelInstance->findOrFail($id);
+}
     /**
      * The attributes that should be hidden for arrays.
      *

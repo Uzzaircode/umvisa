@@ -23,10 +23,14 @@ class RouteServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        //
-
         parent::boot();
+
+        Route::bind('user', function ($value, $route) {
+            return $this->getModel(\App\User::class, $value);
+        });
     }
+    
+    
 
     /**
      * Define the routes for the application.
