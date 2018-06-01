@@ -18,7 +18,7 @@ Auth::routes();
 Route::get('login/{provider}',          'Auth\SocialAccountsController@redirectToProvider');
 Route::get('login/{provider}/callback', 'Auth\SocialAccountsController@handleProviderCallback');
 
-Route::group( ['middleware' => ['auth','timeout']], function() {
+Route::group( ['middleware' => 'auth'], function() {
     Route::resource('users', 'UsersController');
     Route::resource('roles', 'RolesController');
     Route::get('myprofile', 'UsersController@myprofile');
@@ -26,5 +26,4 @@ Route::group( ['middleware' => ['auth','timeout']], function() {
     Route::get('notifications','NotificationsController@index')->name('notifications');
 });
 
-Route::view('mail','emails.mail');
 Route::get('/home', 'HomeController@index')->name('home');

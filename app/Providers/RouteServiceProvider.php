@@ -25,9 +25,9 @@ class RouteServiceProvider extends ServiceProvider
     {
         parent::boot();
 
-        Route::bind('user', function ($value, $route) {
-            return $this->getModel(\App\User::class, $value);
-        });
+        // Route::bind('user', function ($value, $route) {
+        //     return $this->getModel(\App\User::class, $value);
+        // });
     }
     
     

@@ -3,8 +3,6 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Modules\Ticket\Repositories\TicketsRepository as TR;
-use App\Repositories\UsersRepository as UR;
 class HomeController extends Controller
 {
     /**
@@ -22,9 +20,8 @@ class HomeController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(TR $trepo, UR $urepo)
-    {   
-        // $tickets = $trepo->allTickets();            
+    public function index()
+    {                    
         return redirect()->route('tickets.index');
     }
 }
