@@ -30,13 +30,13 @@ class User extends Authenticatable
         'name', 'email', 'password',
     ];
 
-    private function getModel($model, $routeKey)
-{
-    $id = \Hashids::connection($model)->decode($routeKey)[0] ?? null;
-    $modelInstance = resolve($model);
+//     private function getModel($model, $routeKey)
+// {
+//     $id = \Hashids::connection($model)->decode($routeKey)[0] ?? null;
+//     $modelInstance = resolve($model);
 
-    return  $modelInstance->findOrFail($id);
-}
+//     return  $modelInstance->findOrFail($id);
+// }
     /**
      * The attributes that should be hidden for arrays.
      *
@@ -64,10 +64,10 @@ class User extends Authenticatable
 
     // Check if user is online
 
-    public function isOnline()
-    {
-    return Cache::has('user-is-online-' . $this->id);
-    }
+    // public function isOnline()
+    // {
+    // return Cache::has('user-is-online-' . $this->id);
+    // }
 
     public function profileOwner($user){
         return $this->id == $user->id;
