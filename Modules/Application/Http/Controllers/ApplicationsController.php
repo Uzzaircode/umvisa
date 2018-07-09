@@ -5,9 +5,14 @@ namespace Modules\Application\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Routing\Controller;
+use PragmaRX\Countries\Package\Countries as Country;
 
-class ApplicationController extends Controller
+class ApplicationsController extends Controller
 {
+    public function __construct(Country $country)
+    {
+        $this->country = $country;
+    }
     /**
      * Display a listing of the resource.
      * @return Response
@@ -23,7 +28,8 @@ class ApplicationController extends Controller
      */
     public function create()
     {
-        return view('application::create');
+        $countries = $this->country->all()->pluck('name.common','flag.flag-icon');
+        return view('application::create', compact('countries'));
     }
 
     /**
@@ -68,5 +74,10 @@ class ApplicationController extends Controller
      */
     public function destroy()
     {
+    }
+
+    public function testFlag(){
+        $countries = $this->country->all()->pluck('name.common');
+        return view('application::test',compact('countries'));
     }
 }
