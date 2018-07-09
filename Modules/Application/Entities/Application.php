@@ -3,13 +3,13 @@
 namespace Modules\Application\Entities;
 
 use Illuminate\Database\Eloquent\Model;
-use Modules\Ticket\Entities\Ticket;
+use App\User;
+use Spatie\ModelStatus\HasStatuses;
+
 
 class Application extends Model
 {
-    protected $fillable = ['name'];
+    use HasStatuses;
 
-    public function tickets(){
-        return $this->hasMany(Ticket::class);
-    }
+    protected $guarded = [];
 }

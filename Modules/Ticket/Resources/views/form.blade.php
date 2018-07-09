@@ -15,7 +15,7 @@
     <div class="card">
     @cardHeader
     {{-- Card Header --}}
-    @slot('card_title')<i class="fe fe-tag"></i> {{isset($ticket) ? 'Edit Ticket':'New Ticket'}}  
+    @slot('card_title')<i class="fe fe-tag"></i> {{isset($ticket) ? 'Edit Application':'New Application'}}  
     @endslot
     {{-- Card Options --}}
     <div class="card-options"> 
@@ -25,13 +25,10 @@
     @endif     
     </div>
     @endcardHeader                
-        @cardBody                                           
+        @cardBody  
+        {{-- Name --}}
         <div class="form-group"  @if ($errors->has('subject')) has-error @endif>
-                <label for="" class="form-label">Subject</label>
-                <input type="hidden" name="user_id" value="{{Auth::id()}}">
-               
-                <input type="hidden" name="ticket_number" 
-                value="{{isset($ticket) ? $ticket->ticket_number : $ticket_rn}}">               
+                <label for="" class="form-label">Name of Applicant</label>
                 <input type="text" class="form-control" name="subject" value="{{old('subject',$ticket->subject ?? null)}}">
                 @if ($errors->has('subject'))
                         <p class="text-danger">{{ $errors->first('subject') }}</p> 
@@ -77,66 +74,13 @@
                                         <img src="{{asset('img/file-icons/xls.png')}}" alt="">
                                         </a>
                                     @endif
-                              
                             </div>  
                             @endforeach          
                 </div>
             </div>
                 <br>
             @endif
-            @endif
-            <div class="form-group"  @if ($errors->has('dept_id')) has-error @endif>
-                    <label for="" class="form-label">Department</label>
-            <select name="dept_id" id="" class="form-control selectize" placeholder="Select department">
-                    @foreach($depts as $dept)                                    
-                        <option value="{{$dept->id}}" 
-                                @if(isset($ticket))
-                                     {{$ticket->dept_id == $dept->id ? 'selected':'' }}    
-                                @endif
-                        >
-                            {{$dept->name}}
-                        </option>
-                    @endforeach            
-            </select>                                               
-                    @if ($errors->has('dept_id'))
-                    <p class="text-danger">{{ $errors->first('dept_id') }}</p> 
-                    @endif            
-            </div>
-            <div class="form-group"  @if ($errors->has('sap_id')) has-error @endif>
-                    <label for="" class="form-label">SAP Modules</label>
-            <select name="sap_id" id="sap_id" class="form-control selectize">
-                @foreach($sap_users as $sap)
-            <option data-value="{{$sap->code}}" value="{{$sap->id}}"
-                @if(isset($ticket))
-                    {{$ticket->sap->id == $sap->id ? 'selected':''}}
-                @endif                
-                >{{$sap->name}}</option>
-                @endforeach                    
-            </select>                    
-                    @if ($errors->has('saps'))
-                    <p class="text-danger">{{ $errors->first('saps') }}</p> @endif            
-            </div>
-            <div class="form-group">                 
-                <label for="" class="form-label">Integration with another application?</label>
-                <select name="integration" id="" onchange="showDiv(this)" class="form-control selectize" placeholder="Please select">
-                        <option value="">Please Select</option>
-                <option value="1" {{isset($ticket) && $ticket->integration == 1 ? 'selected':''}}>Yes</option>
-                        <option value="0" {{isset($ticket) && $ticket->integration == 0 ? 'selected':''}}>No</option>
-                    </select>
-              </div> 
-             
-            <div class="form-group"  @if ($errors->has('application_id')) has-error @endif>
-                    <label for="" class="form-label">Applications</label>
-
-                <select name="application_id" id="app_id" class="form-control selectize" placeholder="Select the application">
-                    @foreach($apps as $app) 
-                <option value="{{$app->id}}" {{isset($ticket) && $ticket->application_id == $app->id ? 'selected':''}}>{{$app->name}}</option> 
-                    @endforeach 
-                </select>
-                @if ($errors->has('application_id'))
-                        <p class="text-danger">{{ $errors->first('application_id') }}</p> 
-                @endif                 
-            </div>
+            @endif                    
             
             <div class="form-group"  @if ($errors->has('ticket_type')) has-error @endif>
                     <label for="" class="form-label">Ticket Type</label>

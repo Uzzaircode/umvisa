@@ -17,9 +17,6 @@ use Modules\Ticket\Http\Requests\CreateTicketRequest as CTR;
 use Modules\Ticket\Repositories\TicketsRepository as TR;
 use Modules\Ticket\Repositories\TicketsAttachmentRepository as TAR;
 use Modules\Ticket\Repositories\RepliesRepository as RR;
-use Modules\Department\Repositories\DeptsRepository as DR;
-use Modules\Application\Repositories\AppsRepository as AR;
-use Modules\Sap\Repositories\SapsRepository as SR;
 use App\Repositories\UsersRepository as UR;
 use Modules\Ticket\Entities\TicketStatus as TS;
 use Modules\Ticket\Entities\TicketsStatusArray as TSA;
@@ -57,15 +54,12 @@ class TicketsController extends Controller
 {
     use Authorizable;
     
-    public function __construct(UR $users, TR $tickets, SR $saps, AR $apps, Auth $auth, DR $depts, TAR $ticketsAttachment, TSA $ticketStatusArray, NTS $notifications, TS $ticketStatus, RR $replies, Profile $profile)
+    public function __construct(UR $users, TR $tickets, Auth $auth, TAR $ticketsAttachment, TSA $ticketStatusArray, NTS $notifications, TS $ticketStatus, RR $replies, Profile $profile)
     {
         $this->entity = 'ticket';
         $this->users = $users;
-        $this->tickets = $tickets;
-        $this->saps = $saps;
-        $this->apps = $apps;
+        $this->tickets = $tickets;       
         $this->auth = $auth;
-        $this->depts = $depts;
         $this->ticketsAttachment = $ticketsAttachment;
         $this->ticketStatusArray = $ticketStatusArray;
         $this->ticketStatus = $ticketStatus;
@@ -88,10 +82,7 @@ class TicketsController extends Controller
      */
     public function create()
     {
-        $users = $this->users->pluck('name', 'id');
-        $saps = $this->saps->pluck('name', 'id');
-        $sap_users = $this->auth::user()->saps;
-        $depts = $this->depts->fetchUsersDept($this->auth::user());
+        $users = $this->users->pluck('name', 'id');        
         $apps = $this->apps->all();
         $user_tickets = $this->auth::user()->tickets;
         if ($this->tickets->count() < 0) {
@@ -99,7 +90,7 @@ class TicketsController extends Controller
         } else {
             $ticket_rn = $this->tickets->ticketNumber();
         }
-        return view('ticket::form', compact('users', 'saps', 'depts', 'sap_users', 'apps', 'user_tickets', 'ticket_rn'));
+        return view('ticket::form', compact('users','apps', 'user_tickets', 'ticket_rn'));
     }
 
     /**
@@ -108,10 +99,7 @@ class TicketsController extends Controller
      */
     public function show($id)
     {
-        $ticket = $this->tickets->find($id);
-        $saps = $this->saps->pluck('name', 'id');
-        $sap_users = $this->auth::user()->saps;
-        $depts = $this->depts->all();
+        $ticket = $this->tickets->find($id);       
         $apps = $this->apps->all();
         $user_tickets = Auth::user()->tickets;
         $ticket_rn = $this->tickets->ticketNumber();
@@ -121,7 +109,7 @@ class TicketsController extends Controller
         $it_persons = User::role('Brillante')->get();
         usort($date_arr, array($this, "date_sort"));
 
-        return view('ticket::show', compact('users', 'saps', 'depts', 'sap_users', 'apps', 'user_tickets', 'ticket_rn', 'ticket', 'replies', 'status', 'date_arr','it_persons'));
+        return view('ticket::show', compact('users','apps', 'user_tickets', 'ticket_rn', 'ticket', 'replies', 'status', 'date_arr','it_persons'));
     }
 
     /**
@@ -132,11 +120,9 @@ class TicketsController extends Controller
     public function store(CTR $request, AppMailer $mailer)
     {
         // fetch all requests except for ticket number
-        $ticket = $this->tickets->create($request->except('ticket_number'));
-        // fetch SAP ID
-        $sap_id = $request->sap_id;
+        $ticket = $this->tickets->create($request->except('ticket_number'));       
         // then find SAP Code
-        $sap_code = $this->saps->find($sap_id)->code;
+        $sap_code = "Hello";
         // fetch ticket number
         $ticket_rn = $request->ticket_number;
         // save ticket number into database

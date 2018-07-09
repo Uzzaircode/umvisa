@@ -1,0 +1,24 @@
+{
+  "name": "flag-icon-css-3",
+  "main": "css/flag-icon.min.css",
+  "ignore": [
+    "**/.*",
+    "assets",
+    "Gruntfile.coffee",
+    "index.html",
+    "LICENSE",
+    "package.json"
+  ],
+  "homepage": "https://github.com/belikemike/flag-icon-css",
+  "version": "0.8.4",
+  "_release": "0.8.4",
+  "_resolution": {
+    "type": "version",
+    "tag": "0.8.4",
+    "commit": "e5977168e9bedbc00febe64828a555c04ccc89a8"
+  },
+  "_source": "https://github.com/belikemike/flag-icon-css.git",
+  "_target": "^0.8.4",
+  "_originalSource": "flag-icon-css-3",
+  "_direct": true
+}

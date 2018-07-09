@@ -16,6 +16,6 @@ class ApplicationDatabaseSeeder extends Seeder
     {
         Model::unguard();
 
-        $this->call(AppListTableSeeder::class);
+        // $this->call("OthersTableSeeder");
     }
 }

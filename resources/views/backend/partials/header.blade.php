@@ -7,8 +7,8 @@
             <div class="d-flex order-lg-2 ml-auto">
                 @if(Auth::user()->hasRole(['Admin','User']))
                 <div class="nav-item d-none d-md-flex">
-                    <a href="{{route('tickets.create')}}" class="btn btn-sm btn-outline-primary">
-                        <i class="fe fe-plus-circle"></i> New Ticket</a>
+                    <a href="{{route('applications.create')}}" class="btn btn-sm btn-outline-primary">
+                        <i class="fe fe-plus-circle"></i> New Application</a>
                 </div>
                 @endif
                 <div class="dropdown d-none d-md-flex">
@@ -41,9 +41,7 @@
                             </div>                                               
                         </button>
                         </form>
-                        @endforeach {{--
-                        <div class="dropdown-divider"></div>
-                        <a href="{{route('notifications')}}" class="dropdown-item text-center text-muted-dark">View All Notifications</a>                        --}}
+                        @endforeach 
                     </div>
                     @endif
                 </div>
@@ -51,12 +49,7 @@
                     <a href="#" class="nav-link pr-0 leading-none" data-toggle="dropdown">
                         <span class="avatar" style="background-image: url({{asset(Auth::user()->profile->avatar)}})"></span>
                         <span class="ml-2 d-none d-lg-block">
-                            <span class="text-default">{{Auth::user()->name}}</span>
-                            <small class="text-muted d-block mt-1">{{Auth::user()->roles()->pluck('name')->first()}} @if(!empty(Auth::user()->profile->department->name))                                   @role('HOD')
-                                    {!! wordwrap(Auth::user()->profile->department->name,30,"<br>\n")!!} 
-                                    @endrole
-                                    @endif 
-                            </small>                            
+                            <span class="text-default">{{Auth::user()->name}}</span>                       
                         </span>
                     </a>
                     <div class="dropdown-menu dropdown-menu-right dropdown-menu-arrow">
@@ -94,27 +87,22 @@
             </div>
             <div class="col-lg order-lg-first">
                 <ul class="nav nav-tabs border-0 flex-column flex-lg-row">
-                    {{--
-                    <li class="nav-item">
-                        <a href="{{route('home')}}" class="nav-link">
-                            <i class="fe fe-home"></i> Home</a>
-                    </li> --}} @can('view_tickets')
+                    @can('view_tickets')
                     <li class="nav-item">
                         <a href="{{route('tickets.index')}}" class="nav-link">
                             <i class="fe fe-tag"></i>{{Auth::user()->hasRole('Admin') ? 'Tickets':'My Tickets'}}</a>
                     </li>
-                    @endcan @role('Admin') {{-- Laravel-permission blade helper --}}
+                    @endcan 
+                    
+                    @role('Admin') {{-- Laravel-permission blade helper --}}
                     <li class="nav-item dropdown">
                         <a href="javascript:void(0)" class="nav-link" data-toggle="dropdown">
                             <i class="fe fe-package"></i> Modules</a>
                         <div class="dropdown-menu dropdown-menu-arrow">
-                            @can('view_saps')
-                            <a href="{{route('saps.index')}}" class="dropdown-item">SAP Modules</a> @endcan @can('view_departments')
-                            <a href="{{route('departments.index')}}" class="dropdown-item">Departments</a> @endcan @can('view_applications')
-                            <a href="{{route('applications.index')}}" class="dropdown-item">Applications</a> @endcan
+                           
+                            <a href="" class="dropdown-item">Applications</a>
                         </div>
-                    </li>
-                    @endrole @role('Admin') {{-- Laravel-permission blade helper --}}
+                    </li>                   
                     <li class="nav-item dropdown">
                         <a href="javascript:void(0)" class="nav-link" data-toggle="dropdown">
                             <i class="fe fe-shield"></i> Administration</a>

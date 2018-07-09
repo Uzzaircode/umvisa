@@ -4,7 +4,7 @@ var gulp = require('gulp'),
     autoprefixer = require('gulp-autoprefixer'),
     rtlcss = require('gulp-rtlcss'),
     pckg = require('./package.json');
-    maps = require('gulp-sourcemaps');
+maps = require('gulp-sourcemaps');
 
 gulp.task('styles', function () {
     return gulp.src('resources/assets/scss/bundle.scss', { base: '.' })
@@ -45,6 +45,15 @@ gulp.task('styles-plugins', function () {
 gulp.task('watch', ['styles', 'styles-plugins'], function () {
     gulp.watch('resources/assets/scss/**/*.scss', ['styles']);
     gulp.watch('resources/assets/plugins/**/*.scss', ['styles-plugins']);
+});
+
+gulp.task('move-bower-css', function () {
+    gulp.src("./resources/vendors/**/css/**/*")
+        .pipe(gulp.dest("./public/vendors/"));
+});
+gulp.task('move-bower-js', function () {
+    gulp.src("./resources/vendors/**/js/**/*")
+        .pipe(gulp.dest("./public/vendors/"));
 });
 
 gulp.task('build', ['styles', 'styles-plugins']);
