@@ -13,3 +13,4 @@ yarn-error.log
 .env
 /tabler
 /public/uploads/attachments
+/public/vendors
