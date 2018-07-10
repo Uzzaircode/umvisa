@@ -2,7 +2,7 @@
         <div class="row">
             <div class="col-3">
                 <label for="" class="form-label">Salutation</label>
-                <select name="salutation" id="" class="form-control">
+                <select name="salutation" id="" class="form-control" readonly>
                     <option value="Mr">Mr</option>                                
                     <option value="Ms">Ms</option>
                     <option value="Dr">Dr</option>
@@ -11,7 +11,7 @@
             </div>
             <div class="col-9">
                 <label for="" class="form-label">Applicant Name</label>
-                <input type="text" class="form-control" name="name" value="">
+                <input type="text" class="form-control" name="name" value="" readonly>
 @include('shared._errors',['entity'=>'name'])
             </div>
         </div>
@@ -20,7 +20,7 @@
         <div class="row">
             <div class="col-5">
                 <label for="" class="form-label">Matric Number</label>
-                <input type="text" class="form-control" name="matric_num" value="">
+                <input type="text" class="form-control" name="matric_num" value="" readonly>
 @include('shared._errors',['entity'=>'matric_num'])
             </div>
             <div class="col-5">
@@ -49,7 +49,7 @@
         <div class="row">
             <div class="col-4">
                 <label for="" class="form-label">IC Number</label>
-                <input type="text" class="form-control" name="ic_num" value="">
+                <input type="text" class="form-control" name="ic_num" value="" readonly>
 @include('shared._errors',['entity'=>'ic_num'])
             </div>
             <div class="col-4">

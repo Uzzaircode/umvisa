@@ -48,8 +48,8 @@ gulp.task('watch', ['styles', 'styles-plugins'], function () {
 });
 
 gulp.task('move-bower', function(){
-    gulp.src("./resources/vendors/**/*")
-      .pipe(gulp.dest("./public/vendors/"));
+    gulp.src("./resources/vendors/**/*/.css")
+      .pipe(gulp.dest("./public/vendors/yellow"));
   });
 
 gulp.task('build', ['styles', 'styles-plugins']);

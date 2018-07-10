@@ -6,12 +6,14 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Routing\Controller;
 use PragmaRX\Countries\Package\Countries as Country;
+use Modules\Application\Repositories\ApplicationRepository as AR;
 
 class ApplicationsController extends Controller
 {
-    public function __construct(Country $country)
+    public function __construct(Country $country,AR $ar)
     {
         $this->country = $country;
+        $this->ar = $ar;
     }
     /**
      * Display a listing of the resource.
@@ -39,6 +41,7 @@ class ApplicationsController extends Controller
      */
     public function store(Request $request)
     {
+        dd($this->ar->create($request->all()));
     }
 
     /**

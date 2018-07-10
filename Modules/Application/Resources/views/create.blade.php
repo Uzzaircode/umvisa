@@ -7,7 +7,7 @@
         {{-- Start Form --}} @if(isset($ticket->id)) {{-- Edit Form --}}
         <form action="{{route('tickets.update',['id'=>$ticket->id])}}" class="" method="POST" enctype="multipart/form-data">
             {{method_field('PUT')}} @else {{-- Store Form --}}
-            <form action="{{route('tickets.store')}}" class="" method="POST" enctype="multipart/form-data">
+            <form action="{{route('applications.store')}}" class="" method="POST" enctype="multipart/form-data">
                 @endif @csrf
                 <div class="card">
                     @cardHeader {{-- Card Header --}} @slot('card_title')
@@ -40,15 +40,18 @@
 </div>
 </form>
 @endsection
-
-    @include('asset-partials.selectize') 
+ 
 @section('page-css')
 <link rel="stylesheet" href="{{asset('vendors/flag-icon-css-3/css/flag-icon.css')}}">
+    @include('asset-partials.datetimepicker.css.file')
+    @include('asset-partials.dropzone.css.file')
 @endsection
  
 @section('page-js')
 <script src="https://cdnjs.cloudflare.com/ajax/libs/magnific-popup.js/1.1.0/jquery.magnific-popup.min.js"></script>
-<script>
+@include('asset-partials.datetimepicker.js.file')
+@include('asset-partials.dropzone.js.file')
+<script type="text/javascript">
     // Image popups
 $('#attachment').magnificPopup({
   delegate: 'a',
@@ -65,33 +68,40 @@ $('#attachment').magnificPopup({
 
 $(function(e){
     $('.faculty, .university, .grant').click(function(e){
-        $('.acc-no-input').show('fast');  
+        $('.acc-no-input').show('fast');
+        $('.others-input').hide('fast');
+        $('.sponsorship-input').hide('fast'); 
     });
 });
 $(function(e){
-    $('#others').click(function(e){
-        $('.acc-no-input').hide('fast');  
+    $('.others').click(function(e){
+        $('.others-input').show('fast');
+        $('.acc-no-input').hide('fast');        
+        $('.sponsorship-input').hide('fast');
     });
 });
 $(function(e){
-    $('#sponsorship').click(function(e){
-        $('.acc-no-input').hide('fast');  
+    $('.sponsorship').click(function(e){
+        $('.sponsorship-input').show('fast');
+        $('.acc-no-input').hide('fast');
+        $('.others-input').hide('fast');  
     });
 });
 
-
-// $(function(e){
-//     $('.university').click(function(e){
-//         $('.acc-no-input').show('fast');      
-//     });
-// });
-
-// $(function(e){
-//     $('.grant').click(function(e){
-//         $('.acc-no-input').show('fast');     
-//     });
-// });
-
+        $('#datetimepicker1').datetimepicker({
+            format: 'L'
+        });
+        $('#datetimepicker2').datetimepicker({
+            useCurrent: false,
+            format:'L'
+        });
+        $("#datetimepicker1").on("change.datetimepicker", function (e) {
+            $('#datetimepicker2').datetimepicker('minDate', e.date);
+        });
+        $("#datetimepicker2").on("change.datetimepicker", function (e) {
+            $('#datetimepicker1').datetimepicker('maxDate', e.date);
+        });
 
 </script>
+    
 @endsection

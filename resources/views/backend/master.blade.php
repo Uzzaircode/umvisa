@@ -39,10 +39,7 @@
         @include('backend.partials.footer')
     </div>
 <script src="{{asset('js/vendors/jquery-3.2.1.min.js')}}"></script>
-<script src="{{asset('js/vendors/bootstrap.bundle.min.js')}}"></script>   
-    @yield('chart-js') 
-    @yield('maps-js') 
-    @yield('input-mask-js')
+<script src="{{asset('js/vendors/bootstrap.bundle.min.js')}}"></script>       
     @yield('datatables-js')
     @yield('selectize-js')
     @yield('input-file-js')

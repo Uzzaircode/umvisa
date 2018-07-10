@@ -12,4 +12,6 @@ class Application extends Model
     use HasStatuses;
 
     protected $guarded = [];
+
+    
 }
