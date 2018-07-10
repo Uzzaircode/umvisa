@@ -63,5 +63,35 @@ $('#attachment').magnificPopup({
   }
 });
 
+$(function(e){
+    $('.faculty, .university, .grant').click(function(e){
+        $('.acc-no-input').show('fast');  
+    });
+});
+$(function(e){
+    $('#others').click(function(e){
+        $('.acc-no-input').hide('fast');  
+    });
+});
+$(function(e){
+    $('#sponsorship').click(function(e){
+        $('.acc-no-input').hide('fast');  
+    });
+});
+
+
+// $(function(e){
+//     $('.university').click(function(e){
+//         $('.acc-no-input').show('fast');      
+//     });
+// });
+
+// $(function(e){
+//     $('.grant').click(function(e){
+//         $('.acc-no-input').show('fast');     
+//     });
+// });
+
+
 </script>
 @endsection

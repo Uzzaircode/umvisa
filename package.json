@@ -10,7 +10,7 @@
         "production": "cross-env NODE_ENV=production node_modules/webpack/bin/webpack.js --no-progress --hide-modules --config=node_modules/laravel-mix/setup/webpack.config.js",
         "gulp-watch": "gulp watch",
         "gulp-build": "gulp build",
-        "move-bower-css": "gulp move-bower-css",
+        "move-bower": "gulp move-bower",
         "move-bower-js": "gulp move-bower-js"
     },
     "devDependencies": {
