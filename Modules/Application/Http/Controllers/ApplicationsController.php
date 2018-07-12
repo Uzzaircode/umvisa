@@ -7,13 +7,25 @@ use Illuminate\Http\Response;
 use Illuminate\Routing\Controller;
 use PragmaRX\Countries\Package\Countries as Country;
 use Modules\Application\Repositories\ApplicationRepository as AR;
+use Modules\Application\Http\Requests\ApplicationsRequest;
+use Modules\Application\Entities\Application;
+use Spatie\ModelStatus\HasStatuses;
+use Auth;
+use Carbon\Carbon;
+use Session;
 
 class ApplicationsController extends Controller
 {
-    public function __construct(Country $country,AR $ar)
+    protected $draft;
+    protected $draftMessage;
+
+    public function __construct(Country $country, AR $app, Auth $auth)
     {
         $this->country = $country;
-        $this->ar = $ar;
+        $this->app = $app;
+        $this->auth = $auth;
+        $this->draft = 'Draft';
+        $this->draftMessage = 'Successfully created';
     }
     /**
      * Display a listing of the resource.
@@ -30,8 +42,9 @@ class ApplicationsController extends Controller
      */
     public function create()
     {
-        $countries = $this->country->all()->pluck('name.common','flag.flag-icon');
-        return view('application::create', compact('countries'));
+        $user = $this->auth::user();
+        $countries = $this->country->all()->pluck('name.common', 'flag.flag-icon');
+        return view('application::create', compact('countries', 'user'));
     }
 
     /**
@@ -39,9 +52,11 @@ class ApplicationsController extends Controller
      * @param  Request $request
      * @return Response
      */
-    public function store(Request $request)
+    public function store(ApplicationsRequest $request)
     {
-        dd($this->ar->create($request->all()));
+        $this->app->saveApplication($request);
+                 
+        return redirect()->route('applications.index');
     }
 
     /**
@@ -79,8 +94,14 @@ class ApplicationsController extends Controller
     {
     }
 
-    public function testFlag(){
+    public function testFlag()
+    {
         $countries = $this->country->all()->pluck('name.common');
-        return view('application::test',compact('countries'));
+        return view('application::test', compact('countries'));
+    }
+
+    public function isDraft($request)
+    {
+        return $request->has('draft');
     }
 }

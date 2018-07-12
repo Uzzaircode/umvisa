@@ -90,8 +90,8 @@
                 <ul class="nav nav-tabs border-0 flex-column flex-lg-row">
                     @can('view_tickets')
                     <li class="nav-item">
-                        <a href="{{route('tickets.index')}}" class="nav-link">
-                            <i class="fe fe-tag"></i>{{Auth::user()->hasRole('Admin') ? 'Tickets':'My Tickets'}}</a>
+                        <a href="{{route('applications.index')}}" class="nav-link">
+                            <i class="fe fe-tag"></i>{{Auth::user()->hasRole('Admin') ? 'Application':'My Applications'}}</a>
                     </li>
                     @endcan 
                     

@@ -117,6 +117,17 @@ return [
     |
     */
 
-    'attributes' => [],
+    'attributes' => [
+
+        'title' => 'Title of Activity/Event',
+        'venue' => 'Venue',
+        'country' => 'Country',
+        'start_date' => 'Start Date',
+        'end_date' => 'End Date',
+        'financial_aid' => 'Financial Assistance',
+        'account_no_ref' => 'Account No.',
+        'sponsor_name' => 'Sponsor Name',
+        'others_remarks' => 'Others Remarks'
+    ],
 
 ];

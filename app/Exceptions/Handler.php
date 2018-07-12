@@ -6,6 +6,7 @@ use Exception;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Auth\AuthenticationException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use Illuminate\Routing\Exceptions\InvalidSignatureException;
 use Session;
 
 class Handler extends ExceptionHandler
@@ -45,21 +46,43 @@ class Handler extends ExceptionHandler
      * @return \Illuminate\Http\Response
      */
     public function render($request, Exception $exception)
-{
-    if ($exception instanceof AuthorizationException) {
-        return $this->unauthorized($request, $exception);
+    {
+        if ($exception instanceof AuthorizationException) {
+            return $this->unauthorized($request, $exception);
+        }
+        if ($exception instanceof AuthenticationException) {
+            return $this->unauthenticated($request, $exception);
+        }
+        if ($exception instanceof InvalidSignatureException) {
+            return $this->invalidUrlSignature($request, $exception);
+        }
+
+        return parent::render($request, $exception);
     }
 
-    return parent::render($request, $exception);
-}
+    private function unauthorized($request, Exception $exception)
+    {
+        if ($request->expectsJson()) {
+            return response()->json(['error' => $exception->getMessage()], 403);
+        }
 
-private function unauthorized($request, Exception $exception)
-{
-    if ($request->expectsJson()) {
-        return response()->json(['error' => $exception->getMessage()], 403);
+        Session::flash('fail', 'You are not allowed to perform the action');
+        return redirect()->back();
     }
 
-    Session::flash('fail','You are not allowed to perform the action');
-    return redirect()->back();
-}
+    // public function unauthenticated($request, Exception $exception)
+    // {
+    //     return $request->expectsJson()
+    //                 ? response()->json(['message' => $exception->getMessage()], 401)
+    //                 : redirect()->guest(route('login'));
+        
+    //     Session::flash('fail', 'You are not authenticated. Please log in');
+        
+    // }
+
+    public function invalidUrlSignature($request, Exception $exception)
+    {
+        Session::flash('fail', 'Security token mismatched. You\'re not allowed to perform the operation');
+        return redirect()->back();
+    }
 }

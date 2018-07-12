@@ -14,24 +14,9 @@ class UserTableSeeder extends Seeder
      */
     public function run()
     {
-        $admin = DB::table('users')->insert([
-            'name' => 'Administrator',
-            'email' => 'admin@test.com',
-            'password' => bcrypt('secret'),
-        ]);
-        $admin->profile->create([
-            'user_id' => $admin->id,
-            'avatar' => 'uploads/avatars/avatar1.jpg'
-        ]);
-
-        $user = DB::table('users')->insert([
-            'name' => 'User',
-            'email' => 'admin@test.com',
-            'password' => bcrypt('secret'),
-        ]);
-        $user->profile->create([
-            'user_id' => $admin->id,
-            'avatar' => 'uploads/avatar/avatar2.jpg'
-        ]);
+        factory(App\User::class, 2)->create()->each(function($u) {
+            $u->profile()->save(factory(App\Profile::class)->make());
+            $u->assignRole('User');
+          });
     }
 }

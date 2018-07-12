@@ -3,40 +3,37 @@
 <div class="row">
     @isset($ticket)
     @include('ticket::layouts.progress') @endisset
-    <div class="col-lg-12 col-md-12">
-        {{-- Start Form --}} @if(isset($ticket->id)) {{-- Edit Form --}}
+    <div class="col-lg-7 col-md-7">
+        @if(isset($ticket->id))
         <form action="{{route('tickets.update',['id'=>$ticket->id])}}" class="" method="POST" enctype="multipart/form-data">
-            {{method_field('PUT')}} @else {{-- Store Form --}}
+            {{method_field('PUT')}} @else
             <form action="{{route('applications.store')}}" class="" method="POST" enctype="multipart/form-data">
-                @endif @csrf
+                @endif
+                @csrf
                 <div class="card">
-                    @cardHeader {{-- Card Header --}} @slot('card_title')
-                    <i class="fe fe-tag"></i> {{isset($ticket) ? 'Edit Application':'New Application'}} @endslot {{-- Card
-                    Options --}}
-                    <div class="card-options">
-
+                    <div class="card-header sticky-top" style="background:white">
+                        <h3 class="card-title"><i class="fe fe-file-text"></i> {{isset($ticket) ? 'Edit Application':'New Application'}}</h3>
+                        <div class="card-options">
+    @include('application::components._form-action-buttons')
+                        </div>
                     </div>
-                    @endcardHeader @cardBody
-                    <p class="lead ">Applicant Details</p>
+                    <div class="card-body">
     @include('application::components._applicant-details')
-                    <hr>
-                    <p class="lead ">Travel Information</p>
     @include('application::components._travel-information')
-                    <hr>
-                    <p class="lead ">Attachments</p>
     @include('application::components._attachment')
-
-                    <div class="form-group">
-                        <button class="btn btn-md btn-primary" name="submit_hod"><i class="fe fe-send"></i> {{isset($ticket) ? 'Submit':'Submit'}}</button>
-
-                        <button class="btn btn-md btn-secondary" name="draft"><i class="fe fe-save"></i> {{isset($ticket) ? 'Update Draft':'Save As Draft'}}</button>
-
-                        <a href="{{route('tickets.index')}}" class="btn btn-md btn-secondary">Back</a>
                     </div>
-                    @endcardBody
                 </div>
     </div>
-
+    <div class="col col-lg-5 col-md-5">
+            <div class='card'>
+                    <div class='card-header'>
+                        <p class='card-title'>Remarks</p>
+                    </div>
+                    <div class='card-body'>
+            @include('application::components._comments')
+                    </div>
+                </div>
+    </div>
 </div>
 </form>
 @endsection
@@ -49,8 +46,8 @@
  
 @section('page-js')
 <script src="https://cdnjs.cloudflare.com/ajax/libs/magnific-popup.js/1.1.0/jquery.magnific-popup.min.js"></script>
-@include('asset-partials.datetimepicker.js.file')
-@include('asset-partials.dropzone.js.file')
+    @include('asset-partials.datetimepicker.js.file')
+    @include('asset-partials.dropzone.js.file')
 <script type="text/javascript">
     // Image popups
 $('#attachment').magnificPopup({
@@ -103,5 +100,4 @@ $(function(e){
         });
 
 </script>
-    
 @endsection
