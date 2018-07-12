@@ -16,16 +16,12 @@ use Session;
 
 class ApplicationsController extends Controller
 {
-    protected $draft;
-    protected $draftMessage;
-
+    
     public function __construct(Country $country, AR $app, Auth $auth)
     {
         $this->country = $country;
         $this->app = $app;
-        $this->auth = $auth;
-        $this->draft = 'Draft';
-        $this->draftMessage = 'Successfully created';
+        $this->auth = $auth;       
     }
     /**
      * Display a listing of the resource.
@@ -54,8 +50,7 @@ class ApplicationsController extends Controller
      */
     public function store(ApplicationsRequest $request)
     {
-        $this->app->saveApplication($request);
-                 
+        $this->app->saveApplication($request);                 
         return redirect()->route('applications.index');
     }
 

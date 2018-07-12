@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class ApplicationAttachment extends Model
 {
-    protected $table = 'ticketattachments';
+    protected $table = 'applicationattachments';
     protected $guarded = [];
 
     public function application(){

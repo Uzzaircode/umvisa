@@ -6,17 +6,28 @@ use App\User;
 use Carbon\Carbon;
 use Session;
 
-class ApplicationRepository extends AbstractRepository implements ApplicationInterface{
-
+class ApplicationRepository extends AbstractRepository implements ApplicationInterface
+{
     protected $modelClassName = "Modules\Application\Entities\Application";
     protected $applicationAttachmentModel = "Modules\Application\Entities\ApplicationAttachment";
     protected $totalDaysBeforeSubmission = 21;
     protected $draft;
     protected $draftMessage = 'Success';
 
-    public function saveApplication($request){
+    public function saveApplication($request)
+    {
+        $app = $this->saveInput($request);
+        //check if there is any attachments
+        $this->hasAttachments($request, $app);
+        //check for late submission
+        $this->checkForLateSubmission($app);
+        // save it as draft or final
+        $this->saveOrDraft($request, $app);
+    }
 
-        $app = $this->modelClassName::create([
+    public function saveInput($request)
+    {
+        return $this->modelClassName::create([
             'user_id' => $request->user_id,
             'title' => $request->title,
             'venue' => $request->venue,
@@ -28,29 +39,9 @@ class ApplicationRepository extends AbstractRepository implements ApplicationInt
             'sponsor_name' => $request->sponsor_name,
             'others_remarks' => $request->others_remarks,
         ]);
-        
-        $this->hasAttachments($request,$app);
-
-        switch ($request->has('action')) {
-            case 'draft':
-            $app->setStatus('Draft', 'Successfully created');
-            $app->save();
-            Session::flash('success', $this->draftMessage);   
-            break;
-            case 'save':
-            $app->setStatus('Submitted');
-            Session::flash('success', $this->draftMessage);   
-            break;
-        }
-        if($this->getTotalDaysBeforeSubmission($app) < $this->totalDaysBeforeSubmission){
-            $app->comment([
-                'body' => 'We have received your application, however we wish you to draw your attention for you to submit the application to our office not less than '.$this->$totalDaysBeforeSubmission.' days prior to the event as to ensure that you are granted permission from the University before attending any activity in the future. Thank you.',
-            ],$this->admin());
-        }
     }
-
-    public function hasAttachments($request,$app){
-
+    public function hasAttachments($request, $app)
+    {
         if ($request->hasFile('attachments')) {
             // $repo->uploadFiles(['files'], $ticket);
             foreach ($request->file('attachments') as $file) {
@@ -59,7 +50,7 @@ class ApplicationRepository extends AbstractRepository implements ApplicationInt
                 // move the attachements to public/uploads/applicationsattachments folder
                 $file->move('uploads/applicationsattachments', $filename);
                 // create attachement record in database, attach it to Ticket ID
-                $this->applcationAttachmentModel->create([
+                $this->applicationAttachmentModel::create([
                     'application_id'=>$app->id,
                     'path'=>'uploads/applicationsattachments/'.$filename
                     ]);
@@ -67,13 +58,37 @@ class ApplicationRepository extends AbstractRepository implements ApplicationInt
         }
     }
 
-    public function getTotalDaysBeforeSubmission($app){
+    public function getTotalDaysBeforeSubmission($app)
+    {
         $start_date = Carbon::parse($app->start_date);
         return $totalDays = Carbon::now()->diffInDays($start_date);
-
     }
 
-    public function admin(){
+    public function checkForLateSubmission($app)
+    {
+        if ($this->getTotalDaysBeforeSubmission($app) < $this->totalDaysBeforeSubmission) {
+            $app->comment([
+                'body' => 'We have received your application, however we wish you to draw your attention for you to submit the application to our office not less than '.$this->totalDaysBeforeSubmission.' days prior to the event as to ensure that you are granted permission from the University before attending any activity in the future. Thank you.',
+            ], $this->admin());
+        }
+    }
+
+    public function saveOrDraft($request, $app)
+    {
+        switch ($request->has('action')) {
+            case 'draft':
+            $app->setStatus('Draft', 'Successfully created');
+            $app->save();
+            Session::flash('success', $this->draftMessage);
+            break;
+            case 'save':
+            $app->setStatus('Submitted');
+            Session::flash('success', $this->draftMessage);
+            break;
+        }
+    }
+    public function admin()
+    {
         return $admin = User::role('Admin')->get()->first();
-    }   
+    }
 }
