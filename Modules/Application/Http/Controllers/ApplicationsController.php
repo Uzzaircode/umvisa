@@ -28,8 +28,9 @@ class ApplicationsController extends Controller
      * @return Response
      */
     public function index()
-    {
-        return view('application::index');
+    {   
+        $results = $this->app->all();
+        return view('application::index',compact('results'));
     }
 
     /**

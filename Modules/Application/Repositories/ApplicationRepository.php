@@ -11,12 +11,15 @@ class ApplicationRepository extends AbstractRepository implements ApplicationInt
     protected $modelClassName = "Modules\Application\Entities\Application";
     protected $applicationAttachmentModel = "Modules\Application\Entities\ApplicationAttachment";
     protected $totalDaysBeforeSubmission = 21;
+    protected $attachmentDirectory = 'uploads/applicationsattachments';
     protected $draft;
-    protected $draftMessage = 'Success';
+    protected $draftMessage = 'Application successfully created';
+
+    
 
     public function saveApplication($request)
     {
-        $app = $this->saveInput($request);
+        $app = $this->createFromRequest($request);
         //check if there is any attachments
         $this->hasAttachments($request, $app);
         //check for late submission
@@ -25,7 +28,7 @@ class ApplicationRepository extends AbstractRepository implements ApplicationInt
         $this->saveOrDraft($request, $app);
     }
 
-    public function saveInput($request)
+    public function createFromRequest($request)
     {
         return $this->modelClassName::create([
             'user_id' => $request->user_id,
@@ -48,11 +51,11 @@ class ApplicationRepository extends AbstractRepository implements ApplicationInt
                 // save the attachment with event title and time as prefix
                 $filename = trim($app->title) . '-' . time() . $file->getClientOriginalName();
                 // move the attachements to public/uploads/applicationsattachments folder
-                $file->move('uploads/applicationsattachments', $filename);
+                $file->move($this->attachmentDirectory, $filename);
                 // create attachement record in database, attach it to Ticket ID
                 $this->applicationAttachmentModel::create([
                     'application_id'=>$app->id,
-                    'path'=>'uploads/applicationsattachments/'.$filename
+                    'path'=>$this->attachmentDirectory.$filename
                     ]);
             }
         }
@@ -83,7 +86,7 @@ class ApplicationRepository extends AbstractRepository implements ApplicationInt
             break;
             case 'save':
             $app->setStatus('Submitted');
-            Session::flash('success', $this->draftMessage);
+            Session::flash('success', $this->saveMessage);
             break;
         }
     }
