@@ -34,7 +34,7 @@
                             <a href="{{ route('applications.show', ['id' => $application->id])  }}" class="btn btn-secondary btn-sm"><i class="fe fe-eye"></i> View</a> 
                             @endcan
                             @can('edit_applications')
-                            <a href="{{ route('applications.edit', ['id' => $application->id])  }}" class="btn btn-secondary btn-sm"><i class="fe fe-edit"></i> Edit</a>
+                            <a href="{{ URL::signedRoute('applications.edit', ['id' => $application->id])  }}" class="btn btn-secondary btn-sm"><i class="fe fe-edit"></i> Edit</a>
                             @endcan
                             
                             @can('delete_applications')

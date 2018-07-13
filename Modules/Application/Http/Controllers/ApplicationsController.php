@@ -13,24 +13,24 @@ use Spatie\ModelStatus\HasStatuses;
 use Auth;
 use Carbon\Carbon;
 use Session;
+use Illuminate\Support\Facades\Storage;
 
 class ApplicationsController extends Controller
 {
-    
     public function __construct(Country $country, AR $app, Auth $auth)
     {
         $this->country = $country;
         $this->app = $app;
-        $this->auth = $auth;       
+        $this->auth = $auth;
     }
     /**
      * Display a listing of the resource.
      * @return Response
      */
     public function index()
-    {   
+    {
         $applications = $this->app->all();
-        return view('application::index',compact('applications'));
+        return view('application::index', compact('applications'));
     }
 
     /**
@@ -51,7 +51,7 @@ class ApplicationsController extends Controller
      */
     public function store(ApplicationsRequest $request)
     {
-        $this->app->saveApplication($request);                 
+        $this->app->saveApplication($request);
         return redirect()->route('applications.index');
     }
 
@@ -60,8 +60,9 @@ class ApplicationsController extends Controller
      * @return Response
      */
     public function show($id)
-    {   
+    {
         $application = $this->app->find($id);
+        
         return view('application::show', compact('application'));
     }
 
@@ -69,9 +70,11 @@ class ApplicationsController extends Controller
      * Show the form for editing the specified resource.
      * @return Response
      */
-    public function edit()
+    public function edit($id)
     {
-        return view('application::edit');
+        $application = $this->app->find($id);
+        $countries = $this->country->all()->pluck('name.common', 'flag.flag-icon');
+        return view('application::create',compact('application','countries'));
     }
 
     /**

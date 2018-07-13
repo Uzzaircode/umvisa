@@ -4,12 +4,12 @@
         <div class="row">
             <div class="col-3">
                 <label for="" class="form-label">Salutation</label>
-            <input type="text" class="form-control" "title" value="{{Auth::user()->profile->title}}" readonly>
+            <input type="text" class="form-control" "title" value="{{old('title',$application->user->profile->title ?? Auth::user()->profile->title)}}" readonly>
 @include('shared._errors',['entity'=>'salutation'])
             </div>
             <div class="col-9">
                 <label for="" class="form-label">Applicant Name</label>
-            <input type="text" class="form-control" "name" value="{{$user->name}}" readonly>
+            <input type="text" class="form-control" "name" value="{{old('name',$application->user->name ?? Auth::user()->name)}}" readonly>
 @include('shared._errors',['entity'=>'name'])
             </div>
         </div>
@@ -18,7 +18,7 @@
         <div class="row">
             <div class="col-5">
                 <label for="" class="form-label">Matric Number</label>
-            <input type="text" class="form-control" "matric_num" value="{{Auth::user()->profile->matric_num}}" readonly>
+            <input type="text" class="form-control" "matric_num" value="{{old('matric_num',$application->user->matric_num ?? Auth::user()->profile->matric_num)}}" readonly>
 @include('shared._errors',['entity'=>'matric_num'])
             </div>
             <div class="col-5">
@@ -90,7 +90,7 @@
             </div>
             <div class="col-4">
                     <label for="" class="form-label">Email Address</label>
-            <input type="text" class="form-control" "email" value="{{$user->email}}" readonly>
+            <input type="text" class="form-control" "email" value="{{old('email',$application->user->email ?? Auth::user()->email)}}" readonly>
 @include('shared._errors',['entity'=>'email'])
             </div>
         </div>

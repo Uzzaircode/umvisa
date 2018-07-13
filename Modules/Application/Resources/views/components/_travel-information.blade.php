@@ -1,21 +1,21 @@
 <div class="mt-5"></div>
 <div class="form-group">
         <label for="" class="form-label">Title of Activity/Event</label>
-<input type="text" class="form-control {{$errors->has('title') ? 'is-invalid':''}}" name="title" value="{{ old('title') }}">
+<input type="text" class="form-control {{$errors->has('title') ? 'is-invalid':''}}" name="title" value="{{ old('title',$application->title ?? null) }}">
         @include('shared._errors',['entity'=>'title'])
 </div>
 <div class="form-group">
         <div class="row">
                 <div class="col-6">
                         <label for="" class="form-label">Venue</label>
-                        <input type="text" class="form-control {{$errors->has('venue') ? 'is-invalid':''}}" name="venue" value="{{ old('venue') }}">
+                        <input type="text" class="form-control {{$errors->has('venue') ? 'is-invalid':''}}" name="venue" value="{{ old('venue',$application->venue ?? null) }}">
         @include('shared._errors',['entity'=>'venue'])
                 </div>
                 <div class="col-6">
                         <label for="" class="form-label">Country</label>
                         <select name="country" id="" class="form-control {{$errors->has('country') ? 'is-invalid':''}}">
-                                @foreach($countries as $c) 
-                        <option value="{!!$c !!}" @if(old('country') == $c) selected @endif>{!! $c !!} </option>
+                        @foreach($countries as $c) 
+                        <option value="{!!$c !!}" @if(isset($application->country)) == $c) selected @endif>{!! $c !!} </option>
                             
                         @endforeach
                         </select>
@@ -33,7 +33,7 @@
                                 <div class="input-group-prepend" data-target="#datetimepicker1" data-toggle="datetimepicker">
                                         <div class="input-group-text"><i class="fe fe-calendar"></i></div>
                                 </div>
-                                <input type="text" class="form-control datetimepicker-input {{$errors->has('start_date') ? 'is-invalid':''}}" data-target="#datetimepicker1" name="start_date" placeholder="Start date"
+                        <input type="text" class="form-control datetimepicker-input {{$errors->has('start_date') ? 'is-invalid':''}}" data-target="#datetimepicker1" name="start_date" placeholder="Start date" value="{{old('start_date')}}"
                                 />
                         </div>
         @include('shared._errors',['entity'=>'start_date'])

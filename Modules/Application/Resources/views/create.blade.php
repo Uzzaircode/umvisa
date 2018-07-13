@@ -1,8 +1,8 @@
 @extends('backend.master') 
 @section('content')
 <div class="row">
-    @isset($ticket)
-    @include('ticket::layouts.progress') @endisset
+    {{-- @isset($application)
+    @include('ticket::layouts.progress') @endisset --}}
     <div class="col-lg-7 col-md-7">
         @if(isset($ticket->id))
         <form action="{{route('tickets.update',['id'=>$ticket->id])}}" class="" method="POST" enctype="multipart/form-data">
