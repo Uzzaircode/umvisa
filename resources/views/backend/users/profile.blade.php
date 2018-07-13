@@ -19,10 +19,10 @@
                         @role('User')
                     <div class="col">
                         <div class="card">
-                                <div class="card-body p-3 text-center">                                
+                                {{-- <div class="card-body p-3 text-center">                                
                                 <div class="h1 m-0">{{Auth::user()->tickets->count()}}</div>
                                         <div class="text-muted mb-4">Tickets Created</div>
-                                      </div>
+                                      </div> --}}
                               </div>
                             </div> 
                             @endrole                           

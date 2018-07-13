@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 use App\User;
 use Spatie\ModelStatus\HasStatuses;
 use BrianFaust\Commentable\Traits\HasComments;
+use Auth;
 
 
 class Application extends Model
@@ -23,5 +24,22 @@ class Application extends Model
         return $this->hasMany(ApplicationAttachment::class);
     }
 
+    public function scopeUserApplication($query){
+        if($this->isAdmin()){
+            return $query->all();
+        }
+
+        if($this->isUser()){
+            return $query->where('user_id',Auth::id());
+        }
+    }
+
+    public function isAdmin(){
+        return Auth::user()->hasRole('Admin');
+    }
+
+    public function isUser(){
+        return Auth::user()->hasRole('User');
+    }
     
 }

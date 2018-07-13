@@ -16,6 +16,9 @@ class ApplicationRepository extends AbstractRepository implements ApplicationInt
     protected $draftMessage = 'Application successfully created';
 
     
+    public function allApplications(){
+        return $this->modelClassName::userApplication()->get();
+    }
 
     public function saveApplication($request)
     {

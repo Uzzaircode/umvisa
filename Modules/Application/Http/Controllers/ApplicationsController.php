@@ -17,11 +17,12 @@ use Illuminate\Support\Facades\Storage;
 
 class ApplicationsController extends Controller
 {
-    public function __construct(Country $country, AR $app, Auth $auth)
+    public function __construct(Country $country, AR $app, Auth $auth, Application $appModel)
     {
         $this->country = $country;
         $this->app = $app;
         $this->auth = $auth;
+        $this->appModel = $appModel;
     }
     /**
      * Display a listing of the resource.
@@ -29,7 +30,7 @@ class ApplicationsController extends Controller
      */
     public function index()
     {
-        $applications = $this->app->all();
+        $applications = $this->app->allApplications();
         return view('application::index', compact('applications'));
     }
 

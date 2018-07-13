@@ -62,23 +62,16 @@ class Handler extends ExceptionHandler
 
     private function unauthorized($request, Exception $exception)
     {
-        if ($request->expectsJson()) {
-            return response()->json(['error' => $exception->getMessage()], 403);
-        }
+        // if ($request->expectsJson()) {
+        //     return response()->json(['error' => $exception->getMessage()], 403);
+        // }
+        return $request->expectsJson()
+                    ? response()->json(['message' => $exception->getMessage()], 401)
+                    : redirect()->guest(route('login'));
 
         Session::flash('fail', 'You are not allowed to perform the action');
         return redirect()->back();
     }
-
-    // public function unauthenticated($request, Exception $exception)
-    // {
-    //     return $request->expectsJson()
-    //                 ? response()->json(['message' => $exception->getMessage()], 401)
-    //                 : redirect()->guest(route('login'));
-        
-    //     Session::flash('fail', 'You are not authenticated. Please log in');
-        
-    // }
 
     public function invalidUrlSignature($request, Exception $exception)
     {
