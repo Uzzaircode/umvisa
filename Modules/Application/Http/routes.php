@@ -1,7 +1,8 @@
 <?php
 
 Route::group(['middleware' => ['web','timeout'], 'prefix' => 'applications', 'namespace' => 'Modules\Application\Http\Controllers'], function()
-{
+{   
+    Route::resource('applications','ApplicationsController',['except'=>['index','create','store']]);
     Route::get('/', ['uses'=>'ApplicationsController@index','as'=>'applications.index']);
     Route::get('/create', ['uses'=>'ApplicationsController@create','as'=>'applications.create']);
     Route::post('store',['uses'=>'ApplicationsController@store','as'=>'applications.store']);

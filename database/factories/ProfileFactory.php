@@ -1,6 +1,6 @@
 <?php
 use Faker\Generator as Faker;
-use Bezhanov\Faker\Provider\Educator;
+use Faker\Provider\ms_MY\Education;
 // $faker->addProvider(new \Bezhanov\Faker\Provider\Educator($faker));
 
 $factory->define(App\Profile::class, function (Faker $faker) {
@@ -12,8 +12,8 @@ $factory->define(App\Profile::class, function (Faker $faker) {
         'study_mode' => $faker->randomElement($array = array ('Undergraduate','Master', 'PhD')),
         'passport_num' => $faker->ean8,
         'citizenship' => $faker->country,
-        'department' => $faker->industry,
-        'faculty' => $faker->companyName,        
+        'department' => $faker->departments,
+        'faculty' => $faker->faculty,        
         'office_num' => $faker->fixedLineNumber,
         'mobile_num' => $faker->mobileNumber,
     ];

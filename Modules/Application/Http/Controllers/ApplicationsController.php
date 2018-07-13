@@ -29,8 +29,8 @@ class ApplicationsController extends Controller
      */
     public function index()
     {   
-        $results = $this->app->all();
-        return view('application::index',compact('results'));
+        $applications = $this->app->all();
+        return view('application::index',compact('applications'));
     }
 
     /**
@@ -59,9 +59,10 @@ class ApplicationsController extends Controller
      * Show the specified resource.
      * @return Response
      */
-    public function show()
-    {
-        return view('application::show');
+    public function show($id)
+    {   
+        $application = $this->app->find($id);
+        return view('application::show', compact('application'));
     }
 
     /**

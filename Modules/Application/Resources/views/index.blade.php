@@ -2,26 +2,51 @@
 @section('content')
 <div class='card'>
     <div class='card-header'>
-        <p class='card-title'><i class="fe fe-file-text"></i> Applications </p>
+        <p class='card-title'><i class="fe fe-file-text"></i> Your Applications </p>
         <div class="card-options">
-            <a class="btn btn-secondary btn-sm">Total: {{ $results->count() }} {{ str_plural('Application', $results->count()) }}</a>            @can('add_applications')
+            <a class="btn btn-secondary btn-sm">Total: {{ $applications->count() }} {{ str_plural('Application', $applications->count()) }}</a>            @can('add_applications')
             <a href="{{ route('applications.create') }}" class="btn btn-primary btn-sm text-white">
     <i class=""></i> Create</a> @endcan
         </div>
     </div>
     <div class='card-body'>
         <div class="table-responsive">
-            <table class="table table-vcenter text-nowrap card-table table-striped">
+            <table class="table table-vcenter text-nowrap card-table table-striped" id="datatable">
                 <thead>
                     <th>#</th>
                     <th>Title Event</th>
+                    <th>Venue</th>
+                    <th>Start Date</th>
+                    <th>End Date</th>
+                    <th>Actions</th>
                 </thead>
                 <tbody>
-                    @foreach($results as $key => $result)
+                    @foreach($applications as $key => $application)
+                    @if($applications->count() > 0)
                     <tr>
                         <td>{{ ++$key }}</td>
-                        <td>{{$result->title}}</td>
+                        <td>{{str_limit($application->title,$limit = 40,$end = '...')}}</td>
+                        <td>{{$application->venue}}</td>
+                        <td>{{$application->start_date->format("d/m/Y")}}</td>
+                        <td>{{$application->end_date->format("d/m/Y")}}</td>
+                        <td>
+                            @can('view_applications')
+                            <a href="{{ route('applications.show', ['id' => $application->id])  }}" class="btn btn-secondary btn-sm"><i class="fe fe-eye"></i> View</a> 
+                            @endcan
+                            @can('edit_applications')
+                            <a href="{{ route('applications.edit', ['id' => $application->id])  }}" class="btn btn-secondary btn-sm"><i class="fe fe-edit"></i> Edit</a>
+                            @endcan
+                            
+                            @can('delete_applications')
+                                {!! Form::open( ['method' => 'delete', 'url' => route('applications.destroy', ['id' => $application->id]), 'style' => 'display: inline', 'onSubmit' => 'return confirm("Are yous sure wanted to delete it?")']) !!}
+                            <button type="submit" class="btn-delete btn btn-sm btn-danger" >
+                                        <i class="fe fe-trash"></i> Delete
+                                    </button>
+                                {!! Form::close() !!}
+                            @endcan  
+                        </td>
                     </tr>
+                    @endif
                     @endforeach
                 </tbody>
             </table>

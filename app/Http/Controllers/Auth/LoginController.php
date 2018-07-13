@@ -28,7 +28,7 @@ class LoginController extends Controller
      *
      * @var string
      */
-    protected $redirectTo = '/tickets';
+    protected $redirectTo = '/applications';
 
     /**
      * Where to redirect users after logout.
