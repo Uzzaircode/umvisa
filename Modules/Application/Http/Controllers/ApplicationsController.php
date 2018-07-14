@@ -74,8 +74,9 @@ class ApplicationsController extends Controller
     public function edit($id)
     {
         $application = $this->app->find($id);
+        $remarks = $application->comments;
         $countries = $this->country->all()->pluck('name.common', 'flag.flag-icon');
-        return view('application::create',compact('application','countries'));
+        return view('application::create',compact('application','countries','remarks'));
     }
 
     /**

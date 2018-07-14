@@ -7,6 +7,7 @@ use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Auth\AuthenticationException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Illuminate\Routing\Exceptions\InvalidSignatureException;
+use Symfony\Component\Debug\Exception\FatalThrowableError;
 use Session;
 
 class Handler extends ExceptionHandler
@@ -57,7 +58,18 @@ class Handler extends ExceptionHandler
             return $this->invalidUrlSignature($request, $exception);
         }
 
+        if ($exception instanceof FatalThrowableError){
+            return $this->noRole($request, $exception);
+        }
+
         return parent::render($request, $exception);
+    }
+
+    public function noRole($request, Exception $exception){
+            if(!Auth::user()->hasRole(['Admin','User'])){
+                Auth::logout();
+                return redirect('login');
+            }
     }
 
     private function unauthorized($request, Exception $exception)

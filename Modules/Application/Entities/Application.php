@@ -14,6 +14,8 @@ class Application extends Model
     use HasStatuses;
     use HasComments;
 
+
+
     protected $table = 'applications';
 
     protected $fillable = ['user_id','title','venue','country','start_date','end_date','financial_aid','account_no_ref','sponsor_name','other_remarks'];
@@ -25,10 +27,7 @@ class Application extends Model
     }
 
     public function scopeUserApplication($query){
-        if($this->isAdmin()){
-            return $query->all();
-        }
-
+        
         if($this->isUser()){
             return $query->where('user_id',Auth::id());
         }

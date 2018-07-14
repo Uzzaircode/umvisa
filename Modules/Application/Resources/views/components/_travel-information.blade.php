@@ -33,7 +33,7 @@
                                 <div class="input-group-prepend" data-target="#datetimepicker1" data-toggle="datetimepicker">
                                         <div class="input-group-text"><i class="fe fe-calendar"></i></div>
                                 </div>
-                        <input type="text" class="form-control datetimepicker-input {{$errors->has('start_date') ? 'is-invalid':''}}" data-target="#datetimepicker1" name="start_date" placeholder="Start date" value="{{old('start_date')}}"
+                        <input type="text" class="form-control datetimepicker-input {{$errors->has('start_date') ? 'is-invalid':''}}" data-target="#datetimepicker1" name="start_date" placeholder="Start date" value=""
                                 />
                         </div>
         @include('shared._errors',['entity'=>'start_date'])

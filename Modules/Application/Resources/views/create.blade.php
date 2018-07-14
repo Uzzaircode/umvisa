@@ -86,6 +86,9 @@ $(function(e){
 });
 
         $('#datetimepicker1').datetimepicker({
+            @isset($application)
+                defaultDate: {{$application->start_date->format('d/m/Y')}}
+            @endisset
             format: 'L'
         });
         $('#datetimepicker2').datetimepicker({
