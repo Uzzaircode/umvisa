@@ -10,5 +10,6 @@ Route::group(['middleware' => ['web','timeout'], 'prefix' => 'applications', 'na
     Route::group(['middleware'=>['signed']],function(){
         Route::get('{id}/edit',['uses'=>'ApplicationsController@edit','as'=>'applications.edit']);
     });
+    Route::get('letter','ApplicationsController@letter');
     
 });

@@ -59,7 +59,7 @@
         <div class="row">
             <div class="col-4">
                 <label for="" class="form-label">IC Number</label>
-            <input type="text" class="form-control" "ic_num" value="{{old('ic_num',$application->user->profile->num_ic ?? Auth::user()->profile->ic_num )}}" readonly>
+            <input type="text" class="form-control" "ic_num" value="{{old('ic_num',$application->user->profile->ic_num ?? Auth::user()->profile->ic_num )}}" readonly>
 @include('shared._errors',['entity'=>'ic_num'])
             </div>
             <div class="col-4">

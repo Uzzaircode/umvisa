@@ -62,8 +62,7 @@ class ApplicationsController extends Controller
      */
     public function show($id)
     {
-        $application = $this->app->find($id);
-        
+        $application = $this->app->find($id);        
         return view('application::show', compact('application'));
     }
 
@@ -106,5 +105,9 @@ class ApplicationsController extends Controller
     public function isDraft($request)
     {
         return $request->has('draft');
+    }
+
+    public function letter(){
+        return view('application::formal-letter');
     }
 }

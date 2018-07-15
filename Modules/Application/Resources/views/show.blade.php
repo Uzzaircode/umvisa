@@ -1,9 +1,9 @@
 @extends('backend.master') 
 @section('content')
 <div class="row">
-    @isset($ticket)
-    @include('ticket::layouts.progress') 
-    @endisset
+        @isset($application)
+        @include('application::components._progress') 
+        @endisset
     <div class="col-lg-7 col-md-7">
         @if(isset($ticket->id))
         <form action="{{route('tickets.update',['id'=>$ticket->id])}}" class="" method="POST" enctype="multipart/form-data">
@@ -13,7 +13,7 @@
                 @csrf
                 <div class="card">
                     <div class="card-header sticky-top" style="background:white">
-                        <h3 class="card-title"><i class="fe fe-file-text"></i> {{isset($ticket) ? 'Edit Application':'New Application'}}</h3>
+                        <h3 class="card-title"><i class="fe fe-file-text"></i> {{isset($application) ? 'Edit Application':'New Application'}}</h3>
                         <div class="card-options">
     @include('application::components._form-action-buttons')
                         </div>

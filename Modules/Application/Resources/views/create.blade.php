@@ -13,7 +13,7 @@
                 @csrf
                 <div class="card">
                     <div class="card-header sticky-top" style="background:white">
-                        <h3 class="card-title"><i class="fe fe-file-text"></i> {{isset($ticket) ? 'Edit Application':'New Application'}}</h3>
+                        <h3 class="card-title"><i class="fe fe-file-text"></i> {{isset($application) ? 'Edit Application':'New Application'}}</h3>
                         <div class="card-options">
     @include('application::components._form-action-buttons')
                         </div>
