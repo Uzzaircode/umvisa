@@ -18,7 +18,7 @@
         <div class="row">
             <div class="col-5">
                 <label for="" class="form-label">Matric Number</label>
-            <input type="text" class="form-control" "matric_num" value="{{old('matric_num',$application->user->matric_num ?? Auth::user()->profile->matric_num)}}" readonly>
+            <input type="text" class="form-control" "matric_num" value="{{old('matric_num',$application->user->profile->matric_num ?? Auth::user()->profile->matric_num)}}" readonly>
 @include('shared._errors',['entity'=>'matric_num'])
             </div>
             <div class="col-5">
@@ -26,15 +26,27 @@
                     <div class="form-label">Study Mode</div>
                     <div class="custom-controls-stacked">
                         <label class="custom-control custom-radio custom-control-inline">
-                        <input type="radio" class="custom-control-input" "example-inline-radios" value="option1" checked="">
+                        <input type="radio" class="custom-control-input" value="Undergraduate"
+                        {{
+                            isset($application) && $application->user->profile->study_mode == "Undergraduate" ? 'checked':''
+                        }}
+                         disabled>
                         <span class="custom-control-label">Undergraduate</span>
                       </label>
                         <label class="custom-control custom-radio custom-control-inline">
-                        <input type="radio" class="custom-control-input" "example-inline-radios" value="option2">
+                        <input type="radio" class="custom-control-input" value="{{old('Master')}}" 
+                        {{
+                            isset($application) && $application->user->profile->study_mode == "Master" ? 'checked':''
+                        }}
+                         disabled>
                         <span class="custom-control-label">Master</span>
                       </label>
                         <label class="custom-control custom-radio custom-control-inline">
-                        <input type="radio" class="custom-control-input" "example-inline-radios" value="option3">
+                        <input type="radio" class="custom-control-input" value="{{old('PhD')}}"
+                        {{
+                            isset($application) && $application->user->profile->study_mode == "PhD" ? 'checked':''
+                        }}
+                         disabled>
                         <span class="custom-control-label">PhD</span>
                       </label>
                     </div>
@@ -47,17 +59,17 @@
         <div class="row">
             <div class="col-4">
                 <label for="" class="form-label">IC Number</label>
-            <input type="text" class="form-control" "ic_num" value="{{Auth::user()->profile->ic_num}}" readonly>
+            <input type="text" class="form-control" "ic_num" value="{{old('ic_num',$application->user->profile->num_ic ?? Auth::user()->profile->ic_num )}}" readonly>
 @include('shared._errors',['entity'=>'ic_num'])
             </div>
             <div class="col-4">
                 <label for="" class="form-label">Passport Number</label>
-                <input type="text" class="form-control" "passport_num" value="{{Auth::user()->profile->passport_num}}" placeholder="Fill in if you're non-Malaysian" readonly>
+                <input type="text" class="form-control" "passport_num" value="{{old('passport_num',$application->user->profile->passport_num ?? Auth::user()->profile->passport_num) }}" placeholder="Fill in if you're non-Malaysian" readonly>
 @include('shared._errors',['entity'=>'passport_num'])
             </div>
             <div class="col-4">
                 <label for="" class="form-label">Citizenship</label>
-                <input type="text" class="form-control" "citizenship" value="{{Auth::user()->profile->citizenship}}" readonly>
+                <input type="text" class="form-control" "citizenship" value="{{old('citizenship',$application->user->profile->citizenship ?? Auth::user()->profile->citizenship )}}" readonly>
 @include('shared._errors',['entity'=>'citizenship'])
             </div>
         </div>
@@ -66,12 +78,12 @@
         <div class="row">
             <div class="col-6">
                 <label for="" class="form-label">Department</label>
-                <input type="text" class="form-control" "department" value="{{Auth::user()->profile->department}}" readonly>
+                <input type="text" class="form-control" "department" value="{{old('department',$application->user->profile->department ?? Auth::user()->profile->department )}}" readonly>
 @include('shared._errors',['entity'=>'department'])
             </div>
             <div class="col-6">
                 <label for="" class="form-label">Faculty/Academy/Institute/Centre</label>
-                <input type="text" class="form-control" "faculty" value="{{Auth::user()->profile->faculty}}" readonly>
+                <input type="text" class="form-control" "faculty" value="{{old('faculty',$application->user->profile->faculty ?? Auth::user()->profile->faculty )}}" readonly>
 @include('shared._errors',['entity'=>'faculty'])
             </div>
         </div>
@@ -80,12 +92,12 @@
         <div class="row">
             <div class="col-4">
                     <label for="" class="form-label">Office Telephone Number</label>
-                    <input type="text" class="form-control" "office_num" value="{{Auth::user()->profile->office_num}}" readonly>
+                    <input type="text" class="form-control" "office_num" value="{{old('office_num',$application->user->profile->office_num ?? Auth::user()->profile->office_num )}}" readonly>
 @include('shared._errors',['entity'=>'office_num'])
             </div>
             <div class="col-4">
                     <label for="" class="form-label">Mobile Number</label>
-                    <input type="text" class="form-control" "mobile_num" value="{{Auth::user()->profile->mobile_num}}" readonly>
+                    <input type="text" class="form-control" "mobile_num" value="{{old('mobile_num',$application->user->profile->mobile_num ?? Auth::user()->profile->mobile_num )}}" readonly>
 @include('shared._errors',['entity'=>'mobile_num'])
             </div>
             <div class="col-4">

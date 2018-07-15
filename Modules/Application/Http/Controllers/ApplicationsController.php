@@ -75,8 +75,9 @@ class ApplicationsController extends Controller
     {
         $application = $this->app->find($id);
         $remarks = $application->comments;
+        $statuses = $application->statuses;
         $countries = $this->country->all()->pluck('name.common', 'flag.flag-icon');
-        return view('application::create',compact('application','countries','remarks'));
+        return view('application::create',compact('application','countries','remarks','statuses'));
     }
 
     /**

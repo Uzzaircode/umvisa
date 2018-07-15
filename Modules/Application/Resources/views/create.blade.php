@@ -1,8 +1,9 @@
 @extends('backend.master') 
 @section('content')
 <div class="row">
-    {{-- @isset($application)
-    @include('ticket::layouts.progress') @endisset --}}
+    @isset($application)
+    @include('application::components._progress') 
+    @endisset
     <div class="col-lg-7 col-md-7">
         @if(isset($ticket->id))
         <form action="{{route('tickets.update',['id'=>$ticket->id])}}" class="" method="POST" enctype="multipart/form-data">
@@ -87,11 +88,14 @@ $(function(e){
 
         $('#datetimepicker1').datetimepicker({
             @isset($application)
-                defaultDate: {{$application->start_date->format('d/m/Y')}}
+                defaultDate: {{$application->start_date->format('d/m/Y')}},
             @endisset
             format: 'L'
         });
         $('#datetimepicker2').datetimepicker({
+            @isset($application)
+                defaultDate: {{$application->end_date->format('d/m/Y')}},
+            @endisset
             useCurrent: false,
             format:'L'
         });

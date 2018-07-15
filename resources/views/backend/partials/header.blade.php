@@ -20,7 +20,7 @@
                     </a> @if(Auth::user()->unreadNotifications->count() > 0)
                     <div class="dropdown-menu dropdown-menu-right dropdown-menu-arrow">
                         @foreach ( Auth::user()->unreadNotifications as $notification)
-                        <form action="{{route('tickets.markread', ['id'=>$notification->id,'ticket_id'=>$notification->data['ticket_id']])}}" style="display:inline"
+                        <form action="{{route('tickets.markread', ['id'=>$notification->id,'application_id'=>$notification->data['application_id']])}}" style="display:inline"
                             method="POST">
                             @csrf
                             <button type="submit" href="" class="dropdown-item d-flex btn btn-link" @if(Auth::user()->hasRole('HOD')) 

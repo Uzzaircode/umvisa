@@ -17,4 +17,8 @@ class Profile extends Model
     public function department(){
         return $this->belongsTo(Department::class,'hod_id');
     }
+
+    public function supervisor(){
+        return $this->belongsTo(User::class,'supervisor_id');
+    }
 }

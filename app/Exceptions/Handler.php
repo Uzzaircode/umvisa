@@ -57,6 +57,9 @@ class Handler extends ExceptionHandler
         if ($exception instanceof InvalidSignatureException) {
             return $this->invalidUrlSignature($request, $exception);
         }
+        if($exception instanceof ErrorException){
+            return $this->objectOnNull($request,$exception);
+        }
 
         if ($exception instanceof FatalThrowableError){
             return $this->noRole($request, $exception);
@@ -70,6 +73,11 @@ class Handler extends ExceptionHandler
                 Auth::logout();
                 return redirect('login');
             }
+    }
+
+    public function objectOnNull($request, Exception $exception){
+            Session::flash('fail', 'Sorry the system can\'t proceed the request');
+            return redirect('/');
     }
 
     private function unauthorized($request, Exception $exception)

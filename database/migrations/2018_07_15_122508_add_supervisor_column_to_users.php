@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class AddRecurringTicketId extends Migration
+class AddSupervisorColumnToUsers extends Migration
 {
     /**
      * Run the migrations.
@@ -13,8 +13,9 @@ class AddRecurringTicketId extends Migration
      */
     public function up()
     {
-        Schema::table('tickets', function (Blueprint $table) {
-            $table->integer('recurring_ticket_id')->nullable();
+        Schema::table('profiles', function (Blueprint $table) {            
+            $table->integer('supervisor_id')->unsigned()->nullable();
+            $table->foreign('supervisor_id')->references('id')->on('users');
         });
     }
 
@@ -25,8 +26,6 @@ class AddRecurringTicketId extends Migration
      */
     public function down()
     {
-        Schema::table('', function (Blueprint $table) {
-
-        });
+        //
     }
 }

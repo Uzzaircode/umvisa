@@ -4,6 +4,8 @@ namespace Modules\Application\Repositories;
 use App\Abstracts\Repository as AbstractRepository;
 use App\User;
 use Carbon\Carbon;
+use Illuminate\Notifications\Notification;
+use Modules\Application\Notifications\SubmitApplication;
 use Session;
 
 class ApplicationRepository extends AbstractRepository implements ApplicationInterface
@@ -15,6 +17,9 @@ class ApplicationRepository extends AbstractRepository implements ApplicationInt
     protected $draft;
     protected $draftMessage = 'Application successfully created';
 
+    public function __construct(User $user){
+        $this->user = $user;
+    }
     
     public function allApplications(){
         return $this->modelClassName::userApplication()->get();
@@ -88,7 +93,9 @@ class ApplicationRepository extends AbstractRepository implements ApplicationInt
             Session::flash('success', $this->draftMessage);
             break;
             case 'save':
-            $app->setStatus('Submitted');
+            $app->setStatus('Submitted','Successfully submitted to Supervisor');
+            $supervisor = $this->getSupervisor($app);
+            $supervisor->notify(new SubmitApplication($app,$user));
             Session::flash('success', $this->saveMessage);
             break;
         }
@@ -96,5 +103,10 @@ class ApplicationRepository extends AbstractRepository implements ApplicationInt
     public function admin()
     {
         return $admin = User::role('Admin')->get()->first();
+    }
+
+    public function getSupervisor($app){
+        return $supervisor = $app->user->profile->supervisor;
+
     }
 }
