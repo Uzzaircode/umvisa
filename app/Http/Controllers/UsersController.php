@@ -14,6 +14,7 @@ use App\Repositories\UsersRepository as UR;
 use Auth;
 use Session;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Notifications\Notification;
 
 class UsersController extends Controller
 {
@@ -211,4 +212,6 @@ class UsersController extends Controller
         Session::flash('success','User has been updated.');
         return redirect()->back();
     }
+
+    
 }

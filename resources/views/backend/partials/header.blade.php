@@ -20,21 +20,10 @@
                     </a> @if(Auth::user()->unreadNotifications->count() > 0)
                     <div class="dropdown-menu dropdown-menu-right dropdown-menu-arrow">
                         @foreach ( Auth::user()->unreadNotifications as $notification)
-                        <form action="{{route('tickets.markread', ['id'=>$notification->id,'application_id'=>$notification->data['application_id']])}}" style="display:inline"
+                        <form action="{{route('notifications.read', ['id'=>$notification->id,'application_id'=>$notification->data['application_id']])}}" style="display:inline"
                             method="POST">
                             @csrf
-                            <button type="submit" href="" class="dropdown-item d-flex btn btn-link" @if(Auth::user()->hasRole('HOD')) 
-                                name="readby_hod"
-                             @elseif(Auth::user()->hasRole('Dasar'))
-                             name="readby_dasar"
-                             @elseif(Auth::user()->hasRole('PTM'))
-                                name="readby_ptm"
-                             @elseif(Auth::user()->hasRole('User'))
-                                name="readby_user"
-                             @elseif(Auth::user()->hasRole('Brillante'))
-                                name="readby_it"
-                             @endif
-                             >                            
+                            <button type="submit" href="" class="dropdown-item d-flex btn btn-link">         
                             <div>
                                 <strong>{{$notification->data['message']}}</strong>                                
                             <div class="small text-muted">{{$notification->updated_at->diffForHumans()}}</div>

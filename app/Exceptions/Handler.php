@@ -61,9 +61,9 @@ class Handler extends ExceptionHandler
             return $this->objectOnNull($request,$exception);
         }
 
-        if ($exception instanceof FatalThrowableError){
-            return $this->noRole($request, $exception);
-        }
+        // if ($exception instanceof FatalThrowableError){
+        //     return $this->noRole($request, $exception);
+        // }
 
         return parent::render($request, $exception);
     }
