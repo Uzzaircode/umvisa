@@ -1,13 +1,19 @@
 @extends('backend.master') 
 @section('content')
-
+@isset($application)
 <div class="row">
-    <div class="col-8">
+   
+    @include('application::components._progress') 
+    
+</div>
+@endisset
+<div class="row">
+    <div class="col-7">
         <div class='card align-middle' width="">
             <div class="card-header">
-                <h2 class="card-title">Permission To Travel (Overseas) Form</h2>
+                <p class="card-title">Permission To Travel (Overseas) Form</p>
                 <div class="card-options">
-                        <button class="btn btn-sm btn-{{$state}}" style="float:right">{{$application->status()->reason}} on {{$application->updated_at->toDayDateTimeString()}}</button>
+                    <button class="btn btn-sm btn-{{getApplicationStatusState($application)}}" style="float:right">{{$application->status()->reason}} on {{$application->created_at->toDayDateTimeString()}}</button>
                 </div>
             </div>
             <div class='card-body'>
@@ -26,7 +32,7 @@
             </div>
         </div>
     </div>
-    <div class="col-4">
+    <div class="col-5">
         <div class='card'>
             <div class='card-header'>
                 <p class='card-title'>Remarks</p>

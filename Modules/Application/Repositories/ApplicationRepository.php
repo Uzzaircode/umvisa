@@ -6,7 +6,9 @@ use App\User;
 use Carbon\Carbon;
 use Illuminate\Notifications\Notification;
 use Modules\Application\Notifications\SubmitApplication;
+use Illuminate\Support\Facades\URL;
 use Session;
+use Auth;
 
 class ApplicationRepository extends AbstractRepository implements ApplicationInterface
 {
@@ -19,6 +21,7 @@ class ApplicationRepository extends AbstractRepository implements ApplicationInt
     protected $saveMessage = 'Your application has been saved and sent to Immediate Supervisor';
     protected $updateMessage = 'Application details has been updated';
     protected $submitSupervisorMessage = "Submitted to Supervisor";
+    protected $successRemarkMessage = "Your remark has been saved";
 
     public function __construct(User $user)
     {
@@ -72,21 +75,6 @@ class ApplicationRepository extends AbstractRepository implements ApplicationInt
         }
     }
 
-    public function getTotalDaysBeforeSubmission($app)
-    {
-        $start_date = Carbon::parse($app->start_date);
-        return $totalDays = Carbon::now()->diffInDays($start_date);
-    }
-
-    public function checkForLateSubmission($app)
-    {
-        if ($this->getTotalDaysBeforeSubmission($app) < $this->totalDaysBeforeSubmission) {
-            $app->comment([
-                'body' => 'We have received your application, however we wish you to draw your attention for you to submit the application to our office not less than '.$this->totalDaysBeforeSubmission.' days prior to the event as to ensure that you are granted permission from the University before attending any activity in the future. Thank you.',
-            ], $this->admin());
-        }
-    }
-
     public function saveOrDraft($request, $app)
     {
         $user = $app->user;
@@ -108,7 +96,7 @@ class ApplicationRepository extends AbstractRepository implements ApplicationInt
         }
     }
 
-    public function updateFromRequest($request,$app)
+    public function updateFromRequest($request, $app)
     {
         return $app->update([
             'user_id' => $request->user_id,
@@ -124,21 +112,21 @@ class ApplicationRepository extends AbstractRepository implements ApplicationInt
         ]);
     }
     
-    public function updateOrSubmit($request,$app)
+    public function updateOrSubmit($request, $app)
     {
         $user = $app->user;
         // if update draft
-        if ($request->has('draft')) {            
+        if ($request->has('draft')) {
             $app->save();
             Session::flash('success', $this->updateMessage);
         }
         // if submit draft
-        if ($request->has('submit')) {            
+        if ($request->has('submit')) {
             //check for late submission
             $this->checkForLateSubmission($app);
             $supervisor = $this->getSupervisor($app);
             $supervisor->notify(new SubmitApplication($app, $user));
-            $app->setStatus('Submitted', 'Submitted to '.$this->supervisorName($supervisor));
+            $app->setStatus('Submitted', 'Submitted to '.$this->getSupervisorName($supervisor));
             $app->save();
             Session::flash('success', $this->saveMessage);
         }
@@ -148,42 +136,64 @@ class ApplicationRepository extends AbstractRepository implements ApplicationInt
     {
         // find application
         $app = $this->modelClassName::find($id);
-        $this->updateFromRequest($request,$app);
-        $this->updateOrSubmit($request,$app);
+        $this->updateFromRequest($request, $app);
+        $this->updateOrSubmit($request, $app);
     }
 
-    public function supervisorName($supervisor){
+    public function saveRemarks($request, $id)
+    {        
+        $app = $this->modelClassName::find($id);
+        $user = $app->user;
+        $app->comment([
+            'body' => $request->remark,
+        ], Auth::user());
+        // notifies Deputy Dean
+        $deputyDean = $this->getDeputyDean();
+        $deputyDean->notify(new SubmitApplication($app,$user));
+        //Set status
+        $app->setStatus('Submitted', 'Submitted to '.$this->getDeputyDeanName($deputyDean).'');
+        Session::flash('success', $this->successRemarkMessage);
+        $url = URL::signedRoute('applications.show',['id'=>$id]);
+        return redirect($url);
+    }
+
+    public function getSupervisorName($supervisor)
+    {
         return $supervisor->profile->title.' '.$supervisor->name;
     }
+
     public function admin()
     {
         return $admin = User::role('Admin')->get()->first();
     }
     
-
     public function getSupervisor($app)
     {
         return $supervisor = $app->user->profile->supervisor;
     }
 
-    public function getStatusState($application)
+    public function getDeputyDeanName($deputyDean){
+        return $deputyDean->profile->title.' '.$deputyDean->name;
+    }
+
+    public function getDeputyDean(){
+        return $this->user->role('Deputy Dean')->get()->first();
+    }
+
+    
+
+    public function getTotalDaysBeforeSubmission($app)
     {
-        switch ($application->status) {
-            case 'Draft':
-            return $state = 'warning';
-            break;
+        $start_date = Carbon::parse($app->start_date);
+        return $totalDays = Carbon::now()->diffInDays($start_date);
+    }
 
-            case 'Submitted':
-            return $state = 'success';
-            break;
-
-            case 'Read':
-            return $state = 'info';
-            break;
-
-            case 'Rejected':
-            return $state = 'danger';
-            break;
+    public function checkForLateSubmission($app)
+    {
+        if ($this->getTotalDaysBeforeSubmission($app) < $this->totalDaysBeforeSubmission) {
+            $app->comment([
+                'body' => 'We have received your application, however we wish you to draw your attention for you to submit the application to our office not less than '.$this->totalDaysBeforeSubmission.' days prior to the event as to ensure that you are granted permission from the University before attending any activity in the future. Thank you.',
+            ], $this->admin());
         }
     }
 }

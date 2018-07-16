@@ -5,8 +5,8 @@
         @include('application::components._progress') 
         @endisset
     <div class="col-lg-7 col-md-7">
-        @if(isset($ticket->id))
-        <form action="{{route('tickets.update',['id'=>$ticket->id])}}" class="" method="POST" enctype="multipart/form-data">
+        @if(isset($application->id))
+        <form action="{{route('applciations.update',['id'=>$ticket->id])}}" class="" method="POST" enctype="multipart/form-data">
             {{method_field('PUT')}} @else
             <form action="{{route('applications.store')}}" class="" method="POST" enctype="multipart/form-data">
                 @endif
@@ -31,7 +31,7 @@
                         <p class='card-title'>Remarks</p>
                     </div>
                     <div class='card-body'>
-            @include('application::components._comments')
+            @include('application::components._remarks')
                     </div>
                 </div>
     </div>

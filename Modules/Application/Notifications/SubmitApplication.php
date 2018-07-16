@@ -60,7 +60,7 @@ class SubmitApplication extends Notification
     public function toArray($notifiable)
     {
         return [
-            'message' => 'You have received an application to be reviewed - '. $this->app->id,
+            'message' => 'You have received an application to be reviewed by'. $this->user->name,
             'application_id' => $this->app->id,
         ];
     }

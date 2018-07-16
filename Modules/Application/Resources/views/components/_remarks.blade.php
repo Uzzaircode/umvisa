@@ -1,12 +1,15 @@
-<div class="form-group" @if ($errors->has('replybody')) has-error @endif>
+
+<div class="form-group" @if ($errors->has('remark')) has-error @endif>
     <label for="" class="form-label">Leave a remark</label>
-    <textarea name="replybody" id="" cols="30" rows="5" class="form-control"></textarea> @if ($errors->has('replybody'))
-    <p class="text-danger">{{ $errors->first('replybody') }}</p>
+    <textarea name="remark" id="" cols="30" rows="5" class="form-control"></textarea> 
+    @if ($errors->has('remark'))
+    <p class="text-danger">{{ $errors->first('remark') }}</p>
     @endif
 </div>
 <div class="form-group text-right">
-    <button type="submit" class="btn btn-primary text-right" name="remark" value="remark"><i class="fe fe-send"></i> Submit</button>
+    <button type="submit" class="btn btn-primary text-right"><i class="fe fe-send"></i> Submit</button>
 </div>
+
 @isset($remarks)
 <div class="o-auto" style="">
     <ul class="list-group list-card-group">

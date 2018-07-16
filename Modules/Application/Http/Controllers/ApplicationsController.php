@@ -14,6 +14,7 @@ use Auth;
 use Carbon\Carbon;
 use Session;
 use Illuminate\Support\Facades\Storage;
+use Date;
 
 class ApplicationsController extends Controller
 {
@@ -30,7 +31,7 @@ class ApplicationsController extends Controller
      */
     public function index()
     {
-        $applications = $this->app->allApplications();        
+        $applications = $this->app->allApplications();
         return view('application::index', compact('applications'));
     }
 
@@ -63,8 +64,9 @@ class ApplicationsController extends Controller
     public function show($id)
     {
         $application = $this->app->find($id);
-        $state = $this->app->getStatusState($application);
-        return view('application::formal-letter', compact('application','state'));
+        $statuses = $application->statuses->sortBy('created_at');
+        $remarks = $application->comments;
+        return view('application::formal-letter', compact('application','remarks','statuses'));
     }
 
     /**
@@ -77,7 +79,7 @@ class ApplicationsController extends Controller
         $remarks = $application->comments;
         $statuses = $application->statuses->sortBy('created_at');
         $countries = $this->country->all()->pluck('name.common', 'flag.flag-icon');
-        return view('application::create',compact('application','countries','remarks','statuses'));
+        return view('application::create', compact('application', 'countries', 'remarks', 'statuses'));
     }
 
     /**
@@ -87,12 +89,14 @@ class ApplicationsController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $this->app->updateApplication($id,$request);
+        $this->app->updateApplication($id, $request);
         return redirect()->back();
     }
 
-    public function createRemarks(Request $request, $id){
-        
+    public function createRemarks(Request $request, $id)
+    {
+        return $this->app->saveRemarks($request, $id);
+
     }
 
     /**
@@ -103,7 +107,7 @@ class ApplicationsController extends Controller
     {
         $app = $this->app->find($id);
         $app->delete();
-        Session::flash('success','The application has been deleted successfully');
+        Session::flash('success', 'The application has been deleted successfully');
         return redirect()->back();
     }
 
@@ -118,8 +122,8 @@ class ApplicationsController extends Controller
         return $request->has('draft');
     }
 
-    public function letter(){
+    public function letter()
+    {
         return view('application::formal-letter');
     }
-
 }
