@@ -30,7 +30,7 @@ class ApplicationsController extends Controller
      */
     public function index()
     {
-        $applications = $this->app->allApplications();
+        $applications = $this->app->allApplications();        
         return view('application::index', compact('applications'));
     }
 
@@ -75,7 +75,7 @@ class ApplicationsController extends Controller
     {
         $application = $this->app->find($id);
         $remarks = $application->comments;
-        $statuses = $application->statuses;
+        $statuses = $application->statuses->sortBy('created_at');
         $countries = $this->country->all()->pluck('name.common', 'flag.flag-icon');
         return view('application::create',compact('application','countries','remarks','statuses'));
     }
@@ -85,16 +85,22 @@ class ApplicationsController extends Controller
      * @param  Request $request
      * @return Response
      */
-    public function update(Request $request)
+    public function update(Request $request, $id)
     {
+        $this->app->updateApplication($id,$request);
+        return redirect()->back();
     }
 
     /**
      * Remove the specified resource from storage.
      * @return Response
      */
-    public function destroy()
+    public function destroy($id)
     {
+        $app = $this->app->find($id);
+        $app->delete();
+        Session::flash('success','The application has been deleted successfully');
+        return redirect()->back();
     }
 
     public function testFlag()

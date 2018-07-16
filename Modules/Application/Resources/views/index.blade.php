@@ -15,9 +15,9 @@
                 <thead>
                     <th>#</th>
                     <th>Title Event</th>
-                    <th>Venue</th>
                     <th>Start Date</th>
                     <th>End Date</th>
+                    <th>Status</th>
                     <th>Actions</th>
                 </thead>
                 <tbody>
@@ -25,13 +25,13 @@
                     @if($applications->count() > 0)
                     <tr>
                         <td>{{ ++$key }}</td>
-                        <td>{{str_limit($application->title,$limit = 40,$end = '...')}}</td>
-                        <td>{{$application->venue}}</td>
+                        <td>{{str_limit($application->title,$limit = 40,$end = '...')}}</td>                        
                         <td>{{$application->start_date->format("d/m/Y")}}</td>
                         <td>{{$application->end_date->format("d/m/Y")}}</td>
+                    <td><span class="badge badge-@if($application->status == 'Draft')warning @elseif($application->status == 'Submitted')success @endif">{{$application->status}}</span></td>
                         <td>
                             @can('view_applications')
-                            <a href="{{ route('applications.show', ['id' => $application->id])  }}" class="btn btn-secondary btn-sm"><i class="fe fe-eye"></i> View</a> 
+                            <a href="{{ URL::signedRoute('applications.show', ['id' => $application->id])  }}" class="btn btn-secondary btn-sm"><i class="fe fe-eye"></i> View</a> 
                             @endcan
                             @can('edit_applications')
                             <a href="{{ URL::signedRoute('applications.edit', ['id' => $application->id])  }}" class="btn btn-secondary btn-sm"><i class="fe fe-edit"></i> Edit</a>

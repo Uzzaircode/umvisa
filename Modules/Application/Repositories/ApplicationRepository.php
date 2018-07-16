@@ -15,13 +15,17 @@ class ApplicationRepository extends AbstractRepository implements ApplicationInt
     protected $totalDaysBeforeSubmission = 21;
     protected $attachmentDirectory = 'uploads/applicationsattachments';
     protected $draft;
-    protected $draftMessage = 'Application successfully created';
+    protected $draftMessage = 'Application created successfully';
+    protected $saveMessage = 'Your application has been saved and sent to Immediate Supervisor';
+    protected $updateMessage = 'Application details has been updated';
 
-    public function __construct(User $user){
+    public function __construct(User $user)
+    {
         $this->user = $user;
     }
     
-    public function allApplications(){
+    public function allApplications()
+    {
         return $this->modelClassName::userApplication()->get();
     }
 
@@ -30,8 +34,6 @@ class ApplicationRepository extends AbstractRepository implements ApplicationInt
         $app = $this->createFromRequest($request);
         //check if there is any attachments
         $this->hasAttachments($request, $app);
-        //check for late submission
-        $this->checkForLateSubmission($app);
         // save it as draft or final
         $this->saveOrDraft($request, $app);
     }
@@ -86,33 +88,82 @@ class ApplicationRepository extends AbstractRepository implements ApplicationInt
 
     public function saveOrDraft($request, $app)
     {
-        switch ($request->has('action')) {
-            case 'draft':
+        $user = $app->user;
+        //draft
+        if ($request->has('draft')) {
             $app->setStatus('Draft', 'Successfully created');
             $app->save();
             Session::flash('success', $this->draftMessage);
-            break;
-            case 'save':
-            $app->setStatus('Submitted','Successfully submitted to Supervisor');
+        }
+        //save
+        if ($request->has('save')) {
+            $app->setStatus('Submitted', 'Successfully submitted to Supervisor');
+            $app->save();
+            //check for late submission
+            $this->checkForLateSubmission($app);
             $supervisor = $this->getSupervisor($app);
-            $supervisor->notify(new SubmitApplication($app,$user));
+            $supervisor->notify(new SubmitApplication($app, $user));
             Session::flash('success', $this->saveMessage);
-            break;
         }
     }
+
+    public function updateFromRequest($request,$app)
+    {
+        return $app->update([
+            'user_id' => $request->user_id,
+            'title' => $request->title,
+            'venue' => $request->venue,
+            'country' => $request->country,
+            'start_date' => Carbon::parse($request->start_date),
+            'end_date' => Carbon::parse($request->end_date),
+            'financial_aid' => $request->financial_aid,
+            'account_no_ref' => $request->account_no_ref,
+            'sponsor_name' => $request->sponsor_name,
+            'others_remarks' => $request->others_remarks,
+        ]);
+    }
+    
+    public function updateOrSubmit($request,$app)
+    {
+        $user = $app->user;
+        // if update draft
+        if ($request->has('draft')) {            
+            $app->save();
+            Session::flash('success', $this->updateMessage);
+        }
+        // if submit draft
+        if ($request->has('submit')) {
+            $app->setStatus('Submitted', 'Successfully submitted to Supervisor');
+            $app->save();
+            //check for late submission
+            $this->checkForLateSubmission($app);
+            $supervisor = $this->getSupervisor($app);
+            $supervisor->notify(new SubmitApplication($app, $user));
+            Session::flash('success', $this->saveMessage);
+        }
+    }
+
+    public function updateApplication($id, $request)
+    {
+        // find application
+        $app = $this->modelClassName::find($id);
+        $this->updateFromRequest($request,$app);
+        $this->updateOrSubmit($request,$app);
+    }
+
     public function admin()
     {
         return $admin = User::role('Admin')->get()->first();
     }
 
-    public function getSupervisor($app){
+    public function getSupervisor($app)
+    {
         return $supervisor = $app->user->profile->supervisor;
-
     }
 
-    public function getStatusState($application){
-        
-        switch($application->status){
+    public function getStatusState($application)
+    {
+        switch ($application->status) {
             case 'Draft':
             return $state = 'warning';
             break;
@@ -124,6 +175,6 @@ class ApplicationRepository extends AbstractRepository implements ApplicationInt
             case 'Rejected':
             return $state = 'danger';
             break;
-        }        
+        }
     }
 }

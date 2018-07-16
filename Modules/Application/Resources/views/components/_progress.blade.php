@@ -9,9 +9,9 @@
         </div>
         <div class="card-body">
             <div class='container-fluid'>
-                <div class='htimeline row'>
+            <div class='htimeline row'>
                     @foreach($statuses as $s)
-                    <div data-date="{{$s->created_at->toDayDateTimeString()}}" class="step col">
+            <div data-date="{{$s->created_at->toDayDateTimeString()}}" class="step col @if($s->name == 'Draft')warning @elseif($s->name=='Submitted')success @endif">
                         <div>                     
                         {{$s->reason}}
                         </div>
