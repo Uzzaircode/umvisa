@@ -1,10 +1,8 @@
 @extends('backend.master') 
 @section('content')
 @isset($application)
-<div class="row">
-   
-    @include('application::components._progress') 
-    
+<div class="row">   
+    @include('application::components._progress')     
 </div>
 @endisset
 <div class="row">
@@ -40,7 +38,7 @@
             <div class='card-body'>
                 <form action="{{route('create.remarks',['id'=>$application->id])}}" method="POST">
                     @csrf
-    @include('application::letters._remarks')
+                    @include('application::letters._remarks')
                 </form>
             </div>
         </div>

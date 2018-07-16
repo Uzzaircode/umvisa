@@ -17,6 +17,10 @@ function getApplicationStatusState($application){
         return $state = 'info';
         break;
 
+        case 'Approved':
+        return $state = 'success';
+        break;
+
         case 'Rejected':
         return $state = 'danger';
         break;
@@ -35,6 +39,10 @@ function getApplicationStatusByName($s){
 
         case 'Read':
         return $state = 'info';
+        break;
+
+        case 'Approved':
+        return $state = 'success';
         break;
 
         case 'Rejected':

@@ -22,6 +22,8 @@ class ApplicationRepository extends AbstractRepository implements ApplicationInt
     protected $updateMessage = 'Application details has been updated';
     protected $submitSupervisorMessage = "Submitted to Supervisor";
     protected $successRemarkMessage = "Your remark has been saved";
+    protected $approveMessage = "The application has been approved";
+    protected $rejectMessage = "The application has been rejected";
 
     public function __construct(User $user)
     {
@@ -86,11 +88,11 @@ class ApplicationRepository extends AbstractRepository implements ApplicationInt
         }
         //save
         if ($request->has('save')) {
-            $app->setStatus('Submitted', 'Successfully submitted to Supervisor');
-            $app->save();
             //check for late submission
             $this->checkForLateSubmission($app);
             $supervisor = $this->getSupervisor($app);
+            $app->setStatus('Submitted', 'Submitted to '.$this->getSupervisorName($supervisor));
+            $app->save();
             $supervisor->notify(new SubmitApplication($app, $user));
             Session::flash('success', $this->saveMessage);
         }
@@ -115,19 +117,19 @@ class ApplicationRepository extends AbstractRepository implements ApplicationInt
     public function updateOrSubmit($request, $app)
     {
         $user = $app->user;
-        // if update draft
+        // if update draft        
         if ($request->has('draft')) {
+            $this->updateFromRequest($app);
             $app->save();
             Session::flash('success', $this->updateMessage);
         }
         // if submit draft
         if ($request->has('submit')) {
-            //check for late submission
+            // check for late submission
             $this->checkForLateSubmission($app);
             $supervisor = $this->getSupervisor($app);
             $supervisor->notify(new SubmitApplication($app, $user));
-            $app->setStatus('Submitted', 'Submitted to '.$this->getSupervisorName($supervisor));
-            $app->save();
+            $app->setStatus('Submitted', 'Submitted to '.$this->getSupervisorName($supervisor));            
             Session::flash('success', $this->saveMessage);
         }
     }
@@ -140,20 +142,45 @@ class ApplicationRepository extends AbstractRepository implements ApplicationInt
         $this->updateOrSubmit($request, $app);
     }
 
+    // save remarks and send it to deputy dean
     public function saveRemarks($request, $id)
-    {        
+    {
         $app = $this->modelClassName::find($id);
         $user = $app->user;
-        $app->comment([
+        // if save remarks
+        if ($request->save_remarks) {
+            $app->comment([
             'body' => $request->remark,
         ], Auth::user());
-        // notifies Deputy Dean
-        $deputyDean = $this->getDeputyDean();
-        $deputyDean->notify(new SubmitApplication($app,$user));
-        //Set status
-        $app->setStatus('Submitted', 'Submitted to '.$this->getDeputyDeanName($deputyDean).'');
-        Session::flash('success', $this->successRemarkMessage);
-        $url = URL::signedRoute('applications.show',['id'=>$id]);
+            // notifies Deputy Dean
+            $deputyDean = $this->getDeputyDean();
+            $deputyDean->notify(new SubmitApplication($app, $user));
+            //Set status
+            $app->setStatus('Submitted', 'Submitted to '.$this->getDeputyDeanName($deputyDean).'');
+            Session::flash('success', $this->successRemarkMessage);
+        }
+
+        // if approve
+        if ($request->has('approve')) {
+            $app->comment([
+                'body' => $request->remark,
+            ], Auth::user());
+            $deputyDean = $this->getDeputyDean();
+            $app->setStatus('Approved', 'Approved by '.$this->getDeputyDeanName($deputyDean));                       
+            $user->notify(new SubmitApplication($app,$user));
+            Session::flash('success', $this->approveMessage);
+        }
+        // if reject
+        if ($request->has('reject')) {
+            $app->comment([
+                'body' => $request->remark,
+            ], Auth::user());
+            $deputyDean = $this->getDeputyDean();
+            $app->setStatus('Rejected', 'Rejected by '.$this->getDeputyDeanName($deputyDean));
+            $user->notify(new SubmitApplication($app,$user));
+            Session::flash('success', $this->rejectMessage);
+        }
+        $url = URL::signedRoute('applications.show', ['id'=>$id]);
         return redirect($url);
     }
 
@@ -172,16 +199,17 @@ class ApplicationRepository extends AbstractRepository implements ApplicationInt
         return $supervisor = $app->user->profile->supervisor;
     }
 
-    public function getDeputyDeanName($deputyDean){
+    public function getDeputyDeanName($deputyDean)
+    {
         return $deputyDean->profile->title.' '.$deputyDean->name;
     }
 
-    public function getDeputyDean(){
+    public function getDeputyDean()
+    {
         return $this->user->role('Deputy Dean')->get()->first();
     }
 
     
-
     public function getTotalDaysBeforeSubmission($app)
     {
         $start_date = Carbon::parse($app->start_date);

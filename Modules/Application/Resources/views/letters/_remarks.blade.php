@@ -5,7 +5,13 @@
         @endif
     </div>
     <div class="form-group text-right">
-        <button type="submit" class="btn btn-primary text-right"><i class="fe fe-send"></i> Submit</button>
+        @role('Supervisor')
+        <button type="submit" class="btn btn-primary text-right" name="save_remarks"><i class="fe fe-send"></i> Submit</button>
+        @endrole
+        @role('Deputy Dean')
+        <button type="submit" class="btn btn-success text-right" name="approve"><i class="fe fe-send"></i> Approve</button>
+        <button type="submit" class="btn btn-danger text-right" name="reject"><i class="fe fe-send"></i> Reject</button>
+        @endrole
     </div>
     @isset($remarks)
     <div class="o-auto" style="">

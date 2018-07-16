@@ -15,6 +15,7 @@ use Carbon\Carbon;
 use Session;
 use Illuminate\Support\Facades\Storage;
 use Date;
+use Modules\Application\Http\Requests\RemarksRequest;
 
 class ApplicationsController extends Controller
 {
@@ -93,7 +94,7 @@ class ApplicationsController extends Controller
         return redirect()->back();
     }
 
-    public function createRemarks(Request $request, $id)
+    public function createRemarks(RemarksRequest $request, $id)
     {
         return $this->app->saveRemarks($request, $id);
 
