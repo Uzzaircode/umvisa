@@ -18,6 +18,7 @@ class ApplicationRepository extends AbstractRepository implements ApplicationInt
     protected $draftMessage = 'Application created successfully';
     protected $saveMessage = 'Your application has been saved and sent to Immediate Supervisor';
     protected $updateMessage = 'Application details has been updated';
+    protected $submitSupervisorMessage = "Submitted to Supervisor";
 
     public function __construct(User $user)
     {
@@ -132,13 +133,13 @@ class ApplicationRepository extends AbstractRepository implements ApplicationInt
             Session::flash('success', $this->updateMessage);
         }
         // if submit draft
-        if ($request->has('submit')) {
-            $app->setStatus('Submitted', 'Successfully submitted to Supervisor');
-            $app->save();
+        if ($request->has('submit')) {            
             //check for late submission
             $this->checkForLateSubmission($app);
             $supervisor = $this->getSupervisor($app);
             $supervisor->notify(new SubmitApplication($app, $user));
+            $app->setStatus('Submitted', 'Submitted to '.$this->supervisorName($supervisor));
+            $app->save();
             Session::flash('success', $this->saveMessage);
         }
     }
@@ -151,6 +152,9 @@ class ApplicationRepository extends AbstractRepository implements ApplicationInt
         $this->updateOrSubmit($request,$app);
     }
 
+    public function supervisorName($supervisor){
+        return $supervisor->profile->title.' '.$supervisor->name;
+    }
     public function admin()
     {
         return $admin = User::role('Admin')->get()->first();

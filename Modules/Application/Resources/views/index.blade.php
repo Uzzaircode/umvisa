@@ -25,11 +25,15 @@
                         <td>{{ ++$key }}</td>
                         <td>{{str_limit($application->title,$limit = 40,$end = '...')}}</td>
                         <td>{{$application->created_at->toDayDateTimeString()}}</td>
-                    <td><span class="badge badge-{{getApplicationStatusState($application)}}">{{$application->status}}</span></td>
+                    <td><span class="badge badge-{{getApplicationStatusState($application)}}">{{$application->status()->reason}}</span></td>
                         <td>
                             @can('view_applications')
                             <a href="{{ URL::signedRoute('applications.show', ['id' => $application->id])  }}" class="btn btn-secondary btn-sm"><i class="fe fe-eye"></i> View</a>                            @endcan @can('edit_applications')
-                            <a href="{{ URL::signedRoute('applications.edit', ['id' => $application->id])  }}" class="btn btn-secondary btn-sm"><i class="fe fe-edit"></i> Edit</a>                            @endcan @can('delete_applications') {!! Form::open( ['method' => 'delete', 'url' => route('applications.destroy',
+                            @if(totalSubmittedApplication($application) < 0)
+                            <a href="{{ URL::signedRoute('applications.edit', ['id' => $application->id])  }}" class="btn btn-secondary btn-sm"><i class="fe fe-edit"></i> Edit</a>
+                            @endif                           
+                            @endcan 
+                            @can('delete_applications') {!! Form::open( ['method' => 'delete', 'url' => route('applications.destroy',
                             ['id' => $application->id]), 'style' => 'display: inline', 'onSubmit' => 'return confirm("Are
                             yous sure wanted to delete it?")']) !!}
                             <button type="submit" class="btn-delete btn btn-sm btn-danger">
