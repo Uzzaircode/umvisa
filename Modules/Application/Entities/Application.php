@@ -8,7 +8,6 @@ use Spatie\ModelStatus\HasStatuses;
 use BrianFaust\Commentable\Traits\HasComments;
 use Auth;
 
-
 class Application extends Model
 {
     use HasStatuses;
@@ -22,40 +21,50 @@ class Application extends Model
 
     protected $dates = ['start_date', 'end_date'];
 
-    public function applicationAttachments(){
+    public function applicationAttachments()
+    {
         return $this->hasMany(ApplicationAttachment::class);
     }
 
-    public function user(){
+    public function user()
+    {
         return $this->belongsTo(User::class);
     }
-    public function scopeUserApplication($query){
-        
-        if($this->isUser()){
-            return $query->where('user_id',Auth::id());
+    public function scopeUserApplication($query)
+    {
+        if ($this->isUser()) {
+            return $query->where('user_id', Auth::id());
         }
-        if($this->isSupervisor()){
-            
-            return $query->whereHas('user',function($q){
-                $q->whereHas('profile',function($p){
-                    $p->where('supervisor_id',Auth::id());
+        if ($this->isSupervisor()) {
+            return $query->whereHas('user', function ($q) {
+                $q->whereHas('profile', function ($p) {
+                    $p->where('supervisor_id', Auth::id());
                 });
-            })->whereHas('statuses',function($s){
-                $s->where('name','Submitted');
+            })->whereHas('statuses', function ($s) {
+                $s->where('name', 'Submitted');
             });
         }
-    }    
+        // if($this->isDeputyDean()){
+        //     return $query->where()
+        // }
+    }
 
-    public function isAdmin(){
+    public function isDeputyDean()
+    {
+        return Auth::user()->hasRole('Deputy Dean');
+    }
+    public function isAdmin()
+    {
         return Auth::user()->hasRole('Admin');
     }
 
-    public function isUser(){
+    public function isUser()
+    {
         return Auth::user()->hasRole('User');
     }
 
-    public function isSupervisor(){
+    public function isSupervisor()
+    {
         return Auth::user()->hasRole('Supervisor');
     }
-    
 }

@@ -55,6 +55,8 @@ class ApplicationRepository extends AbstractRepository implements ApplicationInt
             'end_date' => Carbon::parse($request->end_date),
             'financial_aid' => $request->financial_aid,
             'account_no_ref' => $request->account_no_ref,
+            'faculty_acc_no' => $request->faculty_acc_no,
+            'grant_acc_no' => $request->grant_acc_no,
             'sponsor_name' => $request->sponsor_name,
             'others_remarks' => $request->others_remarks,
         ]);
@@ -71,7 +73,7 @@ class ApplicationRepository extends AbstractRepository implements ApplicationInt
                 // create attachement record in database, attach it to Ticket ID
                 $this->applicationAttachmentModel::create([
                     'application_id'=>$app->id,
-                    'path'=>$this->attachmentDirectory.$filename
+                    'path'=>$this->attachmentDirectory.'/'.$filename
                     ]);
             }
         }
@@ -82,8 +84,7 @@ class ApplicationRepository extends AbstractRepository implements ApplicationInt
         $user = $app->user;
         //draft
         if ($request->has('draft')) {
-            $app->setStatus('Draft', 'Successfully created');
-            $app->save();
+            $app->setStatus('Draft', 'Successfully created');            
             Session::flash('success', $this->draftMessage);
         }
         //save
@@ -91,8 +92,7 @@ class ApplicationRepository extends AbstractRepository implements ApplicationInt
             //check for late submission
             $this->checkForLateSubmission($app);
             $supervisor = $this->getSupervisor($app);
-            $app->setStatus('Submitted', 'Submitted to '.$this->getSupervisorName($supervisor));
-            $app->save();
+            $app->setStatus('Submitted', 'Submitted to '.$this->getSupervisorName($supervisor));            
             $supervisor->notify(new SubmitApplication($app, $user));
             Session::flash('success', $this->saveMessage);
         }

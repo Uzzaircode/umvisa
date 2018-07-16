@@ -2,16 +2,13 @@
 @section('content')
 <div class="row">
     @isset($application)
-    @include('application::components._progress') 
-    @endisset
+    @include('application::components._progress') @endisset
     <div class="col-lg-7 col-md-7">
         @if(isset($application->id))
         <form action="{{route('applications.update',['id'=>$application->id])}}" class="" method="POST" enctype="multipart/form-data">
-            {{method_field('PUT')}} 
-            @else
+            {{method_field('PUT')}} @else
             <form action="{{route('applications.store')}}" class="" method="POST" enctype="multipart/form-data">
-                @endif
-                @csrf
+                @endif @csrf
                 <div class="card">
                     <div class="card-header sticky-top" style="background:white">
                         <h3 class="card-title"><i class="fe fe-file-text"></i> {{isset($application) ? 'Edit Application':'New Application'}}</h3>
@@ -27,14 +24,14 @@
                 </div>
     </div>
     <div class="col col-lg-5 col-md-5">
-            <div class='card'>
-                    <div class='card-header'>
-                        <p class='card-title'>Remarks</p>
-                    </div>
-                    <div class='card-body'>
-            @include('application::components._comments')
-                    </div>
-                </div>
+        <div class='card'>
+            <div class='card-header'>
+                <p class='card-title'>Remarks</p>
+            </div>
+            <div class='card-body'>
+    @include('application::components._remarks')
+            </div>
+        </div>
     </div>
 </div>
 </form>
@@ -66,24 +63,28 @@ $('#attachment').magnificPopup({
 });
 
 $(function(e){
-    $('.faculty, .university, .grant').click(function(e){
-        $('.acc-no-input').show('fast');
-        $('.others-input').hide('fast');
-        $('.sponsorship-input').hide('fast'); 
+    $('.university').click(function(e){
+        $('.acc-no-input').toggle('fast');        
+    });
+});
+$(function(e){
+    $('.faculty').click(function(e){
+        $('.faculty-acc-no-input').toggle('fast');        
+    });
+});
+$(function(e){
+    $('.grant').click(function(e){
+        $('.grant-acc-no-input').toggle('fast');        
     });
 });
 $(function(e){
     $('.others').click(function(e){
-        $('.others-input').show('fast');
-        $('.acc-no-input').hide('fast');        
-        $('.sponsorship-input').hide('fast');
+        $('.others-input').toggle('fast');        
     });
 });
 $(function(e){
     $('.sponsorship').click(function(e){
-        $('.sponsorship-input').show('fast');
-        $('.acc-no-input').hide('fast');
-        $('.others-input').hide('fast');  
+        $('.sponsorship-input').toggle('fast');        
     });
 });
 
