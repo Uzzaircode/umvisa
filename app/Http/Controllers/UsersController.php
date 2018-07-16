@@ -8,8 +8,6 @@ use App\Role;
 use App\Permission;
 use App\Authorizable;
 use App\Profile;
-use Modules\Department\Entities\Department;
-use Modules\Sap\Entities\Sap;
 use App\Repositories\UsersRepository as UR;
 use Auth;
 use Session;
@@ -33,11 +31,9 @@ class UsersController extends Controller
     }
 
     public function create()
-    {   
-        $depts = Department::pluck('name','id');
-        $roles = Role::pluck('name', 'id');
+    {          
         $saps = Sap::pluck('name', 'id');
-        return view('backend.users.create', compact('roles','depts','saps'));
+        return view('backend.users.create', compact('roles'));
     }
 
     public function store(Request $request)
@@ -56,11 +52,7 @@ class UsersController extends Controller
         // Create the user
         if ($user = User::create($request->except('roles', 'permissions'))) {
             // sync permission
-            $this->syncPermissions($request, $user);
-            //departments           
-            $user->departments()->attach($request->depts);
-            // SAP Modules
-            $user->saps()->attach($request->saps);
+            $this->syncPermissions($request, $user);            
             // user's avatar
             if ($request->hasFile('avatar')) {
                 $avatar = $request->avatar;
@@ -89,11 +81,9 @@ class UsersController extends Controller
     {
         $user = User::find($id);
         $roles = Role::pluck('name', 'id');
-        $permissions = Permission::all('name', 'id');
-        $depts = Department::pluck('name','id');
-        $saps = Sap::pluck('name', 'id');
+        $permissions = Permission::all('name', 'id');        
 
-        return view('backend.users.edit', compact('user', 'roles', 'permissions','depts','saps'));
+        return view('backend.users.edit', compact('user', 'roles', 'permissions'));
     }
 
     public function update(Request $request, $id)
@@ -130,9 +120,7 @@ class UsersController extends Controller
         $user->save();
         $user->profile->update();
         // Handle the user roles
-        $this->syncPermissions($request, $user);
-        $user->departments()->sync($request->depts);
-        $user->saps()->sync($request->saps);
+        $this->syncPermissions($request, $user);        
         Session::flash('success','User has been updated.');
         return redirect()->back();
     }

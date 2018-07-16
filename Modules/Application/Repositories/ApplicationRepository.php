@@ -155,6 +155,7 @@ class ApplicationRepository extends AbstractRepository implements ApplicationInt
     {
         return $admin = User::role('Admin')->get()->first();
     }
+    
 
     public function getSupervisor($app)
     {
@@ -170,6 +171,10 @@ class ApplicationRepository extends AbstractRepository implements ApplicationInt
 
             case 'Submitted':
             return $state = 'success';
+            break;
+
+            case 'Read':
+            return $state = 'info';
             break;
 
             case 'Rejected':

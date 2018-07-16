@@ -7,11 +7,11 @@
         <div class="row">            
             <div class="col-6">
                 <label for="" class="form-label">Applicant Name</label>
-            <input type="text" class="form-control-plaintext" value="{{old('title',$application->user->profile->title ?? Auth::user()->profile->title)}} {{old('name',$application->user->name ?? Auth::user()->name)}}" readonly>
+            <input type="text" class="form-control-plaintext" value="{{$application->user->name}}" readonly>
             </div>
             <div class="col-6">
                     <label for="" class="form-label">Matric Number</label>
-                    <input type="text" class="form-control-plaintext" "matric_num" value="{{old('matric_num',$application->user->profile->matric_num ?? Auth::user()->profile->matric_num)}}" readonly>
+                    <input type="text" class="form-control-plaintext" "matric_num" value="{{$application->user->profile->matric_num}}" readonly>
             </div>
         </div>
     </div>
@@ -19,12 +19,12 @@
         <div class="row">
             <div class="col-6">
                     <label for="" class="form-label">IC Number</label>
-                    <input type="text" class="form-control-plaintext" "ic_num" value="{{old('ic_num',$application->user->profile->ic_num ?? Auth::user()->profile->ic_num )}}" readonly>
+                    <input type="text" class="form-control-plaintext" "ic_num" value="{{$application->user->profile->ic_num}}" readonly>
             </div>
             <div class="col-6">
                 <div class="form-group">
                     <div class="form-label">Study Mode</div>
-                    <input type="text" class="form-control-plaintext" "study_mode" value="{{old('study_mode',$application->user->profile->study_mode ?? Auth::user()->profile->study_mode )}}" readonly>
+                    <input type="text" class="form-control-plaintext" "study_mode" value="{{$application->user->profile->study_mode}}" readonly>
                 </div>
             </div>
         </div>
@@ -34,7 +34,7 @@
         <div class="row">            
             <div class="col-6">
                 <label for="" class="form-label">Passport Number</label>
-                <input type="text" class="form-control-plaintext" "passport_num" value="{{old('passport_num',$application->user->profile->passport_num ?? Auth::user()->profile->passport_num) }}" readonly>
+                <input type="text" class="form-control-plaintext" "passport_num" value="{{$application->user->profile->passport_num}}" readonly>
             </div>
             <div class="col-6">
                 <label for="" class="form-label">Citizenship</label>

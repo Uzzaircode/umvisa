@@ -4,6 +4,9 @@
     <p class="text-danger">{{ $errors->first('replybody') }}</p>
     @endif
 </div>
+<div class="form-group text-right">
+    <button type="submit" class="btn btn-primary text-right" name="remark" value="remark"><i class="fe fe-send"></i> Submit</button>
+</div>
 @isset($remarks)
 <div class="o-auto" style="">
     <ul class="list-group list-card-group">

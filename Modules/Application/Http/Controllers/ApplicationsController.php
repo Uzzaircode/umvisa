@@ -91,6 +91,10 @@ class ApplicationsController extends Controller
         return redirect()->back();
     }
 
+    public function createRemarks(Request $request, $id){
+        
+    }
+
     /**
      * Remove the specified resource from storage.
      * @return Response

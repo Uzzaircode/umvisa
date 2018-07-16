@@ -1,7 +1,7 @@
 <div class="header py-4">
     <div class="container">
         <div class="d-flex">
-            <a class="header-brand" href="{{route('tickets.index')}}">
+            <a class="header-brand" href="{{route('applications.index')}}">
                 <img src="{{asset('img/logo.png')}}" class="header-brand-img" alt="brillante logo">
             </a>
             <div class="d-flex order-lg-2 ml-auto">
@@ -77,7 +77,7 @@
             </div>
             <div class="col-lg order-lg-first">
                 <ul class="nav nav-tabs border-0 flex-column flex-lg-row">
-                    @can('view_tickets')
+                    @can('view_applications')
                     <li class="nav-item">
                         <a href="{{route('applications.index')}}" class="nav-link">
                             <i class="fe fe-tag"></i>{{Auth::user()->hasRole('Admin') ? 'Application':'My Applications'}}</a>
