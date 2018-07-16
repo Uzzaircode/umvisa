@@ -109,4 +109,21 @@ class ApplicationRepository extends AbstractRepository implements ApplicationInt
         return $supervisor = $app->user->profile->supervisor;
 
     }
+
+    public function getStatusState($application){
+        
+        switch($application->status){
+            case 'Draft':
+            return $state = 'warning';
+            break;
+
+            case 'Submitted':
+            return $state = 'success';
+            break;
+
+            case 'Rejected':
+            return $state = 'danger';
+            break;
+        }        
+    }
 }

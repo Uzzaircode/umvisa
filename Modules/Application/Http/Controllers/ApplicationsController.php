@@ -62,8 +62,9 @@ class ApplicationsController extends Controller
      */
     public function show($id)
     {
-        $application = $this->app->find($id);        
-        return view('application::show', compact('application'));
+        $application = $this->app->find($id);
+        $state = $this->app->getStatusState($application);
+        return view('application::formal-letter', compact('application','state'));
     }
 
     /**
@@ -110,4 +111,5 @@ class ApplicationsController extends Controller
     public function letter(){
         return view('application::formal-letter');
     }
+
 }
