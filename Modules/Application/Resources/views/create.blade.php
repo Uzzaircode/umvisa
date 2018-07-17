@@ -2,13 +2,17 @@
 @section('content')
 <div class="row">
     @isset($application)
-    @include('application::components._progress') @endisset
+    @include('application::components._progress') 
+    @endisset
     <div class="col-lg-7 col-md-7">
         @if(isset($application->id))
         <form action="{{route('applications.update',['id'=>$application->id])}}" class="" method="POST" enctype="multipart/form-data">
-            {{method_field('PUT')}} @else
+            {{method_field('PUT')}} 
+            @else
             <form action="{{route('applications.store')}}" class="" method="POST" enctype="multipart/form-data">
-                @endif @csrf
+                @endif 
+                
+                @csrf
                 <div class="card">
                     <div class="card-header sticky-top" style="background:white">
                         <h3 class="card-title"><i class="fe fe-file-text"></i> {{isset($application) ? 'Edit Application':'New Application'}}</h3>
@@ -89,15 +93,15 @@ $(function(e){
 });
 
         $('#datetimepicker1').datetimepicker({
-            @isset($application)
-                defaultDate: {{$application->start_date->format('d/m/Y')}},
-            @endisset
+            @if(isset($application))
+                defaultDate: {{$application->start_date->format('m/d/Y')}},
+            @endif
             format: 'L'
         });
         $('#datetimepicker2').datetimepicker({
-            @isset($application)
-                defaultDate: {{$application->end_date->format('d/m/Y')}},
-            @endisset
+            @if(isset($application))
+                defaultDate: {{$application->end_date->format('m/d/Y')}},
+            @endif
             useCurrent: false,
             format:'L'
         });

@@ -9,7 +9,11 @@ function getApplicationStatusState($application){
         return $state = 'warning';
         break;
 
-        case 'Submitted':
+        case 'Submitted To Supervisor':
+        return $state = 'success';
+        break;
+
+        case 'Submitted To Deputy Dean':
         return $state = 'success';
         break;
 
@@ -33,7 +37,11 @@ function getApplicationStatusByName($s){
         return $state = 'warning';
         break;
 
-        case 'Submitted':
+        case 'Submitted To Supervisor':
+        return $state = 'success';
+        break;
+
+        case 'Submitted To Deputy Dean':
         return $state = 'success';
         break;
 

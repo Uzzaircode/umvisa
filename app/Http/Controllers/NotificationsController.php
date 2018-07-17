@@ -27,7 +27,7 @@ class NotificationsController extends Controller
         
         if (isset($application_id)) {
             $app = $this->app->find($application_id);
-            $app->setStatus('Read', 'Read by '.Auth::user()->name);
+            $app->setStatus('Read', 'Read by '.Auth::user()->profile->title.' '.Auth::user()->name);
             $signedUrl = URL::signedRoute('applications.show', ['id'=> $application_id]);
             return redirect($signedUrl);
         }

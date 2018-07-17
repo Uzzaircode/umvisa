@@ -9,6 +9,7 @@ use Modules\Application\Notifications\SubmitApplication;
 use Illuminate\Support\Facades\URL;
 use Session;
 use Auth;
+use Modules\Application\Notifications\ApproveApplication;
 
 class ApplicationRepository extends AbstractRepository implements ApplicationInterface
 {
@@ -67,7 +68,7 @@ class ApplicationRepository extends AbstractRepository implements ApplicationInt
             // $repo->uploadFiles(['files'], $ticket);
             foreach ($request->file('attachments') as $file) {
                 // save the attachment with event title and time as prefix
-                $filename = trim($app->title) . '-' . time() . $file->getClientOriginalName();
+                $filename = time() . $file->getClientOriginalName();
                 // move the attachements to public/uploads/applicationsattachments folder
                 $file->move($this->attachmentDirectory, $filename);
                 // create attachement record in database, attach it to Ticket ID
@@ -100,7 +101,7 @@ class ApplicationRepository extends AbstractRepository implements ApplicationInt
 
     public function updateFromRequest($request, $app)
     {
-        return $app->update([
+        $app->update([
             'user_id' => $request->user_id,
             'title' => $request->title,
             'venue' => $request->venue,
@@ -109,6 +110,8 @@ class ApplicationRepository extends AbstractRepository implements ApplicationInt
             'end_date' => Carbon::parse($request->end_date),
             'financial_aid' => $request->financial_aid,
             'account_no_ref' => $request->account_no_ref,
+            'faculty_acc_no' => $request->faculty_acc_no,
+            'grant_acc_no' => $request->grant_acc_no,
             'sponsor_name' => $request->sponsor_name,
             'others_remarks' => $request->others_remarks,
         ]);
@@ -119,7 +122,7 @@ class ApplicationRepository extends AbstractRepository implements ApplicationInt
         $user = $app->user;
         // if update draft        
         if ($request->has('draft')) {
-            $this->updateFromRequest($app);
+           $this->updateFromRequest($request,$app);
             $app->save();
             Session::flash('success', $this->updateMessage);
         }
@@ -129,7 +132,7 @@ class ApplicationRepository extends AbstractRepository implements ApplicationInt
             $this->checkForLateSubmission($app);
             $supervisor = $this->getSupervisor($app);
             $supervisor->notify(new SubmitApplication($app, $user));
-            $app->setStatus('Submitted To Supervisor', 'Submitted to '.$this->getSupervisorName($supervisor));            
+            $app->setStatus('Submitted To Supervisor', 'Submitted to '.$this->getSupervisorName($supervisor));   
             Session::flash('success', $this->saveMessage);
         }
     }
@@ -148,7 +151,7 @@ class ApplicationRepository extends AbstractRepository implements ApplicationInt
         $app = $this->modelClassName::find($id);
         $user = $app->user;
         // if save remarks
-        if ($request->save_remarks) {
+        if ($request->has('save_remarks')) {
             $app->comment([
             'body' => $request->remark,
         ], Auth::user());

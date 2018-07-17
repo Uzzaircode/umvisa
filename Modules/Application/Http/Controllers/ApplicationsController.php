@@ -91,10 +91,10 @@ class ApplicationsController extends Controller
     public function update(Request $request, $id)
     {
         $this->app->updateApplication($id, $request);
-        return redirect()->back();
+        return redirect()->route('applications.index');
     }
 
-    public function createRemarks(RemarksRequest $request, $id)
+    public function createRemarks(Request $request, $id)
     {
         return $this->app->saveRemarks($request, $id);
 

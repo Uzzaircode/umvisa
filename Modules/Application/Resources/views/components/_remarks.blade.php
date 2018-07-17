@@ -6,9 +6,11 @@
     <p class="text-danger">{{ $errors->first('remark') }}</p>
     @endif
 </div>
+@if(Auth::user()->hasRole('Supervisor','Deputy Dean'))
 <div class="form-group text-right">
-    <button type="submit" class="btn btn-primary text-right"><i class="fe fe-send"></i> Submit</button>
+    <button type="submit" class="btn btn-primary text-right" name="save_remarks"><i class="fe fe-send"></i> Submit</button>
 </div>
+@endif
 
 @isset($remarks)
 <div class="o-auto" style="">

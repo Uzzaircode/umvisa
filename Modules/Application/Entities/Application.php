@@ -41,15 +41,11 @@ class Application extends Model
                     $p->where('supervisor_id', Auth::id());
                 });
             })->whereHas('statuses', function ($s) {
-                $s->where('name', 'Submitted');
+                $s->where('name', 'Submitted To Supervisor');
             });
         }
         if($this->isDeputyDean()){
-            return $query->whereHas('user', function ($q) {
-                $q->whereHas('profile', function ($p) {
-                    $p->where('supervisor_id', Auth::id());
-                });
-            })->whereHas('statuses', function ($s) {
+            return $query->whereHas('statuses', function ($s) {
                 $s->where('name', 'Submitted To Deputy Dean');
             });
         }
