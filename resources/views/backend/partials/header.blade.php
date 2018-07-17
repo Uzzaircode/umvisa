@@ -38,7 +38,7 @@
                     <a href="#" class="nav-link pr-0 leading-none" data-toggle="dropdown">
                         <span class="avatar" style="background-image: url({{asset(Auth::user()->profile->avatar)}})"></span>
                         <span class="ml-2 d-none d-lg-block">
-                            <span class="text-default">{{Auth::user()->name}}</span>
+                            <span class="text-default">{{Auth::user()->profile->title}} {{Auth::user()->name}}</span>
                             <small class="text-muted d-block mt-1">{{ Auth::user()->roles()->pluck('name')->first()}}</small>                       
                         </span>
                     </a>

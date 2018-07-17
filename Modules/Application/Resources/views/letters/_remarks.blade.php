@@ -1,3 +1,7 @@
+@if($remarks->count() <= 0)
+    No remarks yet.
+@endif
+
 @if(Auth::user()->hasRole('Supervisor','Deputy Dean'))
 <div class="form-group" @if ($errors->has('remark')) has-error @endif>
     <label for="" class="form-label">Leave a remark</label>

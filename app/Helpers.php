@@ -52,5 +52,5 @@ function getApplicationStatusByName($s){
 }
 
 function totalSubmittedApplication($application){
-    return $application->statuses->whereIn('name',['Submitted'])->count();
+    return $application->statuses->whereIn('name',['Submitted To Supervisor'])->count();
 }

@@ -5,7 +5,7 @@
 </div>
 @endisset
 <div class="row">
-    <div class="col-7">
+    <div class="col">
         <div class='card align-middle' width="">
             <div class="card-header">
                 <p class="card-title">Permission To Travel (Overseas) Form</p>
@@ -31,19 +31,5 @@
             </div>
         </div>
     </div>
-    
-    <div class="col-5">
-        <div class='card'>
-            <div class='card-header'>
-                <p class='card-title'>Remarks</p>
-            </div>
-            <div class='card-body'>
-                <form action="{{route('create.remarks',['id'=>$application->id])}}" method="POST">
-                    @csrf
-    @include('application::letters._remarks')
-                </form>
-            </div>
-        </div>
-    </div>    
 </div>
 @endsection

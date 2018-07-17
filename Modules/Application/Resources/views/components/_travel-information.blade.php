@@ -58,15 +58,15 @@
         </label>
 
         <label class="custom-control custom-checkbox custom-control-inline">
-                        <input type="checkbox" class="custom-control-input university" name="financial_aid" value="university" @if(old('financial_aid') == 'university') checked @endif>
+                        <input type="checkbox" class="custom-control-input university" name="financial_aid" value="university" @if(old('financial_aid') == 'university' || isset($application) && $application->account_no_ref != NULL ) checked @endif>
                         <span class="custom-control-label">University</span>
                       </label>
         <label class="custom-control custom-checkbox custom-control-inline">
-                        <input type="checkbox" class="custom-control-input faculty" name="financial_aid" value="faculty" @if(old('financial_aid') == 'faculty') checked @endif>
+                        <input type="checkbox" class="custom-control-input faculty" name="financial_aid" value="faculty" @if(old('financial_aid') == 'faculty' || isset($application) && $application->faculty_acc_no != NULL ) checked @endif>
                         <span class="custom-control-label">Faculty</span>
                       </label>
         <label class="custom-control custom-checkbox custom-control-inline">
-                        <input type="checkbox" class="custom-control-input grant" name="financial_aid" value="grant" @if(old('financial_aid') == 'grant') checked @endif>
+                        <input type="checkbox" class="custom-control-input grant" name="financial_aid" value="grant" @if(old('financial_aid') == 'grant' || isset($application) && $application->grant_acc_no != NULL ) checked @endif>
                         <span class="custom-control-label">Grant</span>
                       </label>
         <label class="custom-control custom-checkbox custom-control-inline">
@@ -74,7 +74,7 @@
                         <span class="custom-control-label">Sponsorship</span>
                       </label>
         <label class="custom-control custom-checkbox custom-control-inline">
-                        <input type="checkbox" class="custom-control-input others" name="financial_aid" value="others" @if(old('financial_aid') == 'others') checked @endif>
+                        <input type="checkbox" class="custom-control-input others" name="financial_aid" value="others" @if(old('financial_aid') == 'others' || isset($application) && $application->others_remarks != NULL ) checked @endif>
                         <span class="custom-control-label">Others</span>
                       </label>
         @include('shared._errors',['entity'=>'financial_aid'])
@@ -110,6 +110,6 @@
 <div class="form-group others-input" style="display:{{$errors->has('others_remarks') ? 'block':'none'}}" id="others_input">
         <label for="" class="form-label">Others? Please specify</label>
         <input type="text" class="form-control {{$errors->has('others_remarks') ? 'is-invalid':''}}" name="others_remarks" id="others_remarks"
-                placeholder="">
+placeholder="" value="{{old('others_remarks',$application->others_remarks != null ?? null)}}">
         @include('shared._errors',['entity'=>'others_remarks'])
 </div>

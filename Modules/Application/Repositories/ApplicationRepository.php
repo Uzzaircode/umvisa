@@ -92,7 +92,7 @@ class ApplicationRepository extends AbstractRepository implements ApplicationInt
             //check for late submission
             $this->checkForLateSubmission($app);
             $supervisor = $this->getSupervisor($app);
-            $app->setStatus('Submitted', 'Submitted to '.$this->getSupervisorName($supervisor));            
+            $app->setStatus('Submitted To Supervisor', 'Submitted to '.$this->getSupervisorName($supervisor));            
             $supervisor->notify(new SubmitApplication($app, $user));
             Session::flash('success', $this->saveMessage);
         }
@@ -129,7 +129,7 @@ class ApplicationRepository extends AbstractRepository implements ApplicationInt
             $this->checkForLateSubmission($app);
             $supervisor = $this->getSupervisor($app);
             $supervisor->notify(new SubmitApplication($app, $user));
-            $app->setStatus('Submitted', 'Submitted to '.$this->getSupervisorName($supervisor));            
+            $app->setStatus('Submitted To Supervisor', 'Submitted to '.$this->getSupervisorName($supervisor));            
             Session::flash('success', $this->saveMessage);
         }
     }
@@ -156,7 +156,7 @@ class ApplicationRepository extends AbstractRepository implements ApplicationInt
             $deputyDean = $this->getDeputyDean();
             $deputyDean->notify(new SubmitApplication($app, $user));
             //Set status
-            $app->setStatus('Submitted', 'Submitted to '.$this->getDeputyDeanName($deputyDean).'');
+            $app->setStatus('Submitted To Deputy Dean', 'Submitted to '.$this->getDeputyDeanName($deputyDean).'');
             Session::flash('success', $this->successRemarkMessage);
         }
 
@@ -167,7 +167,7 @@ class ApplicationRepository extends AbstractRepository implements ApplicationInt
             ], Auth::user());
             $deputyDean = $this->getDeputyDean();
             $app->setStatus('Approved', 'Approved by '.$this->getDeputyDeanName($deputyDean));                       
-            $user->notify(new SubmitApplication($app,$user));
+            $user->notify(new ApproveApplication($app,$user));
             Session::flash('success', $this->approveMessage);
         }
         // if reject
@@ -177,7 +177,7 @@ class ApplicationRepository extends AbstractRepository implements ApplicationInt
             ], Auth::user());
             $deputyDean = $this->getDeputyDean();
             $app->setStatus('Rejected', 'Rejected by '.$this->getDeputyDeanName($deputyDean));
-            $user->notify(new SubmitApplication($app,$user));
+            $user->notify(new RejectApplication($app,$user));
             Session::flash('success', $this->rejectMessage);
         }
         $url = URL::signedRoute('applications.show', ['id'=>$id]);
