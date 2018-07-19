@@ -12,6 +12,7 @@ use Modules\Sap\Entities\Sap;
 use Modules\Ticket\Entities\Reply;
 use App\Profile;
 use Cache;
+
 // use App\Http\Traits\Hashidable;
 
 
@@ -30,13 +31,6 @@ class User extends Authenticatable
         'name', 'email', 'password',
     ];
 
-//     private function getModel($model, $routeKey)
-// {
-//     $id = \Hashids::connection($model)->decode($routeKey)[0] ?? null;
-//     $modelInstance = resolve($model);
-
-//     return  $modelInstance->findOrFail($id);
-// }
     /**
      * The attributes that should be hidden for arrays.
      *
@@ -46,37 +40,28 @@ class User extends Authenticatable
         'password', 'remember_token',
     ];
 
-    public function accounts(){
+    public function accounts()
+    {
         return $this->hasMany(LinkedSocialAccount::class);
     }
 
-    public function profile(){
-        return $this->hasOne(Profile::class,'user_id');
-    } 
-      
-    public function departments(){
-         return $this->belongsToMany(Department::class);
+    public function profile()
+    {
+        return $this->hasOne(Profile::class, 'user_id');
     }
-
-    public function saps(){
-        return $this->belongsToMany(Sap::class);
-    }
-
-    // Check if user is online
-
-    // public function isOnline()
-    // {
-    // return Cache::has('user-is-online-' . $this->id);
-    // }
-
-    public function profileOwner($user){
+             
+    public function profileOwner($user)
+    {
         return $this->id == $user->id;
     }
-    public function tickets(){
+    
+    public function tickets()
+    {
         return $this->hasMany(Ticket::class);
     }
-    public function replies(){
+
+    public function replies()
+    {
         return $this->hasMany(Reply::class);
     }
-    
 }

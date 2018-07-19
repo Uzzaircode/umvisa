@@ -6,10 +6,10 @@ use App\User;
 use Carbon\Carbon;
 use Illuminate\Notifications\Notification;
 use Modules\Application\Notifications\SubmitApplication;
+use Modules\Application\Notifications\ApproveApplication;
 use Illuminate\Support\Facades\URL;
 use Session;
 use Auth;
-use Modules\Application\Notifications\ApproveApplication;
 
 class ApplicationRepository extends AbstractRepository implements ApplicationInterface
 {
@@ -42,7 +42,8 @@ class ApplicationRepository extends AbstractRepository implements ApplicationInt
         //check if there is any attachments
         $this->hasAttachments($request, $app);
         // save it as draft or final
-        $this->saveOrDraft($request, $app);
+        $this->draft($request, $app);
+        $this->save($request, $app);
     }
 
     public function createFromRequest($request)
@@ -62,42 +63,6 @@ class ApplicationRepository extends AbstractRepository implements ApplicationInt
             'others_remarks' => $request->others_remarks,
         ]);
     }
-    public function hasAttachments($request, $app)
-    {
-        if ($request->hasFile('attachments')) {
-            // $repo->uploadFiles(['files'], $ticket);
-            foreach ($request->file('attachments') as $file) {
-                // save the attachment with event title and time as prefix
-                $filename = time() . $file->getClientOriginalName();
-                // move the attachements to public/uploads/applicationsattachments folder
-                $file->move($this->attachmentDirectory, $filename);
-                // create attachement record in database, attach it to Ticket ID
-                $this->applicationAttachmentModel::create([
-                    'application_id'=>$app->id,
-                    'path'=>$this->attachmentDirectory.'/'.$filename
-                    ]);
-            }
-        }
-    }
-
-    public function saveOrDraft($request, $app)
-    {
-        $user = $app->user;
-        //draft
-        if ($request->has('draft')) {
-            $app->setStatus('Draft', 'Successfully created');            
-            Session::flash('success', $this->draftMessage);
-        }
-        //save
-        if ($request->has('save')) {
-            //check for late submission
-            $this->checkForLateSubmission($app);
-            $supervisor = $this->getSupervisor($app);
-            $app->setStatus('Submitted To Supervisor', 'Submitted to '.$this->getSupervisorName($supervisor));            
-            $supervisor->notify(new SubmitApplication($app, $user));
-            Session::flash('success', $this->saveMessage);
-        }
-    }
 
     public function updateFromRequest($request, $app)
     {
@@ -116,23 +81,72 @@ class ApplicationRepository extends AbstractRepository implements ApplicationInt
             'others_remarks' => $request->others_remarks,
         ]);
     }
-    
-    public function updateOrSubmit($request, $app)
+
+    public function hasAttachments($request, $app)
     {
-        $user = $app->user;
-        // if update draft        
+        if ($request->hasFile('attachments')) {
+            // $repo->uploadFiles(['files'], $ticket);
+            foreach ($request->file('attachments') as $file) {
+                // save the attachment with event title and time as prefix
+                $filename = time() . $file->getClientOriginalName();
+                // move the attachements to public/uploads/applicationsattachments folder
+                $file->move($this->attachmentDirectory, $filename);
+                // create attachement record in database, attach it to Ticket ID
+                $this->applicationAttachmentModel::create([
+                    'application_id'=>$app->id,
+                    'path'=>$this->attachmentDirectory.'/'.$filename
+                    ]);
+            }
+        }
+    }
+
+    public function draft($request, $app)
+    {
+        //draft
         if ($request->has('draft')) {
-           $this->updateFromRequest($request,$app);
+            $app->setStatus('Draft', 'Successfully created');
+            Session::flash('success', $this->draftMessage);
+        }
+    }
+
+    
+
+    public function save($request, $app)
+    {
+        //save
+        if ($request->has('save')) {
+            //check for late submission
+            $this->checkForLateSubmission($app);
+            $supervisor = $this->getSupervisor($app);
+            $app->setStatus('Submitted To Supervisor', 'Submitted to '.$this->getSupervisorName($supervisor));
+            $supervisor->notify(new SubmitApplication($app, $this->getApplicant($app)));
+            Session::flash('success', $this->saveMessage);
+        }
+    }
+
+    
+    
+    public function updateDraft($request, $app)
+    {
+        // if update draft
+        if ($request->has('draft')) {
+            $this->updateFromRequest($request, $app);
             $app->save();
             Session::flash('success', $this->updateMessage);
         }
-        // if submit draft
+    }
+    
+    public function submit($request, $app)
+    {
+        $user = $app->user;
+        
+        // if submit 'submit'
         if ($request->has('submit')) {
             // check for late submission
             $this->checkForLateSubmission($app);
             $supervisor = $this->getSupervisor($app);
             $supervisor->notify(new SubmitApplication($app, $user));
-            $app->setStatus('Submitted To Supervisor', 'Submitted to '.$this->getSupervisorName($supervisor));   
+            $app->setStatus('Submitted To Supervisor', 'Submitted to '.$this->getSupervisorName($supervisor));
             Session::flash('success', $this->saveMessage);
         }
     }
@@ -142,14 +156,14 @@ class ApplicationRepository extends AbstractRepository implements ApplicationInt
         // find application
         $app = $this->modelClassName::find($id);
         $this->updateFromRequest($request, $app);
-        $this->updateOrSubmit($request, $app);
+        $this->updateDraft($request, $app);
+        $this->submit($request, $app);
     }
 
     // save remarks and send it to deputy dean
     public function saveRemarks($request, $id)
     {
         $app = $this->modelClassName::find($id);
-        $user = $app->user;
         // if save remarks
         if ($request->has('save_remarks')) {
             $app->comment([
@@ -157,7 +171,7 @@ class ApplicationRepository extends AbstractRepository implements ApplicationInt
         ], Auth::user());
             // notifies Deputy Dean
             $deputyDean = $this->getDeputyDean();
-            $deputyDean->notify(new SubmitApplication($app, $user));
+            $deputyDean->notify(new SubmitApplication($app, $this->getApplicant($app)));
             //Set status
             $app->setStatus('Submitted To Deputy Dean', 'Submitted to '.$this->getDeputyDeanName($deputyDean).'');
             Session::flash('success', $this->successRemarkMessage);
@@ -169,8 +183,8 @@ class ApplicationRepository extends AbstractRepository implements ApplicationInt
                 'body' => $request->remark,
             ], Auth::user());
             $deputyDean = $this->getDeputyDean();
-            $app->setStatus('Approved', 'Approved by '.$this->getDeputyDeanName($deputyDean));                       
-            $user->notify(new ApproveApplication($app,$user));
+            $app->setStatus('Approved', 'Approved by '.$this->getDeputyDeanName($deputyDean));
+            $user->notify(new ApproveApplication($app, $user));
             Session::flash('success', $this->approveMessage);
         }
         // if reject
@@ -180,11 +194,16 @@ class ApplicationRepository extends AbstractRepository implements ApplicationInt
             ], Auth::user());
             $deputyDean = $this->getDeputyDean();
             $app->setStatus('Rejected', 'Rejected by '.$this->getDeputyDeanName($deputyDean));
-            $user->notify(new RejectApplication($app,$user));
+            $user->notify(new RejectApplication($app, $user));
             Session::flash('success', $this->rejectMessage);
         }
         $url = URL::signedRoute('applications.show', ['id'=>$id]);
         return redirect($url);
+    }
+
+    public function getApplicant($app)
+    {
+        return $app->user;
     }
 
     public function getSupervisorName($supervisor)

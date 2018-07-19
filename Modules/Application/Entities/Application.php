@@ -13,7 +13,10 @@ class Application extends Model
     use HasStatuses;
     use HasComments;
 
+    public function __construct(){
 
+        $this->user = Auth::user();
+    }
 
     protected $table = 'applications';
 
@@ -30,43 +33,29 @@ class Application extends Model
     {
         return $this->belongsTo(User::class);
     }
+
     public function scopeUserApplication($query)
     {
-        if ($this->isUser()) {
-            return $query->where('user_id', Auth::id());
+
+        if ($this->user->hasRole('User')) {
+            return $query->where('user_id', $this->user->id);
         }
-        if ($this->isSupervisor()) {
+
+        if ($this->user->hasRole('Supervisor')) {
             return $query->whereHas('user', function ($q) {
                 $q->whereHas('profile', function ($p) {
-                    $p->where('supervisor_id', Auth::id());
+                    $p->where('supervisor_id', $this->user->id);
                 });
             })->whereHas('statuses', function ($s) {
                 $s->where('name', 'Submitted To Supervisor');
             });
         }
-        if($this->isDeputyDean()){
+        
+        if($this->user->hasRole('Deputy Dean')){
             return $query->whereHas('statuses', function ($s) {
                 $s->where('name', 'Submitted To Deputy Dean');
             });
         }
     }
-
-    public function isDeputyDean()
-    {
-        return Auth::user()->hasRole('Deputy Dean');
-    }
-    public function isAdmin()
-    {
-        return Auth::user()->hasRole('Admin');
-    }
-
-    public function isUser()
-    {
-        return Auth::user()->hasRole('User');
-    }
-
-    public function isSupervisor()
-    {
-        return Auth::user()->hasRole('Supervisor');
-    }
+    
 }
