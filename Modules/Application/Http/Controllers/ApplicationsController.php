@@ -10,6 +10,8 @@ use Modules\Application\Repositories\ApplicationRepository as AR;
 use Modules\Application\Http\Requests\ApplicationsRequest;
 use Auth;
 use Session;
+use Carbon\Carbon;
+use Modules\Application\Entities\FinancialInstrument;
 
 class ApplicationsController extends Controller
 {
@@ -29,13 +31,15 @@ class ApplicationsController extends Controller
     public function create()
     {
         $user = $this->auth::user();
+        $ins = FinancialInstrument::all();
         $countries = $this->country->all()->pluck('name.common', 'flag.flag-icon');
-        return view('application::create', compact('countries', 'user'));
+        return view('application::create', compact('countries', 'user','ins'));
     }
     
-    public function store(ApplicationsRequest $request)
+    public function store(Request $request)
     {
         $this->app->saveApplication($request);
+        
         return redirect()->route('applications.index');
     }
     

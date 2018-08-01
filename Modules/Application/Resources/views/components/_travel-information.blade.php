@@ -29,7 +29,7 @@
         <label for="" class="form-label">
                 Travelling Period
         </label>
-        <div class="row">
+        {{-- <div class="row">
                 <div class="col">
                         <div class="input-group date" id="datetimepicker1" data-target-input="nearest">
                                 <div class="input-group-prepend" data-target="#datetimepicker1" data-toggle="datetimepicker">
@@ -53,7 +53,7 @@
                         </div>
         @include('shared._errors',['entity'=>'end_date'])
                 </div>
-        </div>
+        </div> --}}
 </div>
 <div class="form-group">
         <label for="" class="form-label">

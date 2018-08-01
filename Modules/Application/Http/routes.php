@@ -14,5 +14,10 @@ Route::group(['middleware' => ['web','timeout'], 'prefix' => 'applications', 'na
     });
     Route::post('{id}/create/remarks',['uses'=>'ApplicationsController@createRemarks','as'=>'create.remarks']);
     Route::get('letter','ApplicationsController@letter');
-    
+       
+});
+
+Route::group(['middleware'=>['web','timeout'],'prefix'=>'financialinstruments','namespace'=>'Modules\Application\Http\Controllers'],function(){
+    Route::get('/', ['uses'=>'FinancialinstrumentController@index','as'=>'finins.index']);
+
 });

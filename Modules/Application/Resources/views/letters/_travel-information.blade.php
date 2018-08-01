@@ -16,7 +16,7 @@
         </div>
         <div class="col-6">
             <label for="" class="form-label">Country</label>
-            <input type="text" class="form-control-plaintext" name="venue" value="{{ old('venue',$application->country ?? null) }}" readonly>
+            <input type="text" class="form-control-plaintext" name="country" value="{{ old('country',$application->country ?? null) }}" readonly>
 
         </div>
     </div>
@@ -28,12 +28,12 @@
     <div class="row">
         <div class="col">
             <label for="" class="form-label">Start Date</label>
-            <input type="text" class="form-control-plaintext" value="{{old('start_date',$application->start_date->format('D, d/m/Y') ?? null)}}"
+            <input type="text" class="form-control-plaintext" name="start_date" value="{{old('start_date',$application->start_date->format('D, d/m/Y') ?? null)}}"
                 readonly>
         </div>
         <div class="col">
             <label for="" class="form-label">End Date</label>
-            <input type="text" class="form-control-plaintext" value="{{old('end_date',$application->end_date->format('D, d/m/Y') ?? null)}}"
+            <input type="text" class="form-control-plaintext" name="end_date" value="{{old('end_date',$application->end_date->format('D, d/m/Y') ?? null)}}"
                 readonly>
         </div>
     </div>

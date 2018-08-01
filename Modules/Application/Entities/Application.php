@@ -13,14 +13,9 @@ class Application extends Model
     use HasStatuses;
     use HasComments;
 
-    public function __construct(){
-
-        $this->user = Auth::user();
-    }
-
     protected $table = 'applications';
 
-    protected $fillable = ['user_id','title','venue','country','start_date','end_date','financial_aid','account_no_ref','sponsor_name','other_remarks'];
+    protected $fillable = ['user_id','title','venue','country','start_date','end_date','financial_aid','account_no_ref','sponsor_name','others_remarks'];
 
     protected $dates = ['start_date', 'end_date'];
 
@@ -36,26 +31,24 @@ class Application extends Model
 
     public function scopeUserApplication($query)
     {
-
-        if ($this->user->hasRole('User')) {
-            return $query->where('user_id', $this->user->id);
+        if (Auth::user()->hasRole('User')) {
+            return $query->where('user_id', Auth::id());
         }
 
-        if ($this->user->hasRole('Supervisor')) {
+        if (Auth::user()->hasRole('Supervisor')) {
             return $query->whereHas('user', function ($q) {
                 $q->whereHas('profile', function ($p) {
-                    $p->where('supervisor_id', $this->user->id);
+                    $p->where('supervisor_id', Auth::id());
                 });
             })->whereHas('statuses', function ($s) {
                 $s->where('name', 'Submitted To Supervisor');
             });
         }
         
-        if($this->user->hasRole('Deputy Dean')){
+        if (Auth::user()->hasRole('Deputy Dean')) {
             return $query->whereHas('statuses', function ($s) {
                 $s->where('name', 'Submitted To Deputy Dean');
             });
         }
     }
-    
 }
