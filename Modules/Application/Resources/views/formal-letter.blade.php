@@ -35,7 +35,7 @@
     <div class="col-5">
         <div class='card'>
             <div class='card-header'>
-                <p class='card-title'>Remarks</p>
+                <p class='card-title'>Recommendations</p>
             </div>
             <div class='card-body'>
                 <form action="{{route('create.remarks',['id'=>$application->id])}}" method="POST">

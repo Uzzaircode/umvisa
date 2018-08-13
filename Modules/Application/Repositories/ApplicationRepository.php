@@ -58,12 +58,8 @@ class ApplicationRepository extends AbstractRepository implements ApplicationInt
             'country' => $request->country,
             'start_date' => $request->start_date,
             'end_date' => $request->end_date,
-            'financial_aid' => $request->financial_aid,
-            'account_no_ref' => $request->account_no_ref,
-            'faculty_acc_no' => $request->faculty_acc_no,
-            'grant_acc_no' => $request->grant_acc_no,
-            'sponsor_name' => $request->sponsor_name,
-            'others_remarks' => $request->others_remarks,
+            'alternate_email' => $request->alternate_email,
+            'type' => $request->application_type,
         ]);
     }
 
@@ -260,8 +256,16 @@ class ApplicationRepository extends AbstractRepository implements ApplicationInt
     {
         if ($this->getTotalDaysBeforeSubmission($app) < $this->totalDaysBeforeSubmission) {
             $app->comment([
+                'title'=>'Late Submission',
                 'body' => 'We have received your application, however we wish you to draw your attention for you to submit the application to our office not less than '.$this->totalDaysBeforeSubmission.' days prior to the event as to ensure that you are granted permission from the University before attending any activity in the future. Thank you.<br><b>Please provide valid reasons supporting this late submission in the text box above. Don\'t forget to click the Submit Remark button.</b>',
             ], $this->admin());
+        }
+    }
+
+    public function checkLateSubmmisionComment($app){
+        $comments = $app->comments->toArray();
+        if(in_array('Late Submission', $comments)){
+
         }
     }
 }

@@ -16,7 +16,7 @@ class Application extends Model
 
     protected $table = 'applications';
 
-    protected $fillable = ['user_id','title','venue','country','start_date','end_date','financial_aid','account_no_ref','sponsor_name','others_remarks'];
+    protected $fillable = ['user_id','title','venue','country','start_date','end_date','financial_aid','account_no_ref','sponsor_name','others_remarks','alternate_email','type'];
 
     protected $dates = ['start_date', 'end_date'];
 

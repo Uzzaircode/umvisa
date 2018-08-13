@@ -5,9 +5,9 @@
                 <label for="" class="form-label">Please select Application Type</label>
                 <select name="application_type" id="" class="form-control">
                     <option value="">Please select</option>
-                    <option value="">Faculty</option>
-                    <option value="">College</option>
-                    <option value="">UM Staff</option>
+                    <option value="faculty">Faculty</option>
+                    <option value="college">College</option>
+                    <option value="staff">UM Staff</option>
                 </select>
         </div>
         <div class="col">
@@ -96,21 +96,21 @@
 </div>
 <div class="form-group">
     <div class="row">
-        <div class="col-4">
+        {{-- <div class="col-4">
             <label for="" class="form-label">Office Telephone Number</label>
             <input type="text" class="form-control" "office_num" value="{{old('office_num',$application->user->profile->office_num ?? Auth::user()->profile->office_num )}}"
                 >
     @include('shared._errors',['entity'=>'office_num'])
-        </div>
-        <div class="col-4">
+        </div> --}}
+        <div class="col-6">
             <label for="" class="form-label">Mobile Number</label>
             <input type="text" class="form-control" "mobile_num" value="{{old('mobile_num',$application->user->profile->mobile_num ?? Auth::user()->profile->mobile_num )}}"
                 >
     @include('shared._errors',['entity'=>'mobile_num'])
         </div>
-        <div class="col-4">
+        <div class="col-6">
             <label for="" class="form-label">Email Address</label>
-            <input type="text" class="form-control" "email" value="{{old('email',$application->user->email ?? Auth::user()->email)}}"
+            <input type="text" class="form-control" name="alternate_email" value="{{old('email',$application->user->email ?? Auth::user()->email)}}"
                 >
     @include('shared._errors',['entity'=>'email'])
         </div>

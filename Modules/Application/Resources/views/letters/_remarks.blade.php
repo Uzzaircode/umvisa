@@ -4,7 +4,7 @@
 
 @if(Auth::user()->hasRole('Supervisor'))
 <div class="form-group" @if ($errors->has('remark')) has-error @endif>
-    <label for="" class="form-label">Leave a remark</label>
+    <label for="" class="form-label">Leave a recommendation</label>
     <textarea name="remark" id="" cols="30" rows="5" class="form-control"></textarea> 
 @if ($errors->has('remark'))
     <p class="text-danger">{{ $errors->first('remark') }}</p>
@@ -13,7 +13,7 @@
 @endif
 @if(Auth::user()->hasRole('Deputy Dean'))
 <div class="form-group" @if ($errors->has('remark')) has-error @endif>
-    <label for="" class="form-label">Leave a remark</label>
+    <label for="" class="form-label">Leave a recommendation</label>
     <textarea name="remark" id="" cols="30" rows="5" class="form-control"></textarea> 
 @if ($errors->has('remark'))
     <p class="text-danger">{{ $errors->first('remark') }}</p>
@@ -42,7 +42,7 @@
                     </div>
                     <br>
                     <div>
-                        {{$remark->body}}
+                        {!! $remark->body !!}
                     </div>
 
                 </div>

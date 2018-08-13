@@ -16,7 +16,7 @@
         </div>
         <div class="col-6">
             <label for="" class="form-label">Country</label>
-            <p>{{$application->country}}</p>
+            <p>{{$application->country}} {!! $flag_icon[0]!!}</p>
         </div>
     </div>
 </div>
@@ -59,3 +59,7 @@
         </tbody>
     </table>   
 </div>
+
+@section('page-css')
+<link rel="stylesheet" href="{{asset('vendors/flag-icon-css-3/css/flag-icon.css')}}">
+@endsection

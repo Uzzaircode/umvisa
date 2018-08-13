@@ -36,7 +36,7 @@
     <div class="col col-lg-5 col-md-5">
         <div class='card'>
             <div class='card-header'>
-                <p class='card-title'>Remarks</p>
+                <p class='card-title'>Recommendations</p>
             </div>
             <div class='card-body'>
     @include('application::components._remarks')

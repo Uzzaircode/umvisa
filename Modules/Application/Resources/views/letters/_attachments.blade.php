@@ -1,9 +1,10 @@
+@if($application->applicationAttachments->count() > 0)
 <div class="mt-5">
     <h3>Attachments</h3>
     <hr>
 </div>
 <div class="form-group">
-    @if($application->applicationAttachments->count() > 0)
+   
     <br>
     <div class="form-group">        
         <div class="row gutters-sm" id="attachment">
@@ -36,4 +37,5 @@
             @endforeach
         </div>
     </div>
-    <br> @endif
+    <br>
+     @endif

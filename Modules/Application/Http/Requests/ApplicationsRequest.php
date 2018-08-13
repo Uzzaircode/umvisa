@@ -19,10 +19,8 @@ class ApplicationsRequest extends FormRequest
             'country' => 'required',
             'start_date' => 'required',
             'end_date' => 'required',
-            'financial_aid' => 'required',
-            'account_no_ref' => 'required_if:financial_aid,university|required_if:financial_aid,faculty|required_if:financial_aid,grant',
-            'sponsor_name' => 'required_if:financial_aid,sponsorship'
-            // 'others_remarks' => 'required_if:financial_aid,others',
+            'alternate_email'=> 'required',
+            'type' => 'required',            
             // 'attachments' => 'required'
 
         ];

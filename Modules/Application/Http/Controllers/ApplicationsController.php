@@ -13,6 +13,7 @@ use Session;
 use Carbon\Carbon;
 use Modules\Application\Entities\FinancialInstrument;
 use Modules\Application\Entities\FinancialAid;
+use PragmaRX\Countries\Package\Countries;
 
 class ApplicationsController extends Controller
 {
@@ -50,7 +51,9 @@ class ApplicationsController extends Controller
         $statuses = $application->statuses->sortBy('created_at');
         $remarks = $application->comments->sortByDesc('created_at');
         $financialaids = $application->financialaids;
-        return view('application::formal-letter', compact('application', 'remarks', 'statuses','financialaids'));
+        $travelling_country = $application->country;
+        $flag_icon= Country::where('name.common',$travelling_country)->pluck('flag.flag-icon');        
+        return view('application::formal-letter', compact('application', 'remarks', 'statuses','financialaids','flag_icon'));
     }
     
     public function edit($id)
