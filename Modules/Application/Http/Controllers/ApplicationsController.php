@@ -12,6 +12,7 @@ use Auth;
 use Session;
 use Carbon\Carbon;
 use Modules\Application\Entities\FinancialInstrument;
+use Modules\Application\Entities\FinancialAid;
 
 class ApplicationsController extends Controller
 {
@@ -47,8 +48,9 @@ class ApplicationsController extends Controller
     {
         $application = $this->app->find($id);
         $statuses = $application->statuses->sortBy('created_at');
-        $remarks = $application->comments;
-        return view('application::formal-letter', compact('application', 'remarks', 'statuses'));
+        $remarks = $application->comments->sortByDesc('created_at');
+        $financialaids = $application->financialaids;
+        return view('application::formal-letter', compact('application', 'remarks', 'statuses','financialaids'));
     }
     
     public function edit($id)
@@ -56,8 +58,11 @@ class ApplicationsController extends Controller
         $application = $this->app->find($id);
         $remarks = $application->comments;
         $statuses = $application->statuses->sortBy('created_at');
+        $participants = $application->participants;
+        $financialaids = $application->financialaids;
+        $ins = FinancialInstrument::all();
         $countries = $this->country->all()->pluck('name.common', 'flag.flag-icon');
-        return view('application::create', compact('application', 'countries', 'remarks', 'statuses'));
+        return view('application::create', compact('application', 'countries', 'remarks', 'statuses','ins','financialaids','participants'));
     }
 
     public function update(Request $request, $id)

@@ -26,7 +26,7 @@
                     </div>
                     <br>
                     <div>
-                        {{$remark->body}}
+                        {!! $remark->body !!}
                     </div>
 
                 </div>

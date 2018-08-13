@@ -80,6 +80,8 @@ return [
 
     'locale' => 'en',    
     'faker_locale' => 'ms_MY',
+    'date_format_js' => 'dd/mm/yy',
+    'date_format' => 'd/m/Y',
 
     /*
     |--------------------------------------------------------------------------

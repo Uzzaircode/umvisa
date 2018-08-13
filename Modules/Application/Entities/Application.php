@@ -7,6 +7,7 @@ use App\User;
 use Spatie\ModelStatus\HasStatuses;
 use BrianFaust\Commentable\Traits\HasComments;
 use Auth;
+use Carbon\Carbon;
 
 class Application extends Model
 {
@@ -24,11 +25,30 @@ class Application extends Model
         return $this->hasMany(ApplicationAttachment::class);
     }
 
+    public function participants(){
+        return $this->hasMany(Participant::class);
+    }
     public function user()
     {
         return $this->belongsTo(User::class);
     }
+    public function financialaids(){
+        return $this->hasMany(FinancialAid::class);
+    }
 
+    public function setStartDateAttribute($value){
+        $this->attributes['start_date'] = Carbon::createFromFormat(config('app.date_format'),$value)->format('Y-m-d');
+    }
+    public function getStartDateAttribute($value){
+        return $this->attributes['start_date'] = Carbon::createFromFormat('Y-m-d',$value)->format(config('app.date_format'));
+    }
+    public function setEndDateAttribute($value){
+        $this->attributes['end_date'] = Carbon::createFromFormat(config('app.date_format'),$value)->format('Y-m-d');
+    }
+    public function getEndDateAttribute($value){
+        return $this->attributes['end_date'] = Carbon::createFromFormat('Y-m-d',$value)->format(config('app.date_format'));
+    }
+    
     public function scopeUserApplication($query)
     {
         if (Auth::user()->hasRole('User')) {

@@ -23,7 +23,7 @@
             </div>
             <div class="col-6">
                 <div class="form-group">
-                    <div class="form-label">Study Mode</div>
+                    <div class="form-label">Study Level</div>
                     <input type="text" class="form-control-plaintext" value="{{$application->user->profile->study_mode}}" readonly>
                 </div>
             </div>

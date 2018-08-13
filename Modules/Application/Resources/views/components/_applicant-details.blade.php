@@ -1,4 +1,27 @@
 <div class="mt-5"></div>
+<div class="form-group">
+    <div class="row">
+        <div class="col">
+                <label for="" class="form-label">Please select Application Type</label>
+                <select name="application_type" id="" class="form-control">
+                    <option value="">Please select</option>
+                    <option value="">Faculty</option>
+                    <option value="">College</option>
+                    <option value="">UM Staff</option>
+                </select>
+        </div>
+        <div class="col">
+            <label for="" class="form-label">Please select number of participants</label>
+            <select name="num_partcipants" id="" class="form-control num_participants">
+                <option value="">Please select</option>
+                <option value="1">1 person</option>
+                <option value="2">More than 1 person</option>
+            </select>
+        </div>
+    </div>
+
+    
+</div>
 <div class="form-group" @if ($errors->has('subject')) has-error @endif>
     <input type="hidden" name="user_id" value="{{Auth::id()}}">
     <div class="row">
@@ -25,8 +48,9 @@
         </div>
         <div class="col-6">
             <div class="form-group">
-                <div class="form-label">Study Mode</div>
-                <input type="text" class="form-control" value="{{old('study_mode', $application->user->profile->study_mode ?? Auth::user()->profile->study_mode)}}" readonly>
+                <div class="form-label">Study Level</div>
+                <input type="text" class="form-control" value="{{old('study_mode', $application->user->profile->study_mode ?? Auth::user()->profile->study_mode)}}"
+                    readonly>
             </div>
         </div>
     </div>
@@ -75,19 +99,19 @@
         <div class="col-4">
             <label for="" class="form-label">Office Telephone Number</label>
             <input type="text" class="form-control" "office_num" value="{{old('office_num',$application->user->profile->office_num ?? Auth::user()->profile->office_num )}}"
-                readonly>
+                >
     @include('shared._errors',['entity'=>'office_num'])
         </div>
         <div class="col-4">
             <label for="" class="form-label">Mobile Number</label>
             <input type="text" class="form-control" "mobile_num" value="{{old('mobile_num',$application->user->profile->mobile_num ?? Auth::user()->profile->mobile_num )}}"
-                readonly>
+                >
     @include('shared._errors',['entity'=>'mobile_num'])
         </div>
         <div class="col-4">
             <label for="" class="form-label">Email Address</label>
             <input type="text" class="form-control" "email" value="{{old('email',$application->user->email ?? Auth::user()->email)}}"
-                readonly>
+                >
     @include('shared._errors',['entity'=>'email'])
         </div>
     </div>

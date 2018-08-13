@@ -8,6 +8,7 @@ use Illuminate\Notifications\Notification;
 use Modules\Application\Notifications\SubmitApplication;
 use Modules\Application\Notifications\ApproveApplication;
 use Illuminate\Support\Facades\URL;
+use Modules\Application\Entities\FinancialAid;
 use Session;
 use Auth;
 
@@ -39,8 +40,10 @@ class ApplicationRepository extends AbstractRepository implements ApplicationInt
     public function saveApplication($request)
     {
         $app = $this->createFromRequest($request);
+        $this->checkForLateSubmission($app);
         //check if there is any attachments
         $this->hasAttachments($request, $app);
+        $this->hasFinancialAid($request,$app);
         // save it as draft or final
         $this->draft($request, $app);
         $this->save($request, $app);
@@ -53,8 +56,8 @@ class ApplicationRepository extends AbstractRepository implements ApplicationInt
             'title' => $request->title,
             'venue' => $request->venue,
             'country' => $request->country,
-            'start_date' => Carbon::parse($request->start_date),
-            'end_date' => Carbon::parse($request->end_date),
+            'start_date' => $request->start_date,
+            'end_date' => $request->end_date,
             'financial_aid' => $request->financial_aid,
             'account_no_ref' => $request->account_no_ref,
             'faculty_acc_no' => $request->faculty_acc_no,
@@ -64,6 +67,20 @@ class ApplicationRepository extends AbstractRepository implements ApplicationInt
         ]);
     }
 
+    public function hasFinancialAid($request, $app)
+    {
+        if ($request->has('financial_instrument')) {
+            $i = 0;
+            for ($i;$i < count($request->financial_instrument); $i++) {
+                FinancialAid::create([
+                'remarks' => $request->remarks[$i],
+                'application_id' => $app->id,
+                'financialinstrument_id' => $request->financial_instrument[$i],
+            ]);
+            }
+        }        
+    }
+
     public function updateFromRequest($request, $app)
     {
         $app->update([
@@ -71,8 +88,8 @@ class ApplicationRepository extends AbstractRepository implements ApplicationInt
             'title' => $request->title,
             'venue' => $request->venue,
             'country' => $request->country,
-            'start_date' => Carbon::parse($request->start_date),
-            'end_date' => Carbon::parse($request->end_date),
+            'start_date' => $request->start_date,
+            'end_date' => $request->end_date,
             'financial_aid' => $request->financial_aid,
             'account_no_ref' => $request->account_no_ref,
             'faculty_acc_no' => $request->faculty_acc_no,
@@ -131,6 +148,7 @@ class ApplicationRepository extends AbstractRepository implements ApplicationInt
         // if update draft
         if ($request->has('draft')) {
             $this->updateFromRequest($request, $app);
+            $this->hasFinancialAid($request,$app);
             $app->save();
             Session::flash('success', $this->updateMessage);
         }
@@ -156,6 +174,7 @@ class ApplicationRepository extends AbstractRepository implements ApplicationInt
         // find application
         $app = $this->modelClassName::find($id);
         $this->updateFromRequest($request, $app);
+        $this->checkForLateSubmission($app);
         $this->updateDraft($request, $app);
         $this->submit($request, $app);
     }
@@ -233,16 +252,15 @@ class ApplicationRepository extends AbstractRepository implements ApplicationInt
 
     
     public function getTotalDaysBeforeSubmission($app)
-    {
-        $start_date = Carbon::parse($app->start_date);
-        return $totalDays = Carbon::now()->diffInDays($start_date);
+    {        
+        return $totalDays = Carbon::now()->diffInDays(Carbon::parse(strtotime($app->start_date)));
     }
 
     public function checkForLateSubmission($app)
     {
         if ($this->getTotalDaysBeforeSubmission($app) < $this->totalDaysBeforeSubmission) {
             $app->comment([
-                'body' => 'We have received your application, however we wish you to draw your attention for you to submit the application to our office not less than '.$this->totalDaysBeforeSubmission.' days prior to the event as to ensure that you are granted permission from the University before attending any activity in the future. Thank you.',
+                'body' => 'We have received your application, however we wish you to draw your attention for you to submit the application to our office not less than '.$this->totalDaysBeforeSubmission.' days prior to the event as to ensure that you are granted permission from the University before attending any activity in the future. Thank you.<br><b>Please provide valid reasons supporting this late submission in the text box above. Don\'t forget to click the Submit Remark button.</b>',
             ], $this->admin());
         }
     }
