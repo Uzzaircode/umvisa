@@ -58,7 +58,7 @@
                 
                                   
                 <ul class="nav nav-tabs">
-                      <li class="nav-item"><a href="#tab1" data-toggle="tab" class="nav-link">First</a></li>
+                      <li class="nav-item"><a href="#tab1" data-toggle="tab" class="nav-link active">First</a></li>
                     <li class="nav-item"><a href="#tab2" data-toggle="tab" class="nav-link">Second</a></li>
                     <li class="nav-item"><a href="#tab3" data-toggle="tab" class="nav-link">Third</a></li>
                     <li class="nav-item"><a href="#tab4" data-toggle="tab" class="nav-link">Forth</a></li>
@@ -70,7 +70,7 @@
                   
                 
                 <div class="tab-content">
-                    <div class="tab-pane" id="tab1">
+                    <div class="tab-pane active" id="tab1">
                       1
                     </div>
                     <div class="tab-pane" id="tab2">
