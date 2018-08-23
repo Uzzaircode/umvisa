@@ -17,7 +17,7 @@
                         </div>
                     </div>
                     <div class="card-body">
-                        <div id="rootwizard">
+                        <div id="r">
                             <div class="container">
                                 <ul class="nav nav-tabs">
                                     <li class="nav-item">
@@ -54,6 +54,53 @@
     </div>
 </div>
 <div class="row">
+        <div id="rootwizard">
+                
+                                  
+                <ul class="nav nav-tabs">
+                      <li class="nav-item"><a href="#tab1" data-toggle="tab" class="nav-link">First</a></li>
+                    <li class="nav-item"><a href="#tab2" data-toggle="tab" class="nav-link">Second</a></li>
+                    <li class="nav-item"><a href="#tab3" data-toggle="tab" class="nav-link">Third</a></li>
+                    <li class="nav-item"><a href="#tab4" data-toggle="tab" class="nav-link">Forth</a></li>
+                    <li class="nav-item"><a href="#tab5" data-toggle="tab" class="nav-link">Fifth</a></li>
+                    <li class="nav-item"><a href="#tab6" data-toggle="tab" class="nav-link">Sixth</a></li>
+                    <li class="nav-item"><a href="#tab7" data-toggle="tab" class="nav-link">Seventh</a></li>
+                </ul>
+                 
+                  
+                
+                <div class="tab-content">
+                    <div class="tab-pane" id="tab1">
+                      1
+                    </div>
+                    <div class="tab-pane" id="tab2">
+                      2
+                    </div>
+                    <div class="tab-pane" id="tab3">
+                        3
+                    </div>
+                    <div class="tab-pane" id="tab4">
+                        4
+                    </div>
+                    <div class="tab-pane" id="tab5">
+                        5
+                    </div>
+                    <div class="tab-pane" id="tab6">
+                        6
+                    </div>
+                    <div class="tab-pane" id="tab7">
+                        7
+                    </div>
+                    <ul class="pager wizard">
+                        <li class="previous first" style="display:none;"><a href="#">First</a></li>
+                        <li class="previous"><a href="#">Previous</a></li>
+                        <li class="next last" style="display:none;"><a href="#">Last</a></li>
+                          <li class="next"><a href="#">Next</a></li>
+                    </ul>
+                </div>
+            </div>
+</div>
+<div class="row">
     <div class="col col-lg-12 col-md-12">
         <div class='card'>
             <div class='card-header'>
@@ -84,7 +131,7 @@
     @include('asset-partials.selectize')
 <script src="{{asset('vendors/smartwizard/js/jquery.smartWizard.js')}}"></script>
 <script>
-    ($).function() {
+   $(document).ready(function() {
   	$('#rootwizard').bootstrapWizard();
 });
 
