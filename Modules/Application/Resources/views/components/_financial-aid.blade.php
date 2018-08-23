@@ -29,14 +29,14 @@
                     1
                 </td>
                 <td>
-                    <select name="financial_instrument[]" id="" class="form-control">
+                    <select name="financial_instrument[]" id="" class="form-control selectize">
                     @foreach($ins as $n)
                 <option value="{{$n->id}}">{{$n->name}}</option>                    
                     @endforeach
                 </select>
                 </td>
                 <td><input type="text" class="form-control" name="remarks[]"></td>
-                <td><a id="+i+" class="btn btn-danger remove-financial text-white"><i class="fe fe-trash"></i> Delete</a></td>
+                <td><a id="+f+" class="btn btn-danger remove-financial text-white"><i class="fe fe-trash"></i> Delete</a></td>
             </tr>
         </tbody>
     </table>

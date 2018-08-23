@@ -3,7 +3,7 @@
     <div class="row">
         <div class="col">
                 <label for="" class="form-label">Please select Application Type</label>
-                <select name="application_type" id="" class="form-control">
+                <select name="application_type" id="" class="form-control selectize">
                     <option value="">Please select</option>
                     <option value="faculty">Faculty</option>
                     <option value="college">College</option>
@@ -12,8 +12,7 @@
         </div>
         <div class="col">
             <label for="" class="form-label">Please select number of participants</label>
-            <select name="num_partcipants" id="" class="form-control num_participants">
-                <option value="">Please select</option>
+            <select name="num_partcipants" id="" class="form-control num_participants selectize">                
                 <option value="1">1 person</option>
                 <option value="2">More than 1 person</option>
             </select>
@@ -104,14 +103,24 @@
         </div> --}}
         <div class="col-6">
             <label for="" class="form-label">Mobile Number</label>
-            <input type="text" class="form-control" "mobile_num" value="{{old('mobile_num',$application->user->profile->mobile_num ?? Auth::user()->profile->mobile_num )}}"
-                >
+            <input type="text" class="form-control" "mobile_num" value="{{old('mobile_num',$application->user->profile->mobile_num ?? Auth::user()->profile->mobile_num)}}"
+                readonly>
     @include('shared._errors',['entity'=>'mobile_num'])
         </div>
         <div class="col-6">
             <label for="" class="form-label">Email Address</label>
-            <input type="text" class="form-control" name="alternate_email" value="{{old('email',$application->user->email ?? Auth::user()->email)}}"
-                >
+            <input type="text" class="form-control" name="email" value="{{old('email',$application->user->email ?? Auth::user()->email)}}"
+                readonly>
+    @include('shared._errors',['entity'=>'email'])
+        </div>
+    </div>
+</div>
+<div class="form-group">
+    <div class="row">
+        <div class="col-6">
+            <label for="" class="form-label">Email Address</label>
+            <input type="text" class="form-control" name="alternate_email" value="{{old('alternate_email',$application->user->email ?? Auth::user()->email)}}"
+                readonly>
     @include('shared._errors',['entity'=>'email'])
         </div>
     </div>

@@ -54,7 +54,7 @@ class Application extends Model
         if (Auth::user()->hasRole('User')) {
             return $query->where('user_id', Auth::id());
         }
-
+        
         if (Auth::user()->hasRole('Supervisor')) {
             return $query->whereHas('user', function ($q) {
                 $q->whereHas('profile', function ($p) {

@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\URL;
 use Modules\Application\Entities\FinancialAid;
 use Session;
 use Auth;
+use Modules\Application\Entities\Participant;
 
 class ApplicationRepository extends AbstractRepository implements ApplicationInterface
 {
@@ -39,11 +40,13 @@ class ApplicationRepository extends AbstractRepository implements ApplicationInt
 
     public function saveApplication($request)
     {
+        
         $app = $this->createFromRequest($request);
         $this->checkForLateSubmission($app);
         //check if there is any attachments
         $this->hasAttachments($request, $app);
         $this->hasFinancialAid($request,$app);
+        $this->hasParticipants($request,$app);
         // save it as draft or final
         $this->draft($request, $app);
         $this->save($request, $app);
@@ -65,34 +68,36 @@ class ApplicationRepository extends AbstractRepository implements ApplicationInt
 
     public function hasFinancialAid($request, $app)
     {
+        
         if ($request->has('financial_instrument')) {
-            $i = 0;
-            for ($i;$i < count($request->financial_instrument); $i++) {
-                FinancialAid::create([
-                'remarks' => $request->remarks[$i],
-                'application_id' => $app->id,
-                'financialinstrument_id' => $request->financial_instrument[$i],
-            ]);
+            if($request->filled('financial_instrument')){
+                $i = 0;
+                for ($i;$i < count($request->financial_instrument); $i++) {
+                    FinancialAid::create([
+                    'remarks' => $request->remarks[$i],
+                    'application_id' => $app->id,
+                    'financialinstrument_id' => $request->financial_instrument[$i],
+                ]);
+                }
             }
+           
         }        
     }
 
-    public function updateFromRequest($request, $app)
+    public function hasParticipants($request, $app)
     {
-        $app->update([
-            'user_id' => $request->user_id,
-            'title' => $request->title,
-            'venue' => $request->venue,
-            'country' => $request->country,
-            'start_date' => $request->start_date,
-            'end_date' => $request->end_date,
-            'financial_aid' => $request->financial_aid,
-            'account_no_ref' => $request->account_no_ref,
-            'faculty_acc_no' => $request->faculty_acc_no,
-            'grant_acc_no' => $request->grant_acc_no,
-            'sponsor_name' => $request->sponsor_name,
-            'others_remarks' => $request->others_remarks,
-        ]);
+        if($request->has('matric_num')){
+            if ($request->filled('matric_num')) {
+                $i = 0;
+                for ($i;$i < count($request->matric_num); $i++) {
+                    Participant::create([
+                    'matric_num' => $request->matric_num[$i],
+                    'application_id' => $app->id,                
+                ]);
+                }
+            } 
+        }
+              
     }
 
     public function hasAttachments($request, $app)
@@ -113,6 +118,19 @@ class ApplicationRepository extends AbstractRepository implements ApplicationInt
         }
     }
 
+    public function updateFromRequest($request, $app)
+    {
+        $app->update([
+            'user_id' => $request->user_id,
+            'title' => $request->title,
+            'venue' => $request->venue,
+            'country' => $request->country,
+            'start_date' => $request->start_date,
+            'end_date' => $request->end_date,                        
+        ]);
+    }
+
+    // draft application
     public function draft($request, $app)
     {
         //draft
@@ -123,7 +141,7 @@ class ApplicationRepository extends AbstractRepository implements ApplicationInt
     }
 
     
-
+    // save application
     public function save($request, $app)
     {
         //save
@@ -138,7 +156,7 @@ class ApplicationRepository extends AbstractRepository implements ApplicationInt
     }
 
     
-    
+    // update draft
     public function updateDraft($request, $app)
     {
         // if update draft
@@ -149,7 +167,9 @@ class ApplicationRepository extends AbstractRepository implements ApplicationInt
             Session::flash('success', $this->updateMessage);
         }
     }
-    
+
+
+    // submit application
     public function submit($request, $app)
     {
         $user = $app->user;
@@ -165,12 +185,16 @@ class ApplicationRepository extends AbstractRepository implements ApplicationInt
         }
     }
 
+    // update application
     public function updateApplication($id, $request)
     {
         // find application
         $app = $this->modelClassName::find($id);
-        $this->updateFromRequest($request, $app);
+        $this->updateFromRequest($request, $app);        
         $this->checkForLateSubmission($app);
+        $this->hasAttachments($request,$app);
+        $this->hasFinancialAid($request,$app);
+        $this->hasParticipants($request,$app);
         $this->updateDraft($request, $app);
         $this->submit($request, $app);
     }
@@ -179,6 +203,7 @@ class ApplicationRepository extends AbstractRepository implements ApplicationInt
     public function saveRemarks($request, $id)
     {
         $app = $this->modelClassName::find($id);
+        
         // if save remarks
         if ($request->has('save_remarks')) {
             $app->comment([
@@ -265,7 +290,7 @@ class ApplicationRepository extends AbstractRepository implements ApplicationInt
     public function checkLateSubmmisionComment($app){
         $comments = $app->comments->toArray();
         if(in_array('Late Submission', $comments)){
-
+            return true;
         }
     }
 }

@@ -38,7 +38,7 @@
         {{-- Footer --}} 
         @include('backend.partials.footer')
     </div>
-<script src="{{asset('js/vendors/jquery-3.2.1.min.js')}}"></script>
+<script src="http://code.jquery.com/jquery-latest.js"></script>
 <script src="{{asset('js/vendors/bootstrap.bundle.min.js')}}"></script>       
     @yield('datatables-js')
     @yield('selectize-js')

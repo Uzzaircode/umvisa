@@ -5,12 +5,13 @@ namespace Modules\Application\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Routing\Controller;
-use PragmaRX\Countries\Package\Countries as Country;
-use Modules\Application\Repositories\ApplicationRepository as AR;
-use Modules\Application\Http\Requests\ApplicationsRequest;
 use Auth;
 use Session;
 use Carbon\Carbon;
+use PragmaRX\Countries\Package\Countries as Country;
+use Modules\Application\Repositories\ApplicationRepository as AR;
+use Modules\Application\Http\Requests\ApplicationsRequest;
+use Modules\Application\Entities\Application;
 use Modules\Application\Entities\FinancialInstrument;
 use Modules\Application\Entities\FinancialAid;
 use PragmaRX\Countries\Package\Countries;
@@ -26,7 +27,7 @@ class ApplicationsController extends Controller
     
     public function index()
     {
-        $applications = $this->app->allApplications();
+        $applications = Application::userApplication()->get();
         return view('application::index', compact('applications'));
     }
     
@@ -35,7 +36,7 @@ class ApplicationsController extends Controller
         $user = $this->auth::user();
         $ins = FinancialInstrument::all();
         $countries = $this->country->all()->pluck('name.common', 'flag.flag-icon');
-        return view('application::create', compact('countries', 'user','ins'));
+        return view('application::create-edit', compact('countries', 'user','ins'));
     }
     
     public function store(Request $request)
@@ -65,7 +66,7 @@ class ApplicationsController extends Controller
         $financialaids = $application->financialaids;
         $ins = FinancialInstrument::all();
         $countries = $this->country->all()->pluck('name.common', 'flag.flag-icon');
-        return view('application::create', compact('application', 'countries', 'remarks', 'statuses','ins','financialaids','participants'));
+        return view('application::create-edit', compact('application', 'countries', 'remarks', 'statuses','ins','financialaids','participants'));
     }
 
     public function update(Request $request, $id)

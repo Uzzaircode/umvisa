@@ -16,18 +16,18 @@
     "devDependencies": {
         "axios": "^0.18",
         "bootstrap": "^4.0.0",
-        "popper.js": "^1.12",
         "cross-env": "^5.1",
-        "jquery": "^3.2",
-        "laravel-mix": "^2.0",
-        "lodash": "^4.17.4",
-        "vue": "^2.5.7",
-        "gulp": "^3.9.1",
+        "gulp": "^4.0.0",
         "gulp-autoprefixer": "^5.0.0",
         "gulp-rename": "^1.2.2",
         "gulp-rtlcss": "^1.2.0",
         "gulp-sass": "^3.1.0",
-        "npm-run-all": "^4.1.2"
+        "jquery": "^3.2",
+        "laravel-mix": "^2.1.14",
+        "lodash": "^4.17.4",
+        "npm-run-all": "^4.1.2",
+        "popper.js": "^1.12",
+        "vue": "^2.5.7"
     },
     "browserslist": [
         "last 1 major version",
@@ -42,6 +42,7 @@
         "Opera >= 30"
     ],
     "dependencies": {
-        "gulp-sourcemaps": "^2.6.4"
+        "gulp-sourcemaps": "^2.6.4",
+        "smartwizard": "^4.3.1"
     }
 }

@@ -23,7 +23,7 @@
                     @foreach($participants as $key => $p)
                     <tr>
                         <td>{{++$key}}</td>
-                        <td>{{$p->participants->name}}</td>
+                        <td>{{$p->matric_num}}</td>
                         <td></td>
                     </tr>                    
                     @endforeach 
@@ -33,7 +33,7 @@
                         <td>
                             1
                         </td>
-                        <td><input type="text" class="form-control" name="matric_nums[]"></td>
+                        <td><input type="text" class="form-control" name="matric_num[]"></td>
                         <td><a type="button" name="remove" id="+p+" class="btn btn-danger remove-participant text-white"><i class="fe fe-trash"></i> Delete</a></td>
                     </tr>
                 </tbody>
