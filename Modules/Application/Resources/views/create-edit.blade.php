@@ -22,23 +22,26 @@
                                         <li><a href="#step-1">Application Type<br /><small></small></a></li>
                                         <li><a href="#step-2">Travel Information<br /><small></small></a></li>
                                         <li><a href="#step-3">Financial Aids<br /><small></small></a></li>
-                                        <li class="participants"><a href="#step-4" >Participants<br /><small></small></a></li>
                                         <li><a href="#step-5">Attachments<br /><small></small></a></li>
-                                    </ul>
-            
+                                    </ul>            
                                     <div>
                                         <div id="step-1" class="">
                                                 @include('application::components._application-type')
                                         </div>
                                         <div id="step-2" class="">
-                                                @include('application::components._travel-information')
+                                            <div class="row">
+                                                <div class="col">
+                                                        @include('application::components._travel-information')
+                                                </div>
+                                                <div class="col participants">
+                                                        @include('application::components._participants')   
+                                                </div>
+                                            </div>
+                                               
                                         </div>
                                         <div id="step-3" class="">
                                                 @include('application::components._financial-aid')
-                                        </div>
-                                        <div id="step-4" class="participants">
-                                             @include('application::components._participants')   
-                                        </div>
+                                        </div>                                        
                                         <div id="step-5" class="">
                                                 @include('application::components._attachment')
                                         </div>

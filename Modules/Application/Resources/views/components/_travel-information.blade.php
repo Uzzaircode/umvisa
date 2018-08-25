@@ -1,7 +1,7 @@
 <div class="mt-5"></div>
 <div class="form-group">
         <label for="" class="form-label">Title of Activity/Event</label>
-        <input type="text" class="form-control {{$errors->has('title') ? 'is-invalid':''}}" name="title" value="{{ old('title',$application->title ?? null) }}">
+        <input type="text" class="form-control {{$errors->has('title') ? 'is-invalid':''}}" name="title" value="{{ old('title',$application->title ?? null) }}" placeholder="e.g: 4th International Conference on New Direction In Multidisciplinary Research & Practice 2018">
         @include('shared._errors',['entity'=>'title'])
 </div>
 <div class="form-group">
@@ -9,7 +9,7 @@
                 <div class="col-6">
                         <label for="" class="form-label">Venue</label>
                         <input type="text" class="form-control {{$errors->has('venue') ? 'is-invalid':''}}" name="venue" value="@isset($application){{$application ? $application->venue : ''}}
-                        @endisset">
+                        @endisset" placeholder="University of Cambridge">
         @include('shared._errors',['entity'=>'venue'])
                 </div>
                 <div class="col-6">

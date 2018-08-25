@@ -48,7 +48,7 @@
 
   $('#add-participant').click(function(){  
        p++;  
-       $('#dynamic_field_participant').append('<tr id="row-participant'+p+'" class="dynamic-added"><td>'+p+'</td><td><input type="text" class="form-control" name="matric_nums[]"></td><td><a id="'+p+'" class="btn btn-danger remove-participant text-white"><i class="fe fe-trash"></i> Delete</a></td></tr>');  
+       $('#dynamic_field_participant').append('<tr id="row-participant'+p+'" class="dynamic-added"><td>'+p+'</td><td><input type="text" class="form-control" name="matric_nums[]"></td><td class="text-center"><a id="'+p+'" class="btn btn-sm btn-danger remove-participant text-white "><i class="fe fe-trash"></i> Delete</a></td></tr>');  
   });  
 
   $(document).on('click', '.remove-participant', function(){  
