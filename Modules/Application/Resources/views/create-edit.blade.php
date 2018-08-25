@@ -18,27 +18,24 @@
                     </div>
                     <div class="card-body">  
                             <div id="smartwizard">
-                                    <ul>
-                                        <li><a href="#step-1">Application Type<br /><small></small></a></li>
+                                    <ul>                                        
                                         <li><a href="#step-2">Travel Information<br /><small></small></a></li>
                                         <li><a href="#step-3">Financial Aids<br /><small></small></a></li>
                                         <li><a href="#step-5">Attachments<br /><small></small></a></li>
                                     </ul>            
-                                    <div>
-                                        <div id="step-1" class="">
-                                                @include('application::components._application-type')
-                                        </div>
+                                    <div>                                        
                                         <div id="step-2" class="">
                                             <div class="row">
-                                                <div class="col">
+                                                    @include('application::components._application-type')
+                                            </div>
+                                            <div class="row">                                                
                                                         @include('application::components._travel-information')
-                                                </div>
-                                                <div class="col participants">
+                                            </div>
+                                                <div class="row participants">
                                                         @include('application::components._participants')   
                                                 </div>
                                             </div>
-                                               
-                                        </div>
+                                                                                       
                                         <div id="step-3" class="">
                                                 @include('application::components._financial-aid')
                                         </div>                                        

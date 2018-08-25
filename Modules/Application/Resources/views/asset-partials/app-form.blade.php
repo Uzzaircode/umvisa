@@ -30,12 +30,12 @@
 
   $('#add-financial').click(function(){  
        f++;  
-       $('#dynamic_field').append('<tr id="row-financial'+f+'" class="dynamic-added"><td>'+f+'</td><td><select name="" id="" class="form-control selectize">@foreach($ins as $n)<option value="{{$n->name}}">{{$n->name}}</option>@endforeach</select></td><td><input type="text" class="form-control" name="remarks[]"></td><td><a type="button" name="remove" id="'+f+'" class="btn btn-danger remove-financial text-white"><i class="fe fe-trash"></i> Delete</a></td></tr>');  
+       $('#dynamic_field').append('<tr id="row-financial'+f+'" class="dynamic-added"><td>'+f+'</td><td><select name="" id="" class="form-control selectize">@foreach($ins as $n)<option value="{{$n->name}}">{{$n->name}}</option>@endforeach</select></td><td><input type="text" class="form-control" name="remarks[]"></td><td class="text-center"><a  name="remove" id="'+f+'" class="btn btn-danger remove-financial text-white"><i class="fe fe-trash"></i> Delete</a></td></tr>');  
   });  
 
   $(document).on('click', '.remove-financial', function(){  
        var financial_button_id = $(this).attr("id");   
-       $('#row-financial'+financial_button_id+'').remove();  
+       $('#row-financial'+financial_button_id+'').remove();    
   });  
 
     });
@@ -48,7 +48,7 @@
 
   $('#add-participant').click(function(){  
        p++;  
-       $('#dynamic_field_participant').append('<tr id="row-participant'+p+'" class="dynamic-added"><td>'+p+'</td><td><input type="text" class="form-control" name="matric_nums[]"></td><td class="text-center"><a id="'+p+'" class="btn btn-sm btn-danger remove-participant text-white "><i class="fe fe-trash"></i> Delete</a></td></tr>');  
+       $('#dynamic_field_participant').append('<tr id="row-participant'+p+'" class="dynamic-added"><td>'+p+'</td><td><input type="text" class="form-control" name="matric_nums[]"></td><td class="text-center"><a id="'+p+'" class="btn btn-danger remove-participant text-white "><i class="fe fe-trash"></i> Delete</a></td></tr>');  
   });  
 
   $(document).on('click', '.remove-participant', function(){  
