@@ -1,6 +1,5 @@
-
-<div class="form-group">
-        <label for="" class="form-label">Financial Aids</label>
+<div class="mt-5"></div>
+<div class="form-group">        
     <div class="text-right mb-5">
         <a class="btn btn-sm btn-secondary" id="add-financial">
         <i class="fe fe-plus-circle"></i> Add Financial Aid(s)
