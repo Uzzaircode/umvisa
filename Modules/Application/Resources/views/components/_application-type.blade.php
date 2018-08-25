@@ -1,7 +1,7 @@
 <div class="mt-5"></div>
 <div class="col-6 mx-auto">
     <div class="form-group">
-        <label for="" class="form-label">Please select Application Type</label>
+        <label for="" class="form-label">Please choose Application Type</label>
         <select name="application_type" id="" class="form-control selectize">
                     <option value="">Please select</option>
                     <option value="faculty">Faculty</option>

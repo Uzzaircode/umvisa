@@ -79,16 +79,13 @@ beforeOpen: function() {
 </script>
 {{-- Participants Panel Hide & Show Function --}}
 <script type="text/javascript">
-    $(function(){
-        $('.participants').hide();
-        @if(isset($application) && $application->participants->count() < 0 || !isset($application))
-        $('.participants').hide();
-        @endif
+    $(function(){                        
               
         $('.num_participants').change(function(){
+            
             var selected_option = $('.num_participants').val();
             
-            if(selected_option == 1 || selected_option == 0){
+            if(selected_option == 1 || selected_option == 0){                               
                 $('.participants').hide();
             }
             if(selected_option == 2){

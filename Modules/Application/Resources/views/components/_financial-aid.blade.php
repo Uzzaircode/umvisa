@@ -11,7 +11,7 @@
                 <th>#</th>
                 <th>Financial Instruments</th>
                 <th>Remarks</th>
-                <th>Actions</th>
+                <th class="text-center">Actions</th>
             </tr>
         </thead>
         <tbody id="dynamic_field">
@@ -35,7 +35,7 @@
                 </select>
                 </td>
                 <td><input type="text" class="form-control" name="remarks[]"></td>
-                <td><a id="+f+" class="btn btn-danger remove-financial text-white"><i class="fe fe-trash"></i> Delete</a></td>
+                <td class="text-center"><a id="+f+" class="btn btn-danger remove-financial text-white"><i class="fe fe-trash"></i> Delete</a></td>
             </tr>
         </tbody>
     </table>

@@ -20,9 +20,10 @@
                             <div id="smartwizard">
                                     <ul>
                                         <li><a href="#step-1">Application Type<br /><small></small></a></li>
-                                        <li><a href="#step-2">Personal Detail<br /><small></small></a></li>
-                                        <li><a href="#step-3">Travel Information<br /><small></small></a></li>
-                                        <li><a href="#step-4">Financial Aid<br /><small></small></a></li>
+                                        <li><a href="#step-2">Travel Information<br /><small></small></a></li>
+                                        <li><a href="#step-3">Financial Aids<br /><small></small></a></li>
+                                        <li class="participants"><a href="#step-4" >Participants<br /><small></small></a></li>
+                                        <li><a href="#step-5">Attachments<br /><small></small></a></li>
                                     </ul>
             
                                     <div>
@@ -35,17 +36,15 @@
                                         <div id="step-3" class="">
                                                 @include('application::components._financial-aid')
                                         </div>
-                                        <div id="step-4" class="">
+                                        <div id="step-4" class="participants">
+                                             @include('application::components._participants')   
+                                        </div>
+                                        <div id="step-5" class="">
                                                 @include('application::components._attachment')
                                         </div>
                                     </div>
                                 </div>                      
                         <!-- fieldsets -->
-   
-    
-   
-    
-
 
                     </div>
                 </div>
@@ -54,8 +53,8 @@
                     
             </div>    
     </div>
-
-    <div class="row">
+    
+    {{-- <div class="row">
         <div class="col col-lg-12 col-md-12">
             <div class='card'>
                 <div class='card-header'>
@@ -65,9 +64,9 @@
     @include('application::components._remarks')
                 </div>
             </div>
-    @include('application::components._participants')
+    
         </div>
-    </div>
+    </div> --}}
 
     </form>
 @endsection
@@ -101,6 +100,14 @@
 .sw-theme-arrows>ul.step-anchor>li.done>a:after {
     border-left: 30px solid #3c8af7;
 }
+.sw-container    {
+    padding:70px !important;
+}
+    /* @if(isset($application) && $application->participants->count() < 0 || !isset($application)) */
+      .participants{
+          display:none;
+      }
+    /* @endif */
     </style>
 @endsection
  
@@ -151,7 +158,9 @@
             // Navigate next
             $('#smartwizard').smartWizard("next");  
             return true;         
-        });       
+        });
+        
+          
     });
 
     </script>
