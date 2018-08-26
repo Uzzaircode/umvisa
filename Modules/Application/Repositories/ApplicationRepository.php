@@ -12,9 +12,16 @@ use Modules\Application\Entities\FinancialAid;
 use Session;
 use Auth;
 use Modules\Application\Entities\Participant;
+use Modules\Application\Traits\Financials;
+use Modules\Application\Traits\Participants;
+use Modules\Application\Traits\Attachments;
+use Modules\Application\Traits\Submission;
 
 class ApplicationRepository extends AbstractRepository implements ApplicationInterface
 {
+
+    use Financials,Participants,Attachments,Submission;
+
     protected $modelClassName = "Modules\Application\Entities\Application";
     protected $applicationAttachmentModel = "Modules\Application\Entities\ApplicationAttachment";
     protected $totalDaysBeforeSubmission = 21;
@@ -27,6 +34,7 @@ class ApplicationRepository extends AbstractRepository implements ApplicationInt
     protected $successRemarkMessage = "Your remark has been saved";
     protected $approveMessage = "The application has been approved";
     protected $rejectMessage = "The application has been rejected";
+
 
     public function __construct(User $user)
     {
@@ -55,67 +63,19 @@ class ApplicationRepository extends AbstractRepository implements ApplicationInt
     public function createFromRequest($request)
     {
         return $this->modelClassName::create([
-            'user_id' => $request->user_id,
+            'user_id' => Auth::id(),
             'title' => $request->title,
             'venue' => $request->venue,
+            'state' => $request->state,
             'country' => $request->country,
-            'start_date' => $request->start_date,
-            'end_date' => $request->end_date,
+            'description' => $request->description,
+            'event_start_date' => $request->event_start_date,
+            'event_end_date' => $request->event_end_date,
+            'travel_start_date' => $request->travel_start_date,
+            'travel_end_date' => $request->travel_end_date,
             'alternate_email' => $request->alternate_email,
             'type' => $request->application_type,
         ]);
-    }
-
-    public function hasFinancialAid($request, $app)
-    {
-        
-        if ($request->has('financial_instrument')) {
-            if($request->filled('financial_instrument')){
-                $i = 0;
-                for ($i;$i < count($request->financial_instrument); $i++) {
-                    FinancialAid::create([
-                    'remarks' => $request->remarks[$i],
-                    'application_id' => $app->id,
-                    'financialinstrument_id' => $request->financial_instrument[$i],
-                ]);
-                }
-            }
-           
-        }        
-    }
-
-    public function hasParticipants($request, $app)
-    {
-        if($request->has('matric_num')){
-            if ($request->filled('matric_num')) {
-                $i = 0;
-                for ($i;$i < count($request->matric_num); $i++) {
-                    Participant::create([
-                    'matric_num' => $request->matric_num[$i],
-                    'application_id' => $app->id,                
-                ]);
-                }
-            } 
-        }
-              
-    }
-
-    public function hasAttachments($request, $app)
-    {
-        if ($request->hasFile('attachments')) {
-            // $repo->uploadFiles(['files'], $ticket);
-            foreach ($request->file('attachments') as $file) {
-                // save the attachment with event title and time as prefix
-                $filename = time() . $file->getClientOriginalName();
-                // move the attachements to public/uploads/applicationsattachments folder
-                $file->move($this->attachmentDirectory, $filename);
-                // create attachement record in database, attach it to Ticket ID
-                $this->applicationAttachmentModel::create([
-                    'application_id'=>$app->id,
-                    'path'=>$this->attachmentDirectory.'/'.$filename
-                    ]);
-            }
-        }
     }
 
     public function updateFromRequest($request, $app)
@@ -125,65 +85,15 @@ class ApplicationRepository extends AbstractRepository implements ApplicationInt
             'title' => $request->title,
             'venue' => $request->venue,
             'country' => $request->country,
-            'start_date' => $request->start_date,
-            'end_date' => $request->end_date,                        
+            'state' => $request->state,
+            'event_start_date' => $request->event_start_date,
+            'event_end_date' => $request->event_end_date, 
+            'travel_start_date' => $request->travel_start_date,
+            'travel_end_date' => $request->travel_end_date,                       
         ]);
     }
 
-    // draft application
-    public function draft($request, $app)
-    {
-        //draft
-        if ($request->has('draft')) {
-            $app->setStatus('Draft', 'Successfully created');
-            Session::flash('success', $this->draftMessage);
-        }
-    }
-
     
-    // save application
-    public function save($request, $app)
-    {
-        //save
-        if ($request->has('save')) {
-            //check for late submission
-            $this->checkForLateSubmission($app);
-            $supervisor = $this->getSupervisor($app);
-            $app->setStatus('Submitted To Supervisor', 'Submitted to '.$this->getSupervisorName($supervisor));
-            $supervisor->notify(new SubmitApplication($app, $this->getApplicant($app)));
-            Session::flash('success', $this->saveMessage);
-        }
-    }
-
-    
-    // update draft
-    public function updateDraft($request, $app)
-    {
-        // if update draft
-        if ($request->has('draft')) {
-            $this->updateFromRequest($request, $app);
-            $this->hasFinancialAid($request,$app);
-            $app->save();
-            Session::flash('success', $this->updateMessage);
-        }
-    }
-
-
-    // submit application
-    public function submit($request, $app)
-    {
-        $user = $app->user;
-        
-        // if submit 'submit'
-        if ($request->has('submit')) {
-            // check for late submission
-            $this->checkForLateSubmission($app);
-            $supervisor = $this->getSupervisor($app);
-            $supervisor->notify(new SubmitApplication($app, $user));
-            $app->setStatus('Submitted To Supervisor', 'Submitted to '.$this->getSupervisorName($supervisor));
-            Session::flash('success', $this->saveMessage);
-        }
-    }
 
     // update application
     public function updateApplication($id, $request)
@@ -277,20 +187,5 @@ class ApplicationRepository extends AbstractRepository implements ApplicationInt
         return $totalDays = Carbon::now()->diffInDays(Carbon::parse(strtotime($app->start_date)));
     }
 
-    public function checkForLateSubmission($app)
-    {
-        if ($this->getTotalDaysBeforeSubmission($app) < $this->totalDaysBeforeSubmission) {
-            $app->comment([
-                'title'=>'Late Submission',
-                'body' => 'We have received your application, however we wish you to draw your attention for you to submit the application to our office not less than '.$this->totalDaysBeforeSubmission.' days prior to the event as to ensure that you are granted permission from the University before attending any activity in the future. Thank you.<br><b>Please provide valid reasons supporting this late submission in the text box above. Don\'t forget to click the Submit Remark button.</b>',
-            ], $this->admin());
-        }
-    }
-
-    public function checkLateSubmmisionComment($app){
-        $comments = $app->comments->toArray();
-        if(in_array('Late Submission', $comments)){
-            return true;
-        }
-    }
+    
 }

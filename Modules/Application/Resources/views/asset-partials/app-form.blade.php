@@ -1,23 +1,44 @@
 {{-- Travel Date picker --}}
 <script type="text/javascript">
     $(function() {
-            $( ".from" ).datepicker({
+        // Event
+            $( ".event-from" ).datepicker({
               defaultDate: "+1w",
               dateFormat: '{{config('app.date_format_js')}}',  
               changeMonth: true,
               numberOfMonths: 1,
               minDate:0,
               onClose: function( selectedDate ) {
-                $( ".to" ).datepicker( "option", "minDate", selectedDate );
+                $( ".event-to" ).datepicker( "option", "minDate", selectedDate );
               }
             });
-            $( ".to" ).datepicker({
+            $( ".event-to" ).datepicker({
               defaultDate: "+1w",
               dateFormat: '{{config('app.date_format_js')}}',
               changeMonth: true,
               numberOfMonths: 1,
               onClose: function( selectedDate ) {
-                $( ".from" ).datepicker( "option", "maxDate", selectedDate );
+                $( ".event-from" ).datepicker( "option", "maxDate", selectedDate );
+              }
+            });
+        // Tavel
+            $( ".travel-from" ).datepicker({
+              defaultDate: "+1w",
+              dateFormat: '{{config('app.date_format_js')}}',  
+              changeMonth: true,
+              numberOfMonths: 1,
+              minDate:0,
+              onClose: function( selectedDate ) {
+                $( ".travel-to" ).datepicker( "option", "minDate", selectedDate );
+              }
+            });
+            $( ".travel-to" ).datepicker({
+              defaultDate: "+1w",
+              dateFormat: '{{config('app.date_format_js')}}',
+              changeMonth: true,
+              numberOfMonths: 1,
+              onClose: function( selectedDate ) {
+                $( ".travel-from" ).datepicker( "option", "maxDate", selectedDate );
               }
             });
           });

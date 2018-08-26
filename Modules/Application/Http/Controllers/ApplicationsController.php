@@ -36,7 +36,7 @@ class ApplicationsController extends Controller
         $user = $this->auth::user();
         $ins = FinancialInstrument::all();
         $countries = $this->country->all()->pluck('name.common', 'flag.flag-icon');
-        return view('application::create-edit', compact('countries', 'user','ins'));
+        return view('application::create', compact('countries', 'user','ins'));
     }
     
     public function store(Request $request)
@@ -66,7 +66,7 @@ class ApplicationsController extends Controller
         $financialaids = $application->financialaids;
         $ins = FinancialInstrument::all();
         $countries = $this->country->all()->pluck('name.common', 'flag.flag-icon');
-        return view('application::create-edit', compact('application', 'countries', 'remarks', 'statuses','ins','financialaids','participants'));
+        return view('application::edit', compact('application', 'countries', 'remarks', 'statuses','ins','financialaids','participants'));
     }
 
     public function update(Request $request, $id)

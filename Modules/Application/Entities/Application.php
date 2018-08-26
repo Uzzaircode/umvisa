@@ -16,9 +16,9 @@ class Application extends Model
 
     protected $table = 'applications';
 
-    protected $fillable = ['user_id','title','venue','country','start_date','end_date','financial_aid','account_no_ref','sponsor_name','others_remarks','alternate_email','type'];
+    protected $fillable = ['user_id','title','venue','description','state','country','event_start_date', 'event_end_date','travel_start_date','travel_end_date','alternate_email','type'];
 
-    protected $dates = ['start_date', 'end_date'];
+    protected $dates = ['event_start_date', 'event_end_date','travel_start_date','travel_end_date'];
 
     public function applicationAttachments()
     {
@@ -36,18 +36,34 @@ class Application extends Model
         return $this->hasMany(FinancialAid::class);
     }
 
-    public function setStartDateAttribute($value){
-        $this->attributes['start_date'] = Carbon::createFromFormat(config('app.date_format'),$value)->format('Y-m-d');
+    public function setEventStartDateAttribute($value){
+        $this->attributes['event_start_date'] = Carbon::createFromFormat(config('app.date_format'),$value)->format('Y-m-d');
     }
-    public function getStartDateAttribute($value){
-        return $this->attributes['start_date'] = Carbon::createFromFormat('Y-m-d',$value)->format(config('app.date_format'));
+    public function getEventStartDateAttribute($value){
+        return $this->attributes['event_start_date'] = Carbon::createFromFormat('Y-m-d',$value)->format(config('app.date_format'));
     }
-    public function setEndDateAttribute($value){
-        $this->attributes['end_date'] = Carbon::createFromFormat(config('app.date_format'),$value)->format('Y-m-d');
+    public function setEventEndDateAttribute($value){
+        $this->attributes['event_end_date'] = Carbon::createFromFormat(config('app.date_format'),$value)->format('Y-m-d');
     }
-    public function getEndDateAttribute($value){
-        return $this->attributes['end_date'] = Carbon::createFromFormat('Y-m-d',$value)->format(config('app.date_format'));
+    public function getEventEndDateAttribute($value){
+        return $this->attributes['event_end_date'] = Carbon::createFromFormat('Y-m-d',$value)->format(config('app.date_format'));
     }
+
+
+    public function setTravelStartDateAttribute($value){
+        $this->attributes['travel_start_date'] = Carbon::createFromFormat(config('app.date_format'),$value)->format('Y-m-d');
+    }
+    public function getTravelStartDateAttribute($value){
+        return $this->attributes['travel_start_date'] = Carbon::createFromFormat('Y-m-d',$value)->format(config('app.date_format'));
+    }
+    public function setTravelEndDateAttribute($value){
+        $this->attributes['travel_end_date'] = Carbon::createFromFormat(config('app.date_format'),$value)->format('Y-m-d');
+    }
+    public function getTravelEndDateAttribute($value){
+        return $this->attributes['travel_end_date'] = Carbon::createFromFormat('Y-m-d',$value)->format(config('app.date_format'));
+    }
+    
+    
     
     public function scopeUserApplication($query)
     {
