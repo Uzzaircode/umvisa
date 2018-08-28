@@ -1,68 +1,63 @@
 <div class="mt-5">
+    {{--
     <h3>Travel Information</h3>
-    <hr>
+    <hr> --}}
 </div>
-<div class="form-group">
-    <label for="" class="form-label">Title of Activity/Event</label>
-    <p>{{$application->title}}</p>
+<div class="col">
+    <table class="table table-striped table-bordered">
+        <tr>
+            <td><label for="" class="form-label">Title of Activity/Event</label></td>
+            <td>{{$application->title}}</td>
+        </tr>
+        <tr>
+            <td><label for="" class="form-label">Venue</label></td>
+            <td>{{$application->venue}}</td>
+        </tr>
+        <tr>
+            <td><label for="" class="form-label">State</label></td>
+            <td>{{$application->state}}</td>
+        </tr>
+        <tr>
+            <td><label for="" class="form-label">Country</label></td>
+            <td>{{$application->country}} {!! $flag_icon[0]!!}</td>
+        </tr>
+        <tr>
+            <td><label for="" class="form-label">Event Period</label></td>
+            <td>
+                <table class="table">
+                    <tr>
+                        <td><label for="" class="form-label">Event Start Date</label> </td>
+                        <td><label for="" class="form-label">Event End Date</label></td>
+                        <td><label for="" class="form-label">Total Days</label></td>
+                    </tr>
+                    <tr>
+                        <td>{{$application->event_start_date}}</td>
+                        <td>{{$application->event_end_date}}</td>
+                        <td>{{getEventTotalDays($application)}}</td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+        <tr>
+            <td><label for="" class="form-label">Travelling Period</label></td>
+            <td>
+                <table class="table">
+                    <tr>
+                        <td><label for="" class="form-label">Traveling Start Date</label></td>
+                        <td><label for="" class="form-label">Traveling End Date</label></td>
+                        <td><label for="" class="form-label">Total Days</label></td>
+                    </tr>
+                    <tr>
 
+                        <td>{{$application->travel_start_date}}</td>
+                        <td>{{$application->travel_end_date}}</td>
+                        <td>{{getTravelTotalDays($application)}}</td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+    </table>
 </div>
-<div class="form-group">
-    <div class="row">
-        <div class="col">
-            <label for="" class="form-label">Venue</label>
-            <p>{{$application->venue}}</p>
-
-        </div>
-        <div class="col">
-                <label for="" class="form-label">State</label>
-                <p>{{$application->state}}</p>
-    
-            </div>
-        <div class="col">
-            <label for="" class="form-label">Country</label>
-            <p>{{$application->country}} {!! $flag_icon[0]!!}</p>
-        </div>
-    </div>
-</div>
-<div class="form-group">
-    <label for="" class="form-label">
-                Event Period
-        </label>
-    <div class="row">
-        <div class="col">
-            <label for="" class="form-label">Event Start Date</label>
-            <p class="form-static">{{$application->event_start_date}}</p>
-        </div>
-        <div class="col">
-            <label for="" class="form-label">Event End Date</label>
-            <p class="form-static">{{$application->event_end_date}}</p>
-        </div>
-        <div class="col">
-            <label for="" class="form-label">Total Days</label>
-            <p class="form-static">{{getEventTotalDays($application)}}</p>
-        </div>
-    </div>
-</div>
-<div class="form-group">
-        <label for="" class="form-label">
-                    Travelling Period
-            </label>
-        <div class="row">
-            <div class="col">
-                <label for="" class="form-label">Travel Start Date</label>
-                <p class="form-static">{{$application->travel_start_date}}</p>
-            </div>
-            <div class="col">
-                <label for="" class="form-label">Travel End Date</label>
-                <p class="form-static">{{$application->travel_end_date}}</p>
-            </div>
-            <div class="col">
-                    <label for="" class="form-label">Total Days</label>
-                    <p class="form-static">{{getTravelTotalDays($application)}}</p>
-                </div>
-        </div>
-    </div>
 
 @section('page-css')
 <link rel="stylesheet" href="{{asset('vendors/flag-icon-css-3/css/flag-icon.css')}}">

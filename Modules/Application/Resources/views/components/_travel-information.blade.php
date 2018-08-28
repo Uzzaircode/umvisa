@@ -22,10 +22,10 @@
                                 </div>
                         <div class="col">
                                 <label for="" class="form-label">Event Country</label>
-                                <select name="country" id="" class="selectize form-control {{$errors->has('country') ? 'is-invalid':''}}">
+                                <select name="country" id="" class="form-control {{$errors->has('country') ? 'is-invalid':''}}">
                                 <option value="">Please select a country</option>
                         @foreach($countries as $c) 
-                        <option value="{{ $c }}" @if(isset($application) && $application->country == $c) selected @endif>{!! $c !!} </option>
+                        <option value="{!! $c->name->common !!}" @if(isset($application) && $application->country == $c) selected @endif>{!! $c->flag['flag-icon'] !!} {!! $c->name->common !!}</option>
                             
                         @endforeach
                         </select>

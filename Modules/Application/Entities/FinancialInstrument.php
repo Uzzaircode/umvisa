@@ -10,9 +10,8 @@ class FinancialInstrument extends Model
     protected $table = 'financialinstruments';
     protected $fillable = ['name'];
 
-    public function financialaids(){
+    public function financialaids()
+    {
         return $this->hasMany(FinancialAid::class);
     }
-
-
 }

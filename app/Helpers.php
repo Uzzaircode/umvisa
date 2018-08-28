@@ -1,7 +1,6 @@
 <?php 
 
 use Carbon\Carbon;
-use Modules\Application\Entities\Application as App;
 
 function getApplicationStatusState($application)
 {
@@ -85,3 +84,5 @@ function getTravelTotalDays($application){
     $dt = setDateObject($application->travel_end_date);
     return getDiffDays($df,$dt);
 }
+
+// <br><b>Please provide valid reasons supporting this late submission in the text box above. Don\'t forget to click the Submit Remark button.</b>

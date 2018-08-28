@@ -10,8 +10,6 @@ use Illuminate\Notifications\Notification;
 use Modules\Application\Notifications\SubmitApplication;
 use Modules\Application\Notifications\ApproveApplication;
 use Illuminate\Support\Facades\URL;
-use Modules\Application\Entities\FinancialAid;
-use Modules\Application\Entities\Participant;
 use Modules\Application\Traits\Financials;
 use Modules\Application\Traits\Participants;
 use Modules\Application\Traits\Attachments;

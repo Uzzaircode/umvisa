@@ -19,5 +19,13 @@ Route::group(['middleware' => ['web','timeout'], 'prefix' => 'applications', 'na
 
 Route::group(['middleware'=>['web','timeout'],'prefix'=>'financialinstruments','namespace'=>'Modules\Application\Http\Controllers'],function(){
     Route::get('/', ['uses'=>'FinancialinstrumentController@index','as'=>'finins.index']);
+});
 
+Route::group(['prefix'=>'country','middleware'=>['web','timeout']],function(){
+    Route::get('/',function(){
+        $country = new PragmaRX\Countries\Package\Countries;
+        $country = $country->all();
+        // return $brazil = $country->where('name.common','Brazil')->hydrate('flag');
+        return view('application::test',compact('country'));
+    });
 });

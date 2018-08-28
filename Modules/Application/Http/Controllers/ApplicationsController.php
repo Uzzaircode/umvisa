@@ -33,7 +33,7 @@ class ApplicationsController extends Controller
     {
         $user = $this->auth::user();
         $ins = FinancialInstrument::all();
-        $countries = $this->country->all()->pluck('name.common', 'flag.flag-icon');
+        $countries = $this->country->all();
         return view('application::create', compact('countries', 'user','ins'));
     }
     

@@ -1,7 +1,9 @@
 <?php 
 
 namespace Modules\Application\Traits;
+
 use Modules\Application\Entities\Participant;
+
 trait Participants
 {
     public function hasParticipants($request, $app)

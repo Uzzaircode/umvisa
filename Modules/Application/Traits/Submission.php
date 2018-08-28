@@ -10,7 +10,7 @@ trait Submission
         if ($this->getTotalDaysBeforeSubmission($app) < $this->totalDaysBeforeSubmission) {
             $app->comment([
                 'title'=>'Late Submission',
-                'body' => 'We have received your application, however we wish you to draw your attention for you to submit the application to our office not less than '.$this->totalDaysBeforeSubmission.' days prior to the event as to ensure that you are granted permission from the University before attending any activity in the future. Thank you.<br><b>Please provide valid reasons supporting this late submission in the text box above. Don\'t forget to click the Submit Remark button.</b>',
+                'body' => 'We have received your application, however we wish you to draw your attention for you to submit the application to our office not less than '.$this->totalDaysBeforeSubmission.' days prior to the event as to ensure that you are granted permission from the University before attending any activity in the future. Thank you.',
             ], $this->admin());
         }
     }
