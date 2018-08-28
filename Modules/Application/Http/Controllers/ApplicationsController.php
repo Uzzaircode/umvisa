@@ -13,8 +13,6 @@ use Modules\Application\Repositories\ApplicationRepository as AR;
 use Modules\Application\Http\Requests\ApplicationsRequest;
 use Modules\Application\Entities\Application;
 use Modules\Application\Entities\FinancialInstrument;
-use Modules\Application\Entities\FinancialAid;
-use PragmaRX\Countries\Package\Countries;
 
 class ApplicationsController extends Controller
 {

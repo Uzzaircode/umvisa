@@ -1,9 +1,10 @@
 <?php 
 
+use Carbon\Carbon;
+use Modules\Application\Entities\Application as App;
 
-
-function getApplicationStatusState($application){
-    
+function getApplicationStatusState($application)
+{
     switch ($application->status) {
         case 'Draft':
         return $state = 'warning';
@@ -31,7 +32,8 @@ function getApplicationStatusState($application){
     }
 }
 
-function getApplicationStatusByName($s){
+function getApplicationStatusByName($s)
+{
     switch ($s->name) {
         case 'Draft':
         return $state = 'warning';
@@ -59,6 +61,27 @@ function getApplicationStatusByName($s){
     }
 }
 
-function totalSubmittedApplication($application){
-    return $application->statuses->whereIn('name',['Submitted To Supervisor'])->count();
+function totalSubmittedApplication($application)
+{
+    return $application->statuses->whereIn('name', ['Submitted To Supervisor'])->count();
+}
+
+function setDateObject($value){
+    return Carbon::createFromFormat(config('app.date_format'),$value)->format('Y-m-d');
+}
+
+function getDiffDays($df,$dt){
+    return Carbon::parse($df)->diffInDays(Carbon::parse($dt));
+}
+function getEventTotalDays($application)
+{
+   $df = setDateObject($application->event_start_date);
+   $dt = setDateObject($application->event_end_date);
+   return getDiffDays($df,$dt);
+}
+
+function getTravelTotalDays($application){
+    $df = setDateObject($application->travel_start_date);
+    $dt = setDateObject($application->travel_end_date);
+    return getDiffDays($df,$dt);
 }

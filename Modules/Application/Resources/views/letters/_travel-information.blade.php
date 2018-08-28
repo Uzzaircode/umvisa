@@ -9,12 +9,17 @@
 </div>
 <div class="form-group">
     <div class="row">
-        <div class="col-6">
+        <div class="col">
             <label for="" class="form-label">Venue</label>
             <p>{{$application->venue}}</p>
 
         </div>
-        <div class="col-6">
+        <div class="col">
+                <label for="" class="form-label">State</label>
+                <p>{{$application->state}}</p>
+    
+            </div>
+        <div class="col">
             <label for="" class="form-label">Country</label>
             <p>{{$application->country}} {!! $flag_icon[0]!!}</p>
         </div>
@@ -22,43 +27,42 @@
 </div>
 <div class="form-group">
     <label for="" class="form-label">
-                Travelling Period
+                Event Period
         </label>
     <div class="row">
         <div class="col">
-            <label for="" class="form-label">Start Date</label>
-            <p class="form-static">{{$application->start_date}}</p>
+            <label for="" class="form-label">Event Start Date</label>
+            <p class="form-static">{{$application->event_start_date}}</p>
         </div>
         <div class="col">
-            <label for="" class="form-label">End Date</label>
-            <p class="form-static">{{$application->end_date}}</p>
+            <label for="" class="form-label">Event End Date</label>
+            <p class="form-static">{{$application->event_end_date}}</p>
+        </div>
+        <div class="col">
+            <label for="" class="form-label">Total Days</label>
+            <p class="form-static">{{getEventTotalDays($application)}}</p>
         </div>
     </div>
 </div>
-
 <div class="form-group">
-    <label for="" class="form-label">
-                Sources of financial assistance for the visit
-    </label>
-    <table class="table table-bordered table-striped">
-        <thead>
-            <tr>
-                <th>#</th>
-                <th>Financial Aid</th>
-                <th>Remarks</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach($financialaids as $key => $f)
-            <tr>
-            <td>{{++$key}}</td>
-            <td>{{$f->financialinstrument->name}}</td>
-            <td>{{$f->remarks}}</td>
-            </tr>
-            @endforeach
-        </tbody>
-    </table>   
-</div>
+        <label for="" class="form-label">
+                    Travelling Period
+            </label>
+        <div class="row">
+            <div class="col">
+                <label for="" class="form-label">Travel Start Date</label>
+                <p class="form-static">{{$application->travel_start_date}}</p>
+            </div>
+            <div class="col">
+                <label for="" class="form-label">Travel End Date</label>
+                <p class="form-static">{{$application->travel_end_date}}</p>
+            </div>
+            <div class="col">
+                    <label for="" class="form-label">Total Days</label>
+                    <p class="form-static">{{getTravelTotalDays($application)}}</p>
+                </div>
+        </div>
+    </div>
 
 @section('page-css')
 <link rel="stylesheet" href="{{asset('vendors/flag-icon-css-3/css/flag-icon.css')}}">

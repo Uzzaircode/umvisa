@@ -23,6 +23,8 @@
                                 <hr>
     @include('application::letters._travel-information')
                                 <hr>
+    @include('application::letters._financial-aid')
+                                <hr>
     @include('application::letters._attachments')
                             </form>
                         </td>
@@ -31,7 +33,7 @@
             </div>
         </div>
     </div>
-    
+
     <div class="col-5">
         <div class='card'>
             <div class='card-header'>
@@ -44,6 +46,6 @@
                 </form>
             </div>
         </div>
-    </div>    
+    </div>
 </div>
 @endsection

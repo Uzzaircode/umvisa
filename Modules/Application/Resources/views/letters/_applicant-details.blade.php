@@ -55,24 +55,16 @@
         </div>
     </div>
     <div class="form-group">
-        <div class="row">
-            <div class="col-6">
-                    <label for="" class="form-label">Office Telephone Number</label>
-                    <input type="text" class="form-control-plaintext" "office_num" value="{{old('office_num',$application->user->profile->office_num ?? Auth::user()->profile->office_num )}}" readonly >
-            </div>
-            <div class="col-6">
+        <div class="row">            
+            <div class="col">
                     <label for="" class="form-label">Mobile Number</label>
                     <input type="text" class="form-control-plaintext" value="{{old('mobile_num',$application->user->profile->mobile_num ?? Auth::user()->profile->mobile_num )}}" readonly >
             </div>
+            <div class="col">
+                    <label for="" class="form-label">Email Address</label>
+            <input type="text" class="form-control-plaintext"  value="{{old('email',$application->user->email ?? Auth::user()->email)}}" readonly >
+
+            </div> 
                     
         </div>
-    </div>
-    <div class="form-group">
-            <div class="row">
-                    <div class="col-4">
-                            <label for="" class="form-label">Email Address</label>
-                    <input type="text" class="form-control-plaintext"  value="{{old('email',$application->user->email ?? Auth::user()->email)}}" readonly >
-    
-                    </div> 
-            </div>
-        </div>
+    </div>    
