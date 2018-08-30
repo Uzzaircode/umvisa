@@ -52,7 +52,7 @@ class ApplicationsController extends Controller
         $financialaids = $application->financialaids;
         $travelling_country = $application->country;
         $flag_icon= Country::where('name.common',$travelling_country)->pluck('flag.flag-icon');        
-        return view('application::formal-letter', compact('application', 'remarks', 'statuses','financialaids','flag_icon'));
+        return view('application::show', compact('application', 'remarks', 'statuses','financialaids','flag_icon'));
     }
     
     public function edit($id)

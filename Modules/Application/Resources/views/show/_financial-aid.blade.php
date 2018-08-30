@@ -10,8 +10,8 @@
                 <table class="table table-bordered table-striped">
                     <thead>
                         <tr>
-                            <th>#</th>
-                            <th>Financial Aid</th>
+                            <td>#</td>
+                            <td>Financial Aid</td>
                             <th>Remarks</th>
                         </tr>
                     </thead>

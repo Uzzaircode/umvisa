@@ -1,11 +1,13 @@
 <div class="mt-5"></div>
 <div class="col">
+                <div id="form-step-0" role="form" data-toggle="validator">
         <div class="form-group">
                 <label for="" class="form-label">Title of Activity/Event</label>
                 <input type="text" class="form-control {{$errors->has('title') ? 'is-invalid':''}}" name="title" value="{{ old('title',$application->title ?? null) }}"
-                        placeholder="e.g: 4th International Conference on New Direction In Multidisciplinary Research & Practice 2018">
+                        placeholder="e.g: 4th International Conference on New Direction In Multidisciplinary Research & Practice 2018" required>
         @include('shared._errors',['entity'=>'title'])
         </div>
+</div>
         <div class="form-group">
                 <div class="row">
                         <div class="col">
@@ -22,7 +24,7 @@
                                 </div>
                         <div class="col">
                                 <label for="" class="form-label">Event Country</label>
-                                <select name="country" id="" class="form-control {{$errors->has('country') ? 'is-invalid':''}}">
+                                <select name="country" id="" class="form-control selectize {{$errors->has('country') ? 'is-invalid':''}}">
                                 <option value="">Please select a country</option>
                         @foreach($countries as $c) 
                         <option value="{!! $c->name->common !!}" @if(isset($application) && $application->country == $c) selected @endif>{!! $c->flag['flag-icon'] !!} {!! $c->name->common !!}</option>
@@ -32,7 +34,7 @@
         @include('shared._errors',['entity'=>'country'])
                         </div>
                 </div>
-        </div>
+        </div>        
         <div class="form-group">
                         <label for="" class="form-label">Event Description</label>
                         <textarea class="form-control {{$errors->has('description') ? 'is-invalid':''}}" name="description" placeholder="Please describe the event">{{ old('description',$application->description ?? null) }}</textarea>

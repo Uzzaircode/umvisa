@@ -81,7 +81,7 @@
 
 </script>
 {{-- Attachment Pop Up --}}
-<script src="https://cdnjs.cloudflare.com/ajax/libs/magnific-popup.js/1.1.0/jquery.magnific-popup.min.js"></script>   
+<script src="https://cdnjs.cloudflare.com/ajax/libs/magnific-popup.js/1.1.0/jquery.magnific-popup.min.js"></script>
 <script type="text/javascript">
     // Image popups
 $('#attachment').magnificPopup({
@@ -114,4 +114,28 @@ beforeOpen: function() {
             }
         });
     });
+
+</script>
+
+<script>
+    // hide cancel submission, recepient input
+    $('.recepient-name').hide();
+    $('.cancel-submit').hide();
+    // show recepient input
+    $('.submit-save').click(function(){
+        $('.submit-save').hide();
+        $('.submit-draft').hide();
+        $('.cancel').hide();
+        $('.recepient-name').show('fade');
+        $('.cancel-submit').show('fade');
+    });
+
+    $('.cancel-submit').click(function(){
+        $('.submit-save').show('fade');
+        $('.submit-draft').show();
+        $('.cancel').show();
+        $('.recepient-name').hide();
+        $('.cancel-submit').hide();
+    });
+
 </script>
