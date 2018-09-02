@@ -8,8 +8,7 @@
         <select name="type" id="" class="form-control selectize {{$errors->has('type') ? 'is-invalid':''}}">
                     <option value="">Please select</option>
                     <option value="faculty">Faculty</option>
-                    <option value="college">College</option>
-                    <option value="staff">UM Staff</option>
+                    <option value="college">Residential College</option>                   
                 </select>
                 @include('shared._errors',['entity'=>'type'])
     </div>

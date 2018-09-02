@@ -2,6 +2,6 @@
 <div class="col-6">
     <div class="form-group">
         <label for="" class="form-label">Please choose your recepient</label>
-        <select id="" name="userlist" class="form-control userlist"></select>
+        <select id="" name="supervisor" class="form-control supervisor"></select>
     </div>
 </div>

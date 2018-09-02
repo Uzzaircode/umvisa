@@ -74,22 +74,22 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.js"></script>
     @include('application::asset-partials.app-form')
     @include('asset-partials.dropzone.js.file')
-    {{-- @include('asset-partials.selectize') --}}
+    @include('asset-partials.selectize')
     <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/js/select2.min.js"></script>
 <script>
-  $('.userlist').select2({
+  $('.supervisor').select2({
     placeholder: 'Please type recepient email',
     ajax: {
-      url: '/applications/users/search/',
+      url: '/applications/users/search',
       dataType: 'json',
-      delay: 250,
-      
+      delay: 250,      
       processResults: function (data) {
         return {
           results:  $.map(data, function (item) {
             return {
               text: item.email,
-              id: item.id
+              id: item.email,
+              
             }
           })
         };

@@ -164,9 +164,11 @@ class ApplicationRepository extends AbstractRepository implements ApplicationInt
         return $admin = User::role('Admin')->get()->first();
     }
     
-    public function getSupervisor($app)
+    public function getSupervisor($request)
     {
-        return $supervisor = $app->user->profile->supervisor;
+        $supervisor_email = $request->supervisor;
+        return $supervisor = User::where('email',$supervisor_email)->get();
+        // return $supervisor = $app->user->profile->supervisor;
     }
 
     public function getDeputyDeanName($deputyDean)
@@ -183,6 +185,35 @@ class ApplicationRepository extends AbstractRepository implements ApplicationInt
     public function getTotalDaysBeforeSubmission($app)
     {        
         return $totalDays = Carbon::now()->diffInDays(Carbon::parse(strtotime($app->start_date)));
+    }
+    
+    // save application
+    public function save($request, $app)
+    {
+        //save
+        if ($request->has('save')) {
+            //check for late submission
+            $this->checkForLateSubmission($app);
+            $supervisor = $this->getSupervisor($request);
+            $app->setStatus('Submitted To Supervisor', 'Submitted to '.$this->getSupervisorName($supervisor));
+            $supervisor->notify(new SubmitApplication($app, $this->getApplicant($app)));
+            Session::flash('success', $this->saveMessage);
+        }
+    }
+
+    public function submit($request, $app)
+    {
+        $user = $app->user;
+        
+        // if submit 'submit'
+        if ($request->has('submit')) {
+            // check for late submission
+            $this->checkForLateSubmission($app);
+            $supervisor = $this->getSupervisor($request);
+            $supervisor->notify(new SubmitApplication($app, $user));
+            $app->setStatus('Submitted To Supervisor', 'Submitted to '.$this->getSupervisorName($supervisor));
+            Session::flash('success', $this->saveMessage);
+        }
     }
 
     

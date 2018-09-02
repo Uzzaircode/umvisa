@@ -1,7 +1,9 @@
 <?php 
 
 namespace Modules\Application\Traits;
+
 use Session;
+use Modules\Application\Notifications\SubmitApplication;
 
 trait Submission
 {
@@ -33,19 +35,7 @@ trait Submission
     }
 
     
-    // save application
-    public function save($request, $app)
-    {
-        //save
-        if ($request->has('save')) {
-            //check for late submission
-            $this->checkForLateSubmission($app);
-            $supervisor = $this->getSupervisor($app);
-            $app->setStatus('Submitted To Supervisor', 'Submitted to '.$this->getSupervisorName($supervisor));
-            $supervisor->notify(new SubmitApplication($app, $this->getApplicant($app)));
-            Session::flash('success', $this->saveMessage);
-        }
-    }
+    
 
     
     // update draft
@@ -62,18 +52,5 @@ trait Submission
 
 
     // submit application
-    public function submit($request, $app)
-    {
-        $user = $app->user;
-        
-        // if submit 'submit'
-        if ($request->has('submit')) {
-            // check for late submission
-            $this->checkForLateSubmission($app);
-            $supervisor = $this->getSupervisor($app);
-            $supervisor->notify(new SubmitApplication($app, $user));
-            $app->setStatus('Submitted To Supervisor', 'Submitted to '.$this->getSupervisorName($supervisor));
-            Session::flash('success', $this->saveMessage);
-        }
-    }
+    
 }

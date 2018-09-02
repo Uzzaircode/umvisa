@@ -1,9 +1,11 @@
-@role('User') @if(isset($application))
-<button class="btn btn-sm btn-primary" name="submit" value="submit" type="submit"><i class="fe fe-send"></i> Submit</button>@else
+@role('User')
+@if(isset($application))
+<button class="btn btn-sm btn-primary" name="submit" value="submit" type="submit"><i class="fe fe-send"></i> Submit</button>
+@else
 <a class="btn btn-sm btn-primary submit-save text-white" name="save"><i class="fe fe-send"></i> Save and Submit</a>
 <div class="input-group recepient-name">    
     <div class="input-group-prepend">
-        <button class="btn btn-primary" name="submit" value="submit" type="submit"><i class="fe fe-send"></i> Save and Submit</button>
+        <button class="btn btn-primary" name="save" value="save" type="submit"><i class="fe fe-send"></i> Save and Submit</button>
         <a class="btn btn-danger cancel-submit text-white"><i class="fe fe-x-circle"></i> Cancel Submission</a>
     </div>
 </div>

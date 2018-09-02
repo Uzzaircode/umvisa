@@ -91,7 +91,7 @@ class ApplicationsController extends Controller
 
     public function loadUsers(Request $request){
         if ($request->has('q')) {
-    		$search = $request->userlist;
+    		$search = $request->q;
             // $data = User::where('email', 'LIKE', '%'.$search.'%')->get();
             $data = DB::table('users')->where('email', 'LIKE', '%'.$search.'%')->get();
     		return response()->json($data);
