@@ -2,8 +2,7 @@
 <script type="text/javascript">
     $(function() {
         // Event
-            $( ".event-from" ).datepicker({
-              defaultDate: "+1w",
+            $( ".event-from" ).datepicker({              
               dateFormat: '{{config('app.date_format_js')}}',  
               changeMonth: true,
               numberOfMonths: 1,

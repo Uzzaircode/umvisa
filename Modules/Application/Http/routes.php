@@ -14,6 +14,7 @@ Route::group(['middleware' => ['web','timeout'], 'prefix' => 'applications', 'na
     });
     Route::post('{id}/create/remarks',['uses'=>'ApplicationsController@createRemarks','as'=>'create.remarks']);
     Route::get('letter','ApplicationsController@letter');
+    Route::get('/users/search', 'ApplicationsController@loadUsers');
        
 });
 
@@ -29,3 +30,10 @@ Route::group(['prefix'=>'country','middleware'=>['web','timeout']],function(){
         return view('application::test',compact('country'));
     });
 });
+
+Route::group(['middleware'=>'api','namespace' => 'Modules\Application\Http\Controllers','prefix'=>'api'],function(){
+    Route::resource('apps','ApplicationsController');
+});
+
+
+

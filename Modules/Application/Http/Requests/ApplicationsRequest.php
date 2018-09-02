@@ -14,15 +14,8 @@ class ApplicationsRequest extends FormRequest
     public function rules()
     {
         return [
-            'title' => 'required|max:255',
-            'venue' => 'required|max:255',
-            'country' => 'required',
-            'start_date' => 'required',
-            'end_date' => 'required',
-            'alternate_email'=> 'required',
-            'type' => 'required',            
-            // 'attachments' => 'required'
-
+            'title' => 'required|max:255',            
+            'type' => 'required',                        
         ];
     }
 
@@ -34,5 +27,12 @@ class ApplicationsRequest extends FormRequest
     public function authorize()
     {
         return true;
+    }
+
+    public function messages(){
+        return [
+            'title.required' => 'We need to know the title of the activity/event',
+            'type.required' => 'Please choose the type of application'
+        ];
     }
 }

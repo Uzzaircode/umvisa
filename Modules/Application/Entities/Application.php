@@ -8,6 +8,7 @@ use Spatie\ModelStatus\HasStatuses;
 use BrianFaust\Commentable\Traits\HasComments;
 use Auth;
 use Carbon\Carbon;
+use Sofa\Eloquence\Eloquence;
 
 class Application extends Model
 {

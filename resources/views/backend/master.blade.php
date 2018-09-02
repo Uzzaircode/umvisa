@@ -40,7 +40,9 @@
         {{-- Footer --}} 
         @include('backend.partials.footer')
     </div>
-<script src="http://code.jquery.com/jquery-latest.js"></script>
+{{-- <script src="{{asset('js/vendors/jquery-3.2.1.slim.min.js')}}"></script> --}}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+    
 <script src="{{asset('js/vendors/bootstrap.bundle.min.js')}}"></script>       
     @yield('datatables-js')
     @yield('selectize-js')

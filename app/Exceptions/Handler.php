@@ -8,6 +8,7 @@ use Illuminate\Auth\AuthenticationException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Illuminate\Routing\Exceptions\InvalidSignatureException;
 use Symfony\Component\Debug\Exception\FatalThrowableError;
+use Illuminate\Session\TokenMismatchException;
 use Session;
 
 class Handler extends ExceptionHandler
@@ -57,6 +58,9 @@ class Handler extends ExceptionHandler
         if ($exception instanceof InvalidSignatureException) {
             return $this->invalidUrlSignature($request, $exception);
         }
+        if ($exception instanceof TokenMismatchException) {
+            return $this->pageExpired($request, $exception);
+        }
         // if($exception instanceof ErrorException){
         //     return $this->objectOnNull($request,$exception);
         // }
@@ -97,5 +101,10 @@ class Handler extends ExceptionHandler
     {
         Session::flash('fail', 'Security token mismatched. You\'re not allowed to perform the operation');
         return redirect()->back();
+    }
+
+    public function pageExpired($request, Exception $exception){
+        Session::flash('fail','Your session has expired, please login again');
+        return redirect('login');
     }
 }

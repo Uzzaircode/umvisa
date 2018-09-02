@@ -72,14 +72,14 @@ class ApplicationRepository extends AbstractRepository implements ApplicationInt
             'travel_start_date' => $request->travel_start_date,
             'travel_end_date' => $request->travel_end_date,
             'alternate_email' => $request->alternate_email,
-            'type' => $request->application_type,
+            'type' => $request->type,
         ]);
     }
 
     public function updateFromRequest($request, $app)
     {
         $app->update([
-            'user_id' => $request->user_id,
+            'user_id' => Auth::id(),
             'title' => $request->title,
             'venue' => $request->venue,
             'country' => $request->country,
@@ -99,7 +99,7 @@ class ApplicationRepository extends AbstractRepository implements ApplicationInt
         // find application
         $app = $this->modelClassName::find($id);
         $this->updateFromRequest($request, $app);        
-        $this->checkForLateSubmission($app);
+        // $this->checkForLateSubmission($app);
         $this->hasAttachments($request,$app);
         $this->hasFinancialAid($request,$app);
         $this->hasParticipants($request,$app);

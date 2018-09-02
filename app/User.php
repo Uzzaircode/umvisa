@@ -12,15 +12,15 @@ use Modules\Sap\Entities\Sap;
 use Modules\Ticket\Entities\Reply;
 use App\Profile;
 use Cache;
-
-// use App\Http\Traits\Hashidable;
-
+use Sofa\Eloquence\Eloquence;
 
 class User extends Authenticatable
 {
     use Notifiable;
     use HasRoles;
-    // use Hashidable;
+    use Eloquence;
+
+    protected $searchableColumns = ['name','email'];    
 
     /**
      * The attributes that are mass assignable.

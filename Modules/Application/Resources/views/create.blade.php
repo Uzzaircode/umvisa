@@ -58,19 +58,42 @@
 <link rel="stylesheet" href="{{asset('vendors/flag-icon-css-3/css/flag-icon.css')}}">
 <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
     @include('asset-partials.dropzone.css.file')
-    <style>
-    .participants{
+<link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/css/select2.min.css" rel="stylesheet" />
+
+<style>
+    .participants {
         display: none;
     }
-    </style>
+</style>
 @endsection
  
 @section('page-js')
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.js"></script>
     @include('application::asset-partials.app-form')
     @include('asset-partials.dropzone.js.file')
-    @include('asset-partials.selectize')
-    <script>
-        
-    </script>
+    {{-- @include('asset-partials.selectize') --}}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/js/select2.min.js"></script>
+<script>
+  $('.userlist').select2({
+    placeholder: 'Cari...',
+    ajax: {
+      url: '/applications/users/search/',
+      dataType: 'json',
+      delay: 250,
+      
+      processResults: function (data) {
+        return {
+          results:  $.map(data, function (item) {
+            return {
+              text: item.email,
+              id: item.id
+            }
+          })
+        };
+      },
+      cache: true,
+      allowClear:true
+    }
+  });
+</script>
 @endsection
