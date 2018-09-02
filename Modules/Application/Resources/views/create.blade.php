@@ -19,6 +19,9 @@
                     </div>
                     <div class="card-body m-5">
                         <div class="row">
+                            @include('application::components._recepient')
+                        </div>
+                        <div class="row">
     @include('application::components._application-type')
                         </div>
                         <div class="row">
@@ -75,7 +78,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/js/select2.min.js"></script>
 <script>
   $('.userlist').select2({
-    placeholder: 'Cari...',
+    placeholder: 'Please type recepient email',
     ajax: {
       url: '/applications/users/search/',
       dataType: 'json',

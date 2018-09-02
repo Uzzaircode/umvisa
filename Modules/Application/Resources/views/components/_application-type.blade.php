@@ -1,6 +1,7 @@
 <div class="mt-5"></div>
+
 <div class="col">
-        <select id="" name="userlist" class="form-control userlist"></select> 
+       
     <div class="form-group">
              
         <label for="" class="form-label">Please choose Application Type</label>
