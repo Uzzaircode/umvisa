@@ -19,6 +19,7 @@
                     <div class="card-body">
     {{-- @include('application::components._applicant-details') --}}
      @csrf
+     @include('application::components._recepient')
     @include('application::components._travel-information')
     @include('application::components._financial-aid')
     @include('application::components._attachment')
@@ -67,6 +68,7 @@
 <link rel="stylesheet" href="{{asset('vendors/flag-icon-css-3/css/flag-icon.css')}}">
 <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
     @include('asset-partials.dropzone.css.file')
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/css/select2.min.css" rel="stylesheet" />
 @endsection
  
 @section('page-js')
@@ -74,4 +76,28 @@
     @include('application::asset-partials.app-form')
     @include('asset-partials.dropzone.js.file')
     @include('asset-partials.selectize')
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/js/select2.min.js"></script>
+    <script>
+      $('.supervisor').select2({
+        placeholder: 'Please type recepient email',
+        ajax: {
+          url: '/applications/users/search',
+          dataType: 'json',
+          delay: 250,      
+          processResults: function (data) {
+            return {
+              results:  $.map(data, function (item) {
+                return {
+                  text: item.email,
+                  id: item.email,
+                  
+                }
+              })
+            };
+          },
+          cache: true,
+          allowClear:true
+        }
+      });
+    </script>
 @endsection

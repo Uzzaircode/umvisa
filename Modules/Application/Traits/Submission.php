@@ -33,10 +33,6 @@ trait Submission
             Session::flash('success', $this->draftMessage);
         }
     }
-
-    
-    
-
     
     // update draft
     public function updateDraft($request, $app)
