@@ -27,7 +27,8 @@
               changeMonth: true,
               numberOfMonths: 1,
               minDate:0,
-              onClose: function( selectedDate ) {
+              onClose: function( selectedDate ) {                
+                $( ".event-from" ).datepicker( "option", "minDate", selectedDate );
                 $( ".travel-to" ).datepicker( "option", "minDate", selectedDate );
               }
             });
@@ -37,6 +38,8 @@
               changeMonth: true,
               numberOfMonths: 1,
               onClose: function( selectedDate ) {
+                $( ".event-to" ).datepicker( "option", "maxDate", selectedDate );
+                $('.event-from').datepicker("option","maxDate", selectedDate);
                 $( ".travel-from" ).datepicker( "option", "maxDate", selectedDate );
               }
             });

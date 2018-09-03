@@ -28,20 +28,20 @@ trait Financials
         
         // if ($request->has('financial_instrument')) {
             $i = 0;
-            for ($i;$i < count($request->financial_instrument); $i++) {
-                // if ($request->remarks[$i]->isNotEmpty()) {
+            for ($i;$i < count($request->remarks); $i++) {
+                if (!empty($request->remarks[$i])) {
                     // FinancialAid::create([
                     //         'remarks' => $request->remarks[$i],
                     //         'application_id' => $app->id,
                     //         'financialinstrument_id' => $request->financial_instrument[$i],
                     //     ]);
-                    // $f = new FinancialAid;
-                    // $f->remarks = $request->remarks[$i];
-                    // $f->application_id = $app->id;
-                    // $f->financialinstrument_id = $request->financial_instrument[$i];
-                    // $f->save();
+                    $f = new FinancialAid;
+                    $f->remarks = $request->remarks[$i];
+                    $f->application_id = $app->id;
+                    $f->financialinstrument_id = $request->financial_instrument[$i];
+                    $f->save();
                 }
-            // }
+            }
         // }
     }
 }

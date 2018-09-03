@@ -156,7 +156,7 @@ class ApplicationRepository extends AbstractRepository implements ApplicationInt
 
     public function getSupervisorName($supervisor)
     {
-        return $supervisor->profile->title.' '.$supervisor->name;
+        return $supervisor->first()->profile->title.' '.$supervisor->first()->name;
     }
 
     public function admin()
@@ -167,8 +167,7 @@ class ApplicationRepository extends AbstractRepository implements ApplicationInt
     public function getSupervisor($request)
     {
         $supervisor_email = $request->supervisor;
-        return $supervisor = User::where('email',$supervisor_email)->get();
-        // return $supervisor = $app->user->profile->supervisor;
+        return $supervisor = User::where('email',$supervisor_email)->get()->first();
     }
 
     public function getDeputyDeanName($deputyDean)

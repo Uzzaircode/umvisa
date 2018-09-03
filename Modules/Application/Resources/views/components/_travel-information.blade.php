@@ -40,36 +40,6 @@
                 @include('shared._errors',['entity'=>'description'])               
         </div>
         <div class="form-group">
-                        <label for="" class="form-label">
-                        Event Period
-                        </label>
-                        <div class="row">
-                                <div class="col">
-                                        <div class="input-group">
-                                                <div class="input-group-prepend">
-                                                        <div class="input-group-text"><i class="fe fe-calendar"></i></div>
-                                                </div>
-                                                <input type="text" class="form-control datetimepicker-input event-from {{$errors->has('event_start_date') ? 'is-invalid':''}}" name="event_start_date"
-                                                        placeholder="Event Start Date" value="{{old('event_start_date',isset($application) ? $application->event_start_date: '')}}"
-                                                />
-                                        </div>
-                @include('shared._errors',['entity'=>'event_start_date'])
-                                </div>
-                                <div class="col">
-                                        <div class="input-group">
-                                                <div class="input-group-prepend">
-                                                        <div class="input-group-text"><i class="fe fe-calendar"></i></div>
-                                                </div>
-                                                <input type="text" class="form-control datetimepicker-input event-to {{$errors->has('event_end_date') ? 'is-invalid':''}}" name="event_end_date"
-                                                        placeholder="Event End Date" value="{{old('event_end_date',isset($application) ? $application->event_end_date : '')}}"
-                                                />
-        
-                                        </div>
-                @include('shared._errors',['entity'=>'event_end_date'])
-                                </div>
-                        </div>
-                </div>
-        <div class="form-group">
                 <label for="" class="form-label">
                 Travelling Period
         </label>
@@ -99,4 +69,35 @@
                         </div>
                 </div>
         </div>
+        <div class="form-group">
+                        <label for="" class="form-label">
+                        Event Period
+                        </label>
+                        <div class="row">
+                                <div class="col">
+                                        <div class="input-group">
+                                                <div class="input-group-prepend">
+                                                        <div class="input-group-text"><i class="fe fe-calendar"></i></div>
+                                                </div>
+                                                <input type="text" class="form-control datetimepicker-input event-from {{$errors->has('event_start_date') ? 'is-invalid':''}}" name="event_start_date"
+                                                        placeholder="Event Start Date" value="{{old('event_start_date',isset($application) ? $application->event_start_date: '')}}"
+                                                />
+                                        </div>
+                @include('shared._errors',['entity'=>'event_start_date'])
+                                </div>
+                                <div class="col">
+                                        <div class="input-group">
+                                                <div class="input-group-prepend">
+                                                        <div class="input-group-text"><i class="fe fe-calendar"></i></div>
+                                                </div>
+                                                <input type="text" class="form-control datetimepicker-input event-to {{$errors->has('event_end_date') ? 'is-invalid':''}}" name="event_end_date"
+                                                        placeholder="Event End Date" value="{{old('event_end_date',isset($application) ? $application->event_end_date : '')}}"
+                                                />
+        
+                                        </div>
+                @include('shared._errors',['entity'=>'event_end_date'])
+                                </div>
+                        </div>
+                </div>
+        
 </div>

@@ -10,6 +10,10 @@
             <td>{{$application->title}}</td>
         </tr>
         <tr>
+            <td><label for="" class="form-label">Description of Activity/Event</label></td>
+            <td>{{$application->description}}</td>
+        </tr>
+        <tr>
             <td><label for="" class="form-label">Venue</label></td>
             <td>{{$application->venue}}</td>
         </tr>
@@ -58,6 +62,7 @@
         </tr>
     </table>
 </div>
+
 
 @section('page-css')
 <link rel="stylesheet" href="{{asset('vendors/flag-icon-css-3/css/flag-icon.css')}}">
