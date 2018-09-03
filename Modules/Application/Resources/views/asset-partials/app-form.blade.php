@@ -39,7 +39,7 @@
               numberOfMonths: 1,
               onClose: function( selectedDate ) {
                 $( ".event-to" ).datepicker( "option", "maxDate", selectedDate );
-                $('.event-from').datepicker("option","maxDate", selectedDate);
+                $(".event-from").datepicker("option","maxDate", selectedDate);
                 $( ".travel-from" ).datepicker( "option", "maxDate", selectedDate );
               }
             });

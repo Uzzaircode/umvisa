@@ -2,7 +2,7 @@
 <div class="col">
     <div class="form-group">
         <label for="" class="form-label">Please choose your recepient</label>
-        <select id="" name="supervisor" class="form-control supervisor"></select>
+        <select id="" name="supervisor" class="form-control supervisor" style="height:50%"></select>
     </div>
 </div>
 <div class="col">

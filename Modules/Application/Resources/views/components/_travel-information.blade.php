@@ -41,10 +41,14 @@
         </div>
         <div class="form-group">
                 <label for="" class="form-label">
-                Travelling Period
-        </label>
+                Travelling Period @isset($application) <span class="badge badge-info">{{getTravelTotalDays($application)}} Days</span>@endisset
+        </label> 
+        
                 <div class="row">
                         <div class="col">
+                                        <label for="" class="form-label">
+                                                        Travel Start Date
+                                                </label> 
                                 <div class="input-group">
                                         <div class="input-group-prepend">
                                                 <div class="input-group-text"><i class="fe fe-calendar"></i></div>
@@ -56,6 +60,9 @@
         @include('shared._errors',['entity'=>'travel_start_date'])
                         </div>
                         <div class="col">
+                                        <label for="" class="form-label">
+                                                        Travel End Date
+                                                </label>
                                 <div class="input-group">
                                         <div class="input-group-prepend">
                                                 <div class="input-group-text"><i class="fe fe-calendar"></i></div>
@@ -71,10 +78,13 @@
         </div>
         <div class="form-group">
                         <label for="" class="form-label">
-                        Event Period
+                        Event Period  @isset($application) <span class="badge badge-info">{{getEventTotalDays($application)}} Days</span>@endisset
                         </label>
                         <div class="row">
                                 <div class="col">
+                                                <label for="" class="form-label">
+                                                               Event Start Date
+                                                        </label>
                                         <div class="input-group">
                                                 <div class="input-group-prepend">
                                                         <div class="input-group-text"><i class="fe fe-calendar"></i></div>
@@ -86,6 +96,9 @@
                 @include('shared._errors',['entity'=>'event_start_date'])
                                 </div>
                                 <div class="col">
+                                                <label for="" class="form-label">
+                                                                Event End Date
+                                                        </label>
                                         <div class="input-group">
                                                 <div class="input-group-prepend">
                                                         <div class="input-group-text"><i class="fe fe-calendar"></i></div>

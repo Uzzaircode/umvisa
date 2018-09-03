@@ -62,6 +62,7 @@
 <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
     @include('asset-partials.dropzone.css.file')
 <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/css/select2.min.css" rel="stylesheet" />
+<link rel="stylesheet" href="{{asset('css/select2.bootstrap4.min.css')}}">
 
 <style>
     .participants {
@@ -79,6 +80,7 @@
 <script>
   $('.supervisor').select2({
     placeholder: 'Please type recepient email',
+    theme: 'bootstrap4',
     ajax: {
       url: '/applications/users/search',
       dataType: 'json',
