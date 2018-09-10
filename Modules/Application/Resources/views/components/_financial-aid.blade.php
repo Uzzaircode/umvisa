@@ -15,14 +15,16 @@
             </tr>
         </thead>
         <tbody id="dynamic_field">
-            @isset($application) @foreach($financialaids as $key => $f)
+            @isset($application) 
+            @foreach($financialaids as $key => $f)
             <tr>
                 <td>{{++$key}}</td>
                 <td>{{$f->financialinstrument->name}}</td>
                 <td>{{$f->remarks}}</td>
                 <td></td>
             </tr>
-            @endforeach @endisset
+            @endforeach 
+            @endisset
             <tr>
                 <td>
                     1

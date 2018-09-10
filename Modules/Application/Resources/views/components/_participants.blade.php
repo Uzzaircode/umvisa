@@ -19,13 +19,17 @@
                     </tr>
                 </thead>
                 <tbody id="dynamic_field_participant">
-                    @isset($application) @if($application->participants->count() > 0) @foreach($participants as $key => $p)
+                    @isset($application) 
+                    @if($application->participants->count() > 0) 
+                    @foreach($participants as $key => $p)
                     <tr>
                         <td>{{++$key}}</td>
                         <td>{{$p->matric_num}}</td>
                         <td></td>
                     </tr>
-                    @endforeach @endif @endisset
+                    @endforeach 
+                    @endif 
+                    @endisset
                     <tr>
                         <td>
                             1

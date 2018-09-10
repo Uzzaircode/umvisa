@@ -39,14 +39,9 @@ trait Submission
     {
         // if update draft
         if ($request->has('draft')) {
-            $this->updateFromRequest($request, $app);
-            $this->hasFinancialAid($request, $app);
+            $this->updateFromRequest($request, $app);        
             $app->save();
             Session::flash('success', $this->updateMessage);
         }
-    }
-
-
-    // submit application
-    
+    }    
 }
