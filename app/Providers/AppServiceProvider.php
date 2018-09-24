@@ -5,6 +5,7 @@ namespace App\Providers;
 use Illuminate\Support\ServiceProvider;
 use App\User;
 use Auth;
+use Illuminate\Support\Facades\Blade;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -18,6 +19,7 @@ class AppServiceProvider extends ServiceProvider
         // view()->composer('backend.partials.header', function ($view) {
         //     $view->with('user', Auth::user());
         // });
+        Blade::component('components.cards.dynamic', 'dynamicCard');
     }
 
     /**

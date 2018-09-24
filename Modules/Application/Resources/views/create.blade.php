@@ -1,4 +1,4 @@
-@extends('backend.master') 
+@extends('backend.master')
 @section('content')
 <div class="row">
     @isset($application)
@@ -8,35 +8,37 @@
         <form action="{{route('applications.update',['id'=>$application->id])}}" class="" method="POST" enctype="multipart/form-data"
             data-toggle="validator" role="form">
             {{method_field('PUT')}} @else
-            <form action="{{route('applications.store')}}" role="form" class="" method="POST" enctype="multipart/form-data" data-toggle="validator">
+            <form action="{{route('applications.store')}}" role="form" class="" method="POST" enctype="multipart/form-data"
+                data-toggle="validator">
                 @endif @csrf
                 <div class="card">
                     <div class="card-header sticky-top" style="background:white">
-                        <h3 class="card-title"><i class="fe fe-file-text"></i> {{isset($application) ? 'Edit Application':'New Application'}}</h3>
+                        <h3 class="card-title"><i class="fe fe-file-text"></i> {{isset($application) ? 'Edit
+                            Application':'New Application'}}</h3>
                         <div class="card-options" id="smartwizard-controls">
-    @include('application::components._form-action-buttons')
+                            @include('application::components._form-action-buttons')
                         </div>
                     </div>
                     <div class="card-body m-5">
-                        <div class="row">
+                        
+                            @include('application::components._application-type')                        
                             @include('application::components._recepient')
+                            @include('application::components._travel-information')
+                        <div class="row">
+                           
                         </div>
                         <div class="row">
-    @include('application::components._application-type')
-                        </div>
-                        <div class="row">
-    @include('application::components._travel-information')
+                            @include('application::components._attachment')
                         </div>
                         <div class="row participants">
-    @include('application::components._participants')
+                            @include('application::components._participants')
                         </div>
-    @include('application::components._financial-aid')
-    @include('application::components._attachment')
+                        @include('application::components._financial-aid')
+
 
                     </div>
                 </div>
     </div>
-</div>
 </div>
 
 {{--
@@ -47,7 +49,7 @@
                 <p class='card-title'>Recommendations</p>
             </div>
             <div class='card-body'>
-    @include('application::components._remarks')
+                @include('application::components._remarks')
             </div>
         </div>
 
@@ -56,11 +58,11 @@
 
 </form>
 @endsection
- 
+
 @section('page-css')
 <link rel="stylesheet" href="{{asset('vendors/flag-icon-css-3/css/flag-icon.css')}}">
 <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
-    @include('asset-partials.dropzone.css.file')
+@include('asset-partials.dropzone.css.file')
 <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/css/select2.min.css" rel="stylesheet" />
 <link rel="stylesheet" href="{{asset('css/select2.bootstrap4.min.css')}}">
 
@@ -70,35 +72,35 @@
     }
 </style>
 @endsection
- 
+
 @section('page-js')
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.js"></script>
-    @include('application::asset-partials.app-form')
-    @include('asset-partials.dropzone.js.file')
-    @include('asset-partials.selectize')
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/js/select2.min.js"></script>
+@include('application::asset-partials.app-form')
+@include('asset-partials.dropzone.js.file')
+@include('asset-partials.selectize')
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/js/select2.min.js"></script>
 <script>
-  $('.supervisor').select2({
-    placeholder: 'Please type recepient email',
-    theme: 'bootstrap4',
-    ajax: {
-      url: '/applications/users/search',
-      dataType: 'json',
-      delay: 250,      
-      processResults: function (data) {
-        return {
-          results:  $.map(data, function (item) {
-            return {
-              text: item.email,
-              id: item.email,
-              
-            }
-          })
-        };
-      },
-      cache: true,
-      allowClear:true
-    }
-  });
+    $('.supervisor').select2({
+        placeholder: 'Please type recepient email',
+        theme: 'bootstrap4',
+        ajax: {
+            url: '/applications/users/search',
+            dataType: 'json',
+            delay: 250,
+            processResults: function (data) {
+                return {
+                    results: $.map(data, function (item) {
+                        return {
+                            text: item.email,
+                            id: item.email,
+
+                        }
+                    })
+                };
+            },
+            cache: true,
+            allowClear: true
+        }
+    });
 </script>
 @endsection
