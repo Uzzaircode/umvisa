@@ -19,18 +19,13 @@
                             @include('application::components._form-action-buttons')
                         </div>
                     </div>
-                    <div class="card-body m-5">
-                        
+                    <div class="card-body m-5">                            
+                            @include('application::components._applicant-details')
                             @include('application::components._application-type')                        
                             @include('application::components._recepient')
                             @include('application::components._travel-information')                                               
-                            @include('application::components._attachment')                       
-                        <div class="row participants">
+                            @include('application::components._financial-aid')                                               
                             @include('application::components._participants')
-                        </div>
-                        @include('application::components._financial-aid')
-
-
                     </div>
                 </div>
     </div>

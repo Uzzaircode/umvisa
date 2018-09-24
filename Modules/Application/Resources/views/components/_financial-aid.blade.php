@@ -1,4 +1,4 @@
-@dynamicCard(['title'=>'Financial Resources','class'=>'participants'])
+@dynamicCard(['title'=>'Financial Resources','class'=>''])
 @slot('body')
 <div class="form-group">
     <div class="text-right mb-5">
