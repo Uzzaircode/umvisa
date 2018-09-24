@@ -1,4 +1,4 @@
-@dynamicCard(['title'=>'Application Type'])
+@dynamicCard(['title'=>'Application Type','class'=>''])
 @slot('body')
 <div class="row">
     <div class="col">

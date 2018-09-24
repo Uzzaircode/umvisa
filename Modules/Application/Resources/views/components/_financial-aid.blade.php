@@ -1,9 +1,10 @@
-<div class="mt-5"></div>
-<div class="form-group">        
+@dynamicCard(['title'=>'Financial Resources','class'=>'participants'])
+@slot('body')
+<div class="form-group">
     <div class="text-right mb-5">
         <a class="btn btn-sm btn-secondary" id="add-financial">
-        <i class="fe fe-plus-circle"></i> Add Financial Aid(s)
-    </a>
+            <i class="fe fe-plus-circle"></i> Add Financial Aid(s)
+        </a>
     </div>
     <table class="table table-striped table-bordered">
         <thead>
@@ -15,7 +16,7 @@
             </tr>
         </thead>
         <tbody id="dynamic_field">
-            @isset($application) 
+            @isset($application)
             @foreach($financialaids as $key => $f)
             <tr>
                 <td>{{++$key}}</td>
@@ -23,7 +24,7 @@
                 <td>{{$f->remarks}}</td>
                 <td></td>
             </tr>
-            @endforeach 
+            @endforeach
             @endisset
             <tr>
                 <td>
@@ -31,16 +32,17 @@
                 </td>
                 <td>
                     <select name="financial_instrument[]" id="" class="form-control selectize">
-                    @foreach($ins as $n)
-                <option value="{{$n->id}}">{{$n->name}}</option>                    
-                    @endforeach
-                </select>
+                        @foreach($ins as $n)
+                        <option value="{{$n->id}}">{{$n->name}}</option>
+                        @endforeach
+                    </select>
                 </td>
                 <td><input type="text" class="form-control" name="remarks[]"></td>
-                <td class="text-center"><a id="+f+" class="btn btn-danger remove-financial text-white"><i class="fe fe-trash"></i> Delete</a></td>
+                <td class="text-center"><a id="+f+" class="btn btn-danger remove-financial text-white"><i class="fe fe-trash"></i>
+                        Delete</a></td>
             </tr>
         </tbody>
     </table>
 </div>
-
-
+@endslot
+@enddynamicCard

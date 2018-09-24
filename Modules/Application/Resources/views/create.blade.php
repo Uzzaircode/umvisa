@@ -23,13 +23,8 @@
                         
                             @include('application::components._application-type')                        
                             @include('application::components._recepient')
-                            @include('application::components._travel-information')
-                        <div class="row">
-                           
-                        </div>
-                        <div class="row">
-                            @include('application::components._attachment')
-                        </div>
+                            @include('application::components._travel-information')                                               
+                            @include('application::components._attachment')                       
                         <div class="row participants">
                             @include('application::components._participants')
                         </div>

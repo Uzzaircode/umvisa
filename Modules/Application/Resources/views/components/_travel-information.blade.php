@@ -1,4 +1,4 @@
-@dynamicCard(['title'=>'Travel Information'])
+@dynamicCard(['title'=>'Travel Information','class'=>''])
 @slot('body')
 <div class="col">
         <div class="form-group">
@@ -107,8 +107,7 @@
 
                 </div>
         </div>
-        <div class="form-group">
-                <div class="col">
+        <div class="form-group">                
                         <div class="form-group">
                                 <label for="" class="form-label">Event Attachments</label>
                                 <div class="file-drop-area">
@@ -159,7 +158,7 @@
                                 </div>
                         </div>
                         @endif
-                </div>
+               
         </div>
 
 </div>
