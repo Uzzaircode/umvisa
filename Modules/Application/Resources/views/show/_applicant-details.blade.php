@@ -1,7 +1,4 @@
 <div class="mt-5">
-    {{--
-    <h3>Applicant Details</h3>
-    <hr> --}}
 </div>
 <div class="col">
     <table class="table table-striped table-bordered">

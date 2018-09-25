@@ -4,7 +4,7 @@
     <div class="col">
         <div class="form-group">
             <label for="" class="form-label">Please choose Application Type</label>
-            <select name="type" id="" class="form-control selectize {{$errors->has('type') ? 'is-invalid':''}}">
+            <select name="type" id="" class="form-control selectize {{$errors->has('type') ? 'is-invalid':''}} application_type">
                 <option value="">Please select</option>
                 <option value="faculty">Faculty</option>
                 <option value="college">Residential College</option>

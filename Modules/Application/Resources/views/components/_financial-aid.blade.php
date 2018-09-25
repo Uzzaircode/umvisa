@@ -1,4 +1,4 @@
-@dynamicCard(['title'=>'Financial Resources','class'=>''])
+@dynamicCard(['title'=>'Financial Aids','class'=>''])
 @slot('body')
 <div class="form-group">
     <div class="text-right mb-5">
@@ -10,8 +10,8 @@
         <thead>
             <tr>
                 <th>#</th>
-                <th>Financial Instruments</th>
-                <th>Remarks</th>
+                <th>Financial Resources</th>
+                <th>Details</th>
                 <th class="text-center">Actions</th>
             </tr>
         </thead>

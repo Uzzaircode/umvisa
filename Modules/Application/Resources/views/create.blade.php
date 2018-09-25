@@ -22,7 +22,8 @@
                     <div class="card-body m-5">                            
                             @include('application::components._applicant-details')
                             @include('application::components._application-type')                        
-                            @include('application::components._recepient')
+                            @include('application::components._supervisor')
+                            @include('application::components._college-fellow')
                             @include('application::components._travel-information')                                               
                             @include('application::components._financial-aid')                                               
                             @include('application::components._participants')
@@ -71,7 +72,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/js/select2.min.js"></script>
 <script>
     $('.supervisor').select2({
-        placeholder: 'Please type recepient email',
+        placeholder: 'Please choose',
         theme: 'bootstrap4',
         ajax: {
             url: '/applications/users/search',
@@ -92,5 +93,27 @@
             allowClear: true
         }
     });
+    $('.college_fellow').select2({
+        placeholder: 'Please choose',
+        theme:'bootstrap4',
+        ajax: {
+          url: '/applications/users/search',
+          dataType: 'json',
+          delay: 250,      
+          processResults: function (data) {
+            return {
+              results:  $.map(data, function (item) {
+                return {
+                  text: item.email,
+                  id: item.email,
+                  
+                }
+              })
+            };
+          },
+          cache: true,
+          allowClear:true
+        }
+      });
 </script>
 @endsection

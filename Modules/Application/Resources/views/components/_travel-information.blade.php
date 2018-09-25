@@ -42,9 +42,9 @@
                 </div>
         </div>
         <div class="form-group">
-                <label for="" class="form-label">Event Description</label>
+                <label for="" class="form-label">Justifications For Attending The Visit</label>
                 <textarea class="form-control {{$errors->has('description') ? 'is-invalid':''}}" name="description"
-                        placeholder="Please describe the event">{{ old('description',$application->description ?? null) }}</textarea>
+                        placeholder="">{{ old('description',$application->description ?? null) }}</textarea>
                 @include('shared._errors',['entity'=>'description'])
         </div>
         <div class="form-group">
@@ -112,8 +112,7 @@
                                 <label for="" class="form-label">Event Attachments</label>
                                 <div class="file-drop-area">
                                         <span class="fake-btn">Choose your attachments</span>
-                                        <span class="file-msg">or drag and drop your attachments here. You are allowed
-                                                to upload more than one attachment.</span>
+                                        <span class="file-msg">Please attach supporting document (Letter of invitation, etc).</span>
                                         <input class="file-input" type="file" name="attachments[]" multiple>
 
                                 </div>

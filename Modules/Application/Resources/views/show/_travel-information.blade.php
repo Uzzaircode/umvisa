@@ -1,7 +1,4 @@
 <div class="mt-5">
-    {{--
-    <h3>Travel Information</h3>
-    <hr> --}}
 </div>
 <div class="col">
     <table class="table table-striped table-bordered">
@@ -14,15 +11,15 @@
             <td>{{$application->description}}</td>
         </tr>
         <tr>
-            <td><label for="" class="form-label">Venue</label></td>
+            <td><label for="" class="form-label">Event Venue</label></td>
             <td>{{$application->venue}}</td>
         </tr>
         <tr>
-            <td><label for="" class="form-label">State</label></td>
+            <td><label for="" class="form-label">Event State</label></td>
             <td>{{$application->state}}</td>
         </tr>
         <tr>
-            <td><label for="" class="form-label">Country</label></td>
+            <td><label for="" class="form-label">Event Country</label></td>
             <td>{{$application->country}} {!! $flag_icon[0]!!}</td>
         </tr>
         <tr>
@@ -30,12 +27,14 @@
             <td>
                 <table class="table">
                     <tr>
-                        <td><label for="" class="form-label">Event Start Date</label> </td>
-                        <td><label for="" class="form-label">Event End Date</label></td>
+                        <td><label for="" class="form-label">Start Date</label> </td>
+                        <td><label for="" class="form-label">End Date</label></td>
                         <td><label for="" class="form-label">Total Days</label></td>
                     </tr>
                     <tr>
                         <td>{{$application->event_start_date}}</td>
+                        <!-- <td>
+                            {{Carbon\Carbon::createFromFormat('d/m/Y',$application->event_start_date)->format('Y')}}</td> -->
                         <td>{{$application->event_end_date}}</td>
                         <td>{{getEventTotalDays($application)}}</td>
                     </tr>
@@ -47,8 +46,8 @@
             <td>
                 <table class="table">
                     <tr>
-                        <td><label for="" class="form-label">Traveling Start Date</label></td>
-                        <td><label for="" class="form-label">Traveling End Date</label></td>
+                        <td><label for="" class="form-label">Start Date</label></td>
+                        <td><label for="" class="form-label">End Date</label></td>
                         <td><label for="" class="form-label">Total Days</label></td>
                     </tr>
                     <tr>

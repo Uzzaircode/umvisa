@@ -45,12 +45,11 @@
         </div>
         <div class="col-4">
             <label for="" class="form-label">Passport Number</label>
-            <input type="text" class="form-control" value="{{old('passport_num',$application->user->profile->passport_num ?? Auth::user()->profile->passport_num) }}"
-                placeholder="Fill in if you're non-Malaysian" readonly>
+            <input type="text" class="form-control" value="{{old('passport_num',$application->user->profile->passport_num ?? Auth::user()->profile->passport_num) }}" readonly>
             @include('shared._errors',['entity'=>'passport_num'])
         </div>
         <div class="col-4">
-            <label for="" class="form-label">Citizenship</label>
+            <label for="" class="form-label">Nationality</label>
             <input type="text" class="form-control" value="{{old('citizenship',$application->user->profile->citizenship ?? Auth::user()->profile->citizenship )}}"
                 readonly>
             @include('shared._errors',['entity'=>'citizenship'])
@@ -90,14 +89,8 @@
     </div>
 </div>
 <div class="form-group">
-    <div class="row">
+    <div class="row">        
         <div class="col-6">
-            <label for="" class="form-label">Email Address</label>
-            <input type="text" class="form-control" name="alternate_email" value="{{old('alternate_email',$application->user->email ?? Auth::user()->email)}}"
-                readonly>
-            @include('shared._errors',['entity'=>'email'])
-        </div>
-        <div class="col">
             <label for="" class="form-label">Your Alternative E-mail</label>
             <input type="text" class="form-control" name="alternate_email" placeholder="Ensure the email is active">
         </div>

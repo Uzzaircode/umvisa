@@ -1,6 +1,4 @@
-<div class="mt-5">
-    {{-- <h3>Financial Aid</h3>
-    <hr> --}}
+<div class="mt-5">  
 </div>
 <div class="col">
         <div class="form-group">

@@ -118,6 +118,26 @@ beforeOpen: function() {
     });
 
 </script>
+{{-- Recepients Panel Hide & Show Function --}}
+<script type="text/javascript">
+    $(function(){                        
+        $('.college-fellow').hide();
+        $('.application_type').change(function(){
+            
+            var selected_option = $('.application_type').val();
+            
+            if(selected_option == 'faculty'){                               
+                $('.college-fellow').hide();
+                $('.immediate-supervisor').show();
+            }
+            if(selected_option == 'college'){
+                $('.immediate-supervisor').hide();
+                $('.college-fellow').show();
+            }
+        });
+    });
+
+</script>
 
 <script>
     // hide cancel submission, recepient input

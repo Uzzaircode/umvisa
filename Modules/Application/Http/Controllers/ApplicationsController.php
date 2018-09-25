@@ -41,8 +41,7 @@ class ApplicationsController extends Controller
     
     public function store(ApplicationsRequest $request)
     {
-        $this->app->saveApplication($request);
-        
+        $this->app->saveApplication($request);        
         return redirect()->route('applications.index');
     }
     
@@ -52,9 +51,10 @@ class ApplicationsController extends Controller
         $statuses = $application->statuses->sortBy('created_at');
         $remarks = $application->comments->sortByDesc('created_at');
         $financialaids = $application->financialaids;
+        $participants = $application->participants;
         $travelling_country = $application->country;
         $flag_icon= Country::where('name.common',$travelling_country)->pluck('flag.flag-icon');        
-        return view('application::show', compact('application', 'remarks', 'statuses','financialaids','flag_icon'));
+        return view('application::show', compact('application', 'remarks', 'statuses','financialaids','flag_icon','participants'));
     }
     
     public function edit($id)

@@ -1,4 +1,4 @@
-@extends('backend.master') 
+@extends('backend.master')
 @section('content')
 <div class="row">
     @isset($application)
@@ -13,18 +13,17 @@
                     <div class="card-header sticky-top" style="background:white">
                         <h3 class="card-title"><i class="fe fe-file-text"></i> Edit Application</h3>
                         <div class="card-options">
-    @include('application::components._form-action-buttons')
-    
+                            @include('application::components._form-action-buttons')
+
                         </div>
                     </div>
                     <div class="card-body">
                         @include('application::components._participant-list')
-    {{-- @include('application::components._applicant-details') --}}
-     @csrf
-     @include('application::components._recepient')
-    @include('application::components._travel-information')
-    @include('application::components._financial-aid')
-    @include('application::components._attachment')
+                        @csrf
+                        @include('application::components._supervisor')
+                        @include('application::components._travel-information')
+                        @include('application::components._financial-aid')
+                        @include('application::components._attachment')
 
                     </div>
                 </div>
@@ -36,26 +35,26 @@
                 <p class='card-title'>Recommendations</p>
             </div>
             <div class='card-body'>
-    @include('application::components._remarks')
+                @include('application::components._remarks')
 
             </div>
         </div>
     </div>
     <div class="overlay"></div>
-    
+
 </div>
 
 
 @endsection
- 
+
 @section('page-css')
 <link rel="stylesheet" href="{{asset('vendors/flag-icon-css-3/css/flag-icon.css')}}">
 <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
-    @include('asset-partials.dropzone.css.file')
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/css/select2.min.css" rel="stylesheet" />
-    <link rel="stylesheet" href="{{asset('css/select2.bootstrap4.min.css')}}">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.min.css">
-    <style>
+@include('asset-partials.dropzone.css.file')
+<link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/css/select2.min.css" rel="stylesheet" />
+<link rel="stylesheet" href="{{asset('css/select2.bootstrap4.min.css')}}">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.min.css">
+<style>
     /* ---------------------------------------------------
     SIDEBAR STYLE
 ----------------------------------------------------- */
@@ -121,55 +120,77 @@
 
     </style>
 @endsection
- 
+
 @section('page-js')
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.js"></script>
-    @include('application::asset-partials.app-form')
-    @include('asset-partials.dropzone.js.file')
-    @include('asset-partials.selectize')
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/js/select2.min.js"></script>
-    <script>
-      $('.supervisor').select2({
-        placeholder: 'Please type recepient email',
-        theme:'bootstrap4',
+@include('application::asset-partials.app-form')
+@include('asset-partials.dropzone.js.file')
+@include('asset-partials.selectize')
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/js/select2.min.js"></script>
+<script>
+    $('.supervisor').select2({
+        placeholder: 'Please choose',
+        theme: 'bootstrap4',
         ajax: {
-          url: '/applications/users/search',
-          dataType: 'json',
-          delay: 250,      
-          processResults: function (data) {
-            return {
-              results:  $.map(data, function (item) {
+            url: '/applications/users/search',
+            dataType: 'json',
+            delay: 250,
+            processResults: function (data) {
                 return {
-                  text: item.email,
-                  id: item.email,
-                  
-                }
-              })
-            };
-          },
-          cache: true,
-          allowClear:true
+                    results: $.map(data, function (item) {
+                        return {
+                            text: item.email,
+                            id: item.email,
+
+                        }
+                    })
+                };
+            },
+            cache: true,
+            allowClear: true
         }
-      });
-    </script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.concat.min.js"></script>
-    <script type="text/javascript">
-      $(document).ready(function () {
-          $("#sidebar").mCustomScrollbar({
-              theme: "minimal"
-          });
+    });
+    $('.college-fellow').select2({
+        placeholder: 'Please choose',
+        theme: 'bootstrap4',
+        ajax: {
+            url: '/applications/users/search',
+            dataType: 'json',
+            delay: 250,
+            processResults: function (data) {
+                return {
+                    results: $.map(data, function (item) {
+                        return {
+                            text: item.email,
+                            id: item.email,
 
-          $('#dismiss, .overlay').on('click', function () {
-              $('#sidebar').removeClass('active');
-              $('.overlay').removeClass('active');
-          });
+                        }
+                    })
+                };
+            },
+            cache: true,
+            allowClear: true
+        }
+    });
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.concat.min.js"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#sidebar").mCustomScrollbar({
+            theme: "minimal"
+        });
 
-          $('#sidebarCollapse').on('click', function () {
-              $('#sidebar').addClass('active');
-              $('.overlay').addClass('active');
-              $('.collapse.in').toggleClass('in');
-              $('a[aria-expanded=true]').attr('aria-expanded', 'false');
-          });
-      });
-  </script>
+        $('#dismiss, .overlay').on('click', function () {
+            $('#sidebar').removeClass('active');
+            $('.overlay').removeClass('active');
+        });
+
+        $('#sidebarCollapse').on('click', function () {
+            $('#sidebar').addClass('active');
+            $('.overlay').addClass('active');
+            $('.collapse.in').toggleClass('in');
+            $('a[aria-expanded=true]').attr('aria-expanded', 'false');
+        });
+    });
+</script>
 @endsection
