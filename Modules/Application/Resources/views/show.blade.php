@@ -8,7 +8,7 @@
     <div class="col">
         <div class='card align-middle' width="">
             <div class="card-header">
-                <p class="card-title">Permission To Travel (Overseas) Form</p>
+                <p class="card-title">Permission To Travel (Overseas) Form | ETRAVEL/2018/01/0001</p>
                 <div class="card-options">
                     <button class="btn btn-sm btn-{{getApplicationStatusState($application)}}" style="float:right">{{$application->status()->reason}}
                         on {{$application->created_at->toDayDateTimeString()}}</button>
@@ -24,7 +24,7 @@
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link" id="travel-info-tab" data-toggle="tab" href="#travel-info" role="tab"
-                                    aria-controls="travel-info" aria-selected="false">Travel Information</a>
+                                    aria-controls="travel-info" aria-selected="false">Event/Travel Information</a>
                             </li>
                             @if($financialaids->count() > 0)
                             <li class="nav-item">

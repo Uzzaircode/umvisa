@@ -3,7 +3,7 @@
 <div class="row">
     <div class="col">
         <div class="form-group">
-            <label for="" class="form-label">Please choose your College Fellow</label>
+            <label for="" class="form-label">Please choose your College Fellow<span class="text-danger">*</span></label>
             <select id="" name="college_fellow" class="form-control college_fellow" style="height:50%"></select>
         </div>
     </div>

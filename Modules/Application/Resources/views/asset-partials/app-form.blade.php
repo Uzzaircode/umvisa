@@ -1,5 +1,14 @@
 {{-- Travel Date picker --}}
 <script type="text/javascript">
+    var selector = function (dateStr) {
+        var d1 = $('.event-from').datepicker('getDate');
+        var d2 = $('.event-to').datepicker('getDate');       
+        var diff = 1;
+        if (d1 && d2) {
+            diff = diff + Math.floor((d2.getTime() - d1.getTime()) / 86400000);
+        }
+        $('.calculated').val(diff);
+    }  
     $(function() {
         // Event
             $( ".event-from" ).datepicker({              
@@ -8,7 +17,7 @@
               numberOfMonths: 1,
               minDate:0,
               onClose: function( selectedDate ) {
-                $( ".event-to" ).datepicker( "option", "minDate", selectedDate );
+                $( ".event-to" ).datepicker( "option", "minDate", selectedDate );                
               }
             });
             $( ".event-to" ).datepicker({
@@ -17,9 +26,10 @@
               changeMonth: true,
               numberOfMonths: 1,
               onClose: function( selectedDate ) {
-                $( ".event-from" ).datepicker( "option", "maxDate", selectedDate );
+                $( ".event-from" ).datepicker( "option", "maxDate", selectedDate );            
               }
             });
+            $('.event-from,.event-to').change(selector);
         // Tavel
             $( ".travel-from" ).datepicker({
               defaultDate: "+1w",

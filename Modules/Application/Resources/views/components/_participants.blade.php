@@ -11,7 +11,7 @@
             <thead>
                 <tr>
                     <th>#</th>
-                    <th>Matric No.</th>
+                    <th>Matric No.<span class="text-danger">*</span></th>
                     <th>Participant Name</th>
                     <th class="text-center">Actions</th>
                 </tr>

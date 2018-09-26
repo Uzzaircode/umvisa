@@ -19,7 +19,12 @@
                             @include('application::components._form-action-buttons')
                         </div>
                     </div>
-                    <div class="card-body m-5">                            
+                    <div class="card-body m-5">
+                        <div class="row">
+                            <div class="col">
+                                    <p class="help-block">Please fill in the form below accordingly. Field with asterisk (<span class="text-danger">*</span>) sign is compulsory.</p>
+                            </div>                            
+                        </div>                            
                             @include('application::components._applicant-details')
                             @include('application::components._application-type')                        
                             @include('application::components._supervisor')
@@ -72,7 +77,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/js/select2.min.js"></script>
 <script>
     $('.supervisor').select2({
-        placeholder: 'Please choose',
+        placeholder: 'Please Select',
         theme: 'bootstrap4',
         ajax: {
             url: '/applications/users/search',
@@ -94,7 +99,7 @@
         }
     });
     $('.college_fellow').select2({
-        placeholder: 'Please choose',
+        placeholder: 'Please Select',
         theme:'bootstrap4',
         ajax: {
           url: '/applications/users/search',

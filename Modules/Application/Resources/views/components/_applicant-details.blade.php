@@ -92,7 +92,7 @@
     <div class="row">        
         <div class="col-6">
             <label for="" class="form-label">Your Alternative E-mail</label>
-            <input type="text" class="form-control" name="alternate_email" placeholder="Ensure the email is active">
+            <input type="text" class="form-control" name="alternate_email" placeholder="Your active e-mail only">
         </div>
     </div>
 

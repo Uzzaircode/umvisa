@@ -10,8 +10,8 @@
         <thead>
             <tr>
                 <th>#</th>
-                <th>Financial Resources</th>
-                <th>Details</th>
+                <th>Sources Of Financial Assistance For The Visit<span class="text-danger">*</span></th>
+                <th>Details<span class="text-danger">*</span></th>
                 <th class="text-center">Actions</th>
             </tr>
         </thead>
@@ -32,12 +32,13 @@
                 </td>
                 <td>
                     <select name="financial_instrument[]" id="" class="form-control selectize">
+                        <option value="">Please choose</option>
                         @foreach($ins as $n)
                         <option value="{{$n->id}}">{{$n->name}}</option>
                         @endforeach
                     </select>
                 </td>
-                <td><input type="text" class="form-control" name="remarks[]"></td>
+                <td><input type="text" class="form-control" name="remarks[]" placeholder=""></td>
                 <td class="text-center"><a id="+f+" class="btn btn-danger remove-financial text-white"><i class="fe fe-trash"></i>
                         Delete</a></td>
             </tr>

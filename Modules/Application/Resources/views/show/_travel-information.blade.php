@@ -7,19 +7,19 @@
             <td>{{$application->title}}</td>
         </tr>
         <tr>
-            <td><label for="" class="form-label">Description of Activity/Event</label></td>
+            <td><label for="" class="form-label">Justification For Attending The Visit</label></td>
             <td>{{$application->description}}</td>
         </tr>
         <tr>
-            <td><label for="" class="form-label">Event Venue</label></td>
+            <td><label for="" class="form-label">Venue</label></td>
             <td>{{$application->venue}}</td>
         </tr>
         <tr>
-            <td><label for="" class="form-label">Event State</label></td>
+            <td><label for="" class="form-label">State</label></td>
             <td>{{$application->state}}</td>
         </tr>
         <tr>
-            <td><label for="" class="form-label">Event Country</label></td>
+            <td><label for="" class="form-label">Country</label></td>
             <td>{{$application->country}} {!! $flag_icon[0]!!}</td>
         </tr>
         <tr>

@@ -3,7 +3,7 @@
 <div class="row">
     <div class="col">
         <div class="form-group">
-            <label for="" class="form-label">Please choose Application Type</label>
+            <label for="" class="form-label">Please choose Application Type<span class="text-danger">*</span></label>
             <select name="type" id="" class="form-control selectize {{$errors->has('type') ? 'is-invalid':''}} application_type">
                 <option value="">Please select</option>
                 <option value="faculty">Faculty</option>
@@ -14,7 +14,7 @@
     </div>
     <div class="col">
         <div class="form-group">
-            <label for="" class="form-label">Please select number of participants</label>
+            <label for="" class="form-label">Please select number of participants<span class="text-danger">*</span></label>
             <select name="num_partcipants" id="" class="form-control num_participants selectize">
                 <option value="1">1 person</option>
                 <option value="2">More than 1 person</option>
