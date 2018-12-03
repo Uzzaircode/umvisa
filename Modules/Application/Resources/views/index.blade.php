@@ -25,7 +25,7 @@
                         <td>{{ ++$key }}</td>
                         <td>{{str_limit($application->title,$limit = 40,$end = '...')}}</td>
                         <td>{{$application->created_at->toDayDateTimeString()}}</td>
-                    <td><span class="badge badge-{{getApplicationStatusState($application)}}">{{$application->status()->reason}}</span></td>
+                    <td><span class="badge badge-{{getApplicationStatusState($application)}}">{{ strtoupper($application->status()->reason) }}</span></td>
                         <td>
                             @can('view_applications')
                             <a href="{{ URL::signedRoute('applications.show', ['id' => $application->id])  }}" class="btn btn-secondary btn-sm"><i class="fe fe-eye"></i> View</a>                        @endcan

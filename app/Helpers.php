@@ -6,7 +6,7 @@ function getApplicationStatusState($application)
 {
     switch ($application->status) {
         case 'Draft':
-        return $state = 'warning';
+        return $state = 'success';
         break;
 
         case 'Submitted To Supervisor':
