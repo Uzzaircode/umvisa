@@ -43,6 +43,6 @@ class CreateSNVWMAKLPENYANDANG extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('');
+        Schema::dropIfExists('SN_VW_MAKL_PENYANDANG');
     }
 }

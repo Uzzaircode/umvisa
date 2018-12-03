@@ -59,6 +59,6 @@ class CreateVIEWPROFILEEDUCATION extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('');
+        Schema::dropIfExists('VIEW_PROFILE_EDUCATION');
     }
 }

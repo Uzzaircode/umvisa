@@ -69,6 +69,6 @@ class CreateMAKLUMATSTAFSISVW extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('');
+        Schema::dropIfExists('MAKLUMAT_STAF_SIS_VW');
     }
 }

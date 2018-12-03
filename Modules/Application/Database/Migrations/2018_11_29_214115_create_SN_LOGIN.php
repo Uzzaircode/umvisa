@@ -22,14 +22,6 @@ class CreateSNLOGIN extends Migration
             $table->timestamps();
         });
     }
-    // STA_NOSTAF	VARCHAR2(15)
-    // STA_ID_PENGGUNA	VARCHAR2(20)
-    // STA_KATA_LALUAN	VARCHAR2(50)
-    // STA_AKTIF	VARCHAR2(1)
-    // STA_CREATED_BY	VARCHAR2(20)
-    // STA_CREATED_DATE	DATE
-    // STA_UPDATED_BY	VARCHAR2(20)
-    // STA_UPDATED_DATE	DATE
     
     /**
      * Reverse the migrations.
@@ -38,6 +30,6 @@ class CreateSNLOGIN extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('');
+        Schema::dropIfExists('SN_LOGIN');
     }
 }
