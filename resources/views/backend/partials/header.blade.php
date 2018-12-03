@@ -87,7 +87,7 @@
                     @role('Admin') {{-- Laravel-permission blade helper --}}
                     <li class="nav-item dropdown">
                         <a href="javascript:void(0)" class="nav-link" data-toggle="dropdown">
-                            <i class="fe fe-package"></i> Modules</a>
+                            <i class="fe fe-layer"></i> Modules</a>
                         <div class="dropdown-menu dropdown-menu-arrow">
                            
                             <a href="" class="dropdown-item">Applications</a>

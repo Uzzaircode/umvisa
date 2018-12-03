@@ -6,6 +6,7 @@ Route::group(['middleware' => ['web','timeout'], 'prefix' => 'applications', 'na
     Route::get('/', ['uses'=>'ApplicationsController@index','as'=>'applications.index']);
     Route::get('create', ['uses'=>'ApplicationsController@create','as'=>'applications.create']);
     Route::post('store',['uses'=>'ApplicationsController@store','as'=>'applications.store']);
+    Route::view('config','application::config');
     
     Route::group(['middleware'=>['signed']],function(){
         Route::get('{id}/edit',['uses'=>'ApplicationsController@edit','as'=>'applications.edit']);

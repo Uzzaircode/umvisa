@@ -56,4 +56,8 @@ class RolesController extends Controller
         Session::flash('success', 'The role has been deleted');
         return redirect()->back();
     }
+
+    public function config(){
+        
+    }
 }
