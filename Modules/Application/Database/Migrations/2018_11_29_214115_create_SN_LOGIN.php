@@ -13,9 +13,12 @@ class CreateSNLOGIN extends Migration
      */
     public function up()
     {
-        Schema::create('', function (Blueprint $table) {
+        Schema::create('SN_LOGIN', function (Blueprint $table) {
             $table->increments('id');
-
+            $table->string('STA_NOSTAF')->nullable();
+            $table->string('STA_ID_PENGGUNA')->nullable();
+            $table->string('STA_KATA_LALUAN')->nullable();
+            $table->string('STA_AKTIF')->nullable();            
             $table->timestamps();
         });
     }
