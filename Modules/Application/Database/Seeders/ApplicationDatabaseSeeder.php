@@ -4,6 +4,7 @@ namespace Modules\Application\Database\Seeders;
 
 use Illuminate\Database\Seeder;
 use Illuminate\Database\Eloquent\Model;
+use Modules\Application\Database\Seeders\ApplicationConfigSeederTableSeeder;
 
 class ApplicationDatabaseSeeder extends Seeder
 {
@@ -16,6 +17,6 @@ class ApplicationDatabaseSeeder extends Seeder
     {
         Model::unguard();
 
-        // $this->call("OthersTableSeeder");
+        $this->call(ApplicationConfigSeederTableSeeder::class);
     }
 }

@@ -8,7 +8,7 @@
     <div class="col">
         <div class='card align-middle' width="">
             <div class="card-header">
-                <p class="card-title">Permission To Travel (Overseas) Form | ETRAVEL/2018/01/0001</p>
+                <p class="card-title">Permission To Travel (Overseas) Form | {{ getApplicationRunningNumber($application) }}</p>
                 <div class="card-options">
                     <button class="btn btn-sm btn-{{getApplicationStatusState($application)}}" style="float:right">{{$application->status()->reason}}
                         on {{$application->created_at->toDayDateTimeString()}}</button>

@@ -7,7 +7,9 @@
         </div>
     </div>
     <div class='card-body'>
-        <form action="" class="container">
+        <form action="{{ route('applicationconfig.update') }}" class="container" method="POST">
+            @csrf
+            {{ method_field('UPDATE') }}
             <div class="row">
                 <div class="col">
                     <label for="">
@@ -18,24 +20,18 @@
                     <div class="row">
                         <div class="form-group">
                             <label for="" class="">Application Prefix</label>
-                            <input type="text" class="form-control">
+                            <input type="text" class="form-control" name="prefix" value="{{ isset($config->running_no_prefix)?:null }}">
                         </div>
-                    </div>
-                    <div class="row">
-                        <div class="form-group">
-                            <label for="" class="">Application Prefix</label>
-                            <input type="text" class="form-control">
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="form-group">
-                            <label for="" class="">Application Prefix</label>
-                            <input type="text" class="form-control">
-                        </div>
-                    </div>
+                    </div>                    
                 </div>
             </div>
-
+            <div class="row">
+                <div class="form-group pull-right">
+                    <button class="btn btn-primary" type="submit">
+                        Update
+                    </button>
+                </div>
+            </div>
         </form>
     </div>
 </div>

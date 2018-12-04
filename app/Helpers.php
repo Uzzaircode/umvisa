@@ -1,6 +1,7 @@
 <?php 
 
 use Carbon\Carbon;
+use Modules\Application\Entities\Application;
 
 function getApplicationStatusState($application)
 {
@@ -85,4 +86,11 @@ function getTravelTotalDays($application){
     return getDiffDays($df,$dt);
 }
 
+function getApplicationRunningNumber($application){    
+    $year = Carbon::parse($application->created_at)->format('Y');
+    $month = Carbon::parse($application->created_at)->format('m');
+    $running_number = $year.'/'.$month;
+    return $running_number;
+
+}
 // <br><b>Please provide valid reasons supporting this late submission in the text box above. Don\'t forget to click the Submit Remark button.</b>

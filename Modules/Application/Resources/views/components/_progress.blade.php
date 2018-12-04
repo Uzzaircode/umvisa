@@ -2,7 +2,7 @@
     <div class="card">
         <div class="card-header">
             <h3 class="card-title">
-                <i class="fe fe-activity"></i> Application Status</h3>
+                <i class="fe fe-check-circle-o"></i> Application Status</h3>
             <div class="card-options">
 
             </div>

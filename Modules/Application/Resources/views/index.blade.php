@@ -2,7 +2,7 @@
 @section('content')
 <div class='card'>
     <div class='card-header'>
-        <p class='card-title'><i class="fe fe-file-text"></i> Your Applications </p>
+        <p class='card-title'><i class="fe fe-document"></i> My Applications </p>
         <div class="card-options">
             <a class="btn btn-secondary btn-sm">Total: {{ $applications->count() }} {{ str_plural('Application', $applications->count()) }}</a>            @can('add_applications')
             <a href="{{ route('applications.create') }}" class="btn btn-primary btn-sm text-white">

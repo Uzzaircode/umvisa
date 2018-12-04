@@ -29,12 +29,6 @@
     @endif
 </div>
 
-{{-- <div class="form-group @if ($errors->has('saps')) has-error @endif">
-        {!! Form::label('saps[]', 'SAP Modules') !!} {!! Form::select('saps[]', $saps, isset($user) ? $user->saps->pluck('id')->toArray()
-        : null, ['class' => 'form-control selectize', 'multiple']) !!} @if ($errors->has('saps'))
-        <p class="help-block">{{ $errors->first('saps') }}</p> @endif
-</div> --}}
-
 
 <!-- Permissions -->
 @if(isset($user))

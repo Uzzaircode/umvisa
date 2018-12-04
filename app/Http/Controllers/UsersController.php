@@ -32,8 +32,8 @@ class UsersController extends Controller
     }
 
     public function create()
-    {          
-        $saps = Sap::pluck('name', 'id');
+    {   
+        $roles = Role::all();
         return view('backend.users.create', compact('roles'));
     }
 

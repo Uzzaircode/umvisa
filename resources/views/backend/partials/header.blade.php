@@ -80,7 +80,7 @@
                     @can('view_applications')
                     <li class="nav-item">
                         <a href="{{route('applications.index')}}" class="nav-link">
-                            <i class="fe fe-tag"></i>{{Auth::user()->hasRole('Admin') ? 'Application':'My Applications'}}</a>
+                            <i class="fe fe-document"></i>{{Auth::user()->hasRole('Admin') ? 'Application':'My Applications'}}</a>
                     </li>
                     @endcan 
                     
