@@ -45,12 +45,12 @@
                     <div class="dropdown-menu dropdown-menu-right dropdown-menu-arrow">
                         @can('edit_profiles')
                         <a class="dropdown-item" href="/myprofile">
-                            <i class="dropdown-icon fe fe-user"></i> Profile
+                            <i class="dropdown-icon fe fe-user"></i> My Profile
                         </a> @endcan
                         <div class="dropdown-divider"></div>
                         <a class="dropdown-item" href="{{ route('logout') }}" onclick="event.preventDefault();
                                                      document.getElementById('logout-form').submit();">
-                            <i class="dropdown-icon fe fe-log-out"></i> {{ __('Logout') }}
+                            <i class="dropdown-icon fe fe-logout"></i> {{ __('Logout') }}
                             <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
                                 @csrf
                             </form>
