@@ -11,10 +11,10 @@
             <form action="{{route('applications.store')}}" role="form" class="" method="POST" enctype="multipart/form-data" data-toggle="validator">
                 @endif @csrf
                 <div class="card">
-                    <div class="card-header sticky-top" style="background:white">
+                    <div class="card-header" style="background:white">
                         <h3 class="card-title"><i class="fe fe-file-text"></i> {{isset($application) ? 'Edit
                             Application':'New Application'}}</h3>
-                        <div class="card-options" id="smartwizard-controls">
+                        <div class="card-options" id="">
                             @include('application::components._form-action-buttons')
                         </div>
                     </div>
@@ -120,5 +120,29 @@
             allowClear: true
         }
     });
+</script>
+<script>
+    function changeplh() {
+        var sel = document.getElementById("financial-aid-selector");
+        var textbx = document.getElementById("financial-aid-placeholder");
+        var indexe = sel.selectedIndex;
+
+        if (indexe == 1) {
+            $("#financial-aid-placeholder").attr("placeholder", "Account Number");
+
+        }
+        if (indexe == 2) {
+            $("#financial-aid-placeholder").attr("placeholder", "Account Number");
+        }
+        if (indexe == 3) {
+            $("#financial-aid-placeholder").attr("placeholder", "Account Number");
+        }
+        if (indexe == 4) {
+            $("#financial-aid-placeholder").attr("placeholder", "Name of Sponsor");
+        }
+        if (indexe == 5) {
+            $("#financial-aid-placeholder").attr("placeholder", "Please specify");
+        }
+    }
 </script>
 @endsection
