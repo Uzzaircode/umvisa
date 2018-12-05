@@ -24,7 +24,7 @@
                 
                     @include('backend.users._form')
                     <div class="form-group">
-                            <button type="submit" class="btn btn-md btn-success">
+                            <button type="submit" class="btn btn-md btn-primary">
                                 @if(isset($user->id)) Update @else Create @endif
                             </button>
                             <a href="{{route('users.index')}}" class="btn btn-secondary">Back</a> 

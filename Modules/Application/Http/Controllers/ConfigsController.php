@@ -16,8 +16,9 @@ class ConfigsController extends Controller
      */
     public function index()
     {
-
-        return view('application::config', ['config' => ApplicationConfig::all()]);
+        $running_no_prefix = ApplicationConfig::where('name','running_no_prefix')->first();
+        $late_message = ApplicationConfig::where('name','late_message')->first();
+        return view('application::config',compact('running_no_prefix','late_message'));
     }
 
     public function update(Request $request)
