@@ -87,7 +87,7 @@
                     @role('Admin')
                     <li class="nav-item dropdown">
                         <a href="javascript:void(0)" class="nav-link" data-toggle="dropdown">
-                            <i class="fe fe-layer"></i> Modules Config</a>
+                            <i class="fe fe-gear"></i> Configurations</a>
                         <div class="dropdown-menu dropdown-menu-arrow">
                            
                             <a href="{{ route('applicationconfig.index') }}" class="dropdown-item">Applications</a>
