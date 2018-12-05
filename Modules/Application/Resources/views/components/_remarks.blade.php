@@ -20,9 +20,9 @@
             <div class="media">
                 <div class="media-object avatar avatar-md mr-4" style="background-image: url({{asset($remark->creator->profile->avatar)}})"></div>
                 <div class="media-body">
-                    <div class="media-heading">
-                        <small class="float-right text-muted">{{$remark->created_at->toDayDateTimeString()}}</small>
+                    <div class="media-heading">                        
                         <h5>{{$remark->creator->name}}</h5>
+                        <small class="text-muted">{{$remark->created_at->toDayDateTimeString()}}</small>
                     </div>
                     <br>
                     <div>

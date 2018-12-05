@@ -8,33 +8,27 @@
         </tr>
         <tr>
             <td><label for="" class="form-label">Applicant Name</label></td>
-            <td>{{$application->user->name}}</td>
+            <td>{{  $application->user->studentProfile->MBUT_NAMA}}</td>
         </tr>
         <tr>
             <td><label for="" class="form-label">Matric Number</label></td>
-            <td>{{$application->user->profile->matric_num}}</td>
+            <td>{{$application->user->studentProfile->PBP_NODAFTAR}}</td>
         </tr>
         <tr>
-            <td><label for="" class="form-label">IC Number</label></td>
-            <td>{{$application->user->profile->ic_num}}</td>
+            <td><label for="" class="form-label">IC Number/Passport Number</label></td>
+            <td>{{ $application->user->studentProfile->MBUT_NOMKPB }}</td>
         </tr>
         <tr>
             <td><label for="" class="form-label">Study Level</label></td>
-            <td>{{$application->user->profile->study_mode}}</td>
-        </tr>
-        @if($application->user->profile->passport_num != null)
-        <tr>
-            <td><label for="" class="form-label">Passport Number</label></td>
-            <td>{{$application->user->profile->passport_num}}</td>
-        </tr>
-        @endif
+            <td>{{ Auth::user()->studentProfile->PBP_JENIS_PENGAJIAN }}</td>
+        </tr>        
         <tr>
             <td><label for="" class="form-label">Department</label></td>
-            <td>{{$application->user->profile->department}}</td>
+            <td>{{$application->user->studentProfile->JAB_HRIS}}</td>
         </tr>
         <tr>
             <td><label for="" class="form-label">Faculty/Academy/Institute/Centre</label></td>
-            <td>{{$application->user->profile->faculty}}</td>
+            <td>{{$application->user->studentProfile->FKLTI_KTRGN }}</td>
         </tr>
         <tr>
             <td><label for="" class="form-label">Mobile Number</label></td>
@@ -42,7 +36,7 @@
         </tr>
         <tr>
             <td><label for="" class="form-label">Email Address</label></td>
-            <td>{{$application->user->email}}</td>
+            <td>{{$application->user->studentProfile->SIS_EMEL}}</td>
         </tr>
         <tr>
             <td><label for="" class="form-label">Alternate Email Address</label></td>

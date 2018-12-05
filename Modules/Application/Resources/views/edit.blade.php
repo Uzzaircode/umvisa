@@ -3,7 +3,7 @@
 <div class="row">
     @isset($application)
     @include('application::components._progress') @endisset
-    <div class="col-lg-7 col-md-7">
+    <div class="col-lg-8 col-md-8">
         @if(isset($application->id))
         <form action="{{route('applications.update',['id'=>$application->id])}}" class="" method="POST" enctype="multipart/form-data">
             {{method_field('PUT')}} @else
@@ -14,7 +14,6 @@
                         <h3 class="card-title"><i class="fe fe-file-text"></i> Edit Application</h3>
                         <div class="card-options">
                             @include('application::components._form-action-buttons')
-
                         </div>
                     </div>
                     <div class="card-body">
@@ -24,19 +23,17 @@
                         @include('application::components._travel-information')
                         @include('application::components._financial-aid')
                         @include('application::components._attachment')
-
                     </div>
                 </div>
     </div>
     </form>
-    <div class="col col-lg-5 col-md-5">
+    <div class="col col-lg-4 col-md-4">
         <div class='card'>
             <div class='card-header'>
                 <p class='card-title'>Recommendations</p>
             </div>
             <div class='card-body'>
                 @include('application::components._remarks')
-
             </div>
         </div>
     </div>
@@ -192,5 +189,29 @@
             $('a[aria-expanded=true]').attr('aria-expanded', 'false');
         });
     });
+</script>
+<script>
+    function changeplh() {
+        var sel = document.getElementById("financial-aid-selector");
+        var textbx = document.getElementById("financial-aid-placeholder");
+        var indexe = sel.selectedIndex;
+
+        if (indexe == 1) {
+            $("#financial-aid-placeholder").attr("placeholder", "Account Number");
+
+        }
+        if (indexe == 2) {
+            $("#financial-aid-placeholder").attr("placeholder", "Account Number");
+        }
+        if (indexe == 3) {
+            $("#financial-aid-placeholder").attr("placeholder", "Account Number");
+        }
+        if (indexe == 4) {
+            $("#financial-aid-placeholder").attr("placeholder", "Name of Sponsor");
+        }
+        if (indexe == 5) {
+            $("#financial-aid-placeholder").attr("placeholder", "Please specify");
+        }
+    }
 </script>
 @endsection
