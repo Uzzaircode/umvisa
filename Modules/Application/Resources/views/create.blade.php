@@ -80,15 +80,15 @@
         placeholder: 'Please Select',
         theme: 'bootstrap4',
         ajax: {
-            url: '/applications/users/search',
+            url: '/applications/supervisor/search',
             dataType: 'json',
             delay: 250,
             processResults: function (data) {
                 return {
                     results: $.map(data, function (item) {
                         return {
-                            text: item.email,
-                            id: item.email,
+                            text: item.EMP_NAME,
+                            id: item.id,
 
                         }
                     })

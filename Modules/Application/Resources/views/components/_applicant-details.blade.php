@@ -3,12 +3,6 @@
 <div class="form-group" @if ($errors->has('subject')) has-error @endif>
     <input type="hidden" name="user_id" value="{{Auth::id()}}">
     <div class="row">
-        <!-- <div class="col-3">
-            <label for="" class="form-label">Salutation</label>
-            <input type="text" class="form-control" value="{{old('title',$application->user->profile->title ?? Auth::user()->profile->title)}}"
-                readonly>
-            @include('shared._errors',['entity'=>'salutation'])
-        </div> -->
         <div class="col-12">
             <label for="" class="form-label">Applicant Name</label>
             <input type="text" class="form-control" value="{{old('name',$application->user->name ?? Auth::user()->name)}}"
@@ -42,7 +36,7 @@
             <input type="text" class="form-control" value="{{old('ic_num',Auth::user()->studentProfile->PBP_NOMKPB )}}"
                 readonly>
             @include('shared._errors',['entity'=>'ic_num'])
-        </div>        
+        </div>
         <div class="col-6">
             <label for="" class="form-label">Nationality</label>
             <input type="text" class="form-control" value="{{old('citizenship',Auth::user()->studentProfile->MBUT_WARGA )}}"
@@ -85,7 +79,7 @@
     </div>
 </div>
 <div class="form-group">
-    <div class="row">        
+    <div class="row">
         <div class="col-6">
             <label for="" class="form-label">Your Alternative E-mail</label>
             <input type="text" class="form-control" name="alternate_email" placeholder="Your active e-mail only">
