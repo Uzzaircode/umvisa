@@ -8,8 +8,7 @@
         <form action="{{route('applications.update',['id'=>$application->id])}}" class="" method="POST" enctype="multipart/form-data"
             data-toggle="validator" role="form">
             {{method_field('PUT')}} @else
-            <form action="{{route('applications.store')}}" role="form" class="" method="POST" enctype="multipart/form-data"
-                data-toggle="validator">
+            <form action="{{route('applications.store')}}" role="form" class="" method="POST" enctype="multipart/form-data" data-toggle="validator">
                 @endif @csrf
                 <div class="card">
                     <div class="card-header sticky-top" style="background:white">
@@ -22,16 +21,17 @@
                     <div class="card-body m-5">
                         <div class="row">
                             <div class="col">
-                                    <p class="help-block">Please fill in the form below accordingly. Field with asterisk (<span class="text-danger">*</span>) sign is compulsory.</p>
-                            </div>                            
-                        </div>                            
-                            @include('application::components._applicant-details')
-                            @include('application::components._application-type')                        
-                            @include('application::components._supervisor')
-                            @include('application::components._college-fellow')
-                            @include('application::components._travel-information')                                               
-                            @include('application::components._financial-aid')                                               
-                            @include('application::components._participants')
+                                <p class="help-block">Please fill in the form below accordingly. Field with asterisk (<span
+                                        class="text-danger">*</span>) sign is compulsory.</p>
+                            </div>
+                        </div>
+                        @include('application::components._applicant-details')
+                        @include('application::components._application-type')
+                        @include('application::components._supervisor')
+                        @include('application::components._college-fellow')
+                        @include('application::components._travel-information')
+                        @include('application::components._financial-aid')
+                        @include('application::components._participants')
                     </div>
                 </div>
     </div>
@@ -100,25 +100,25 @@
     });
     $('.college_fellow').select2({
         placeholder: 'Please Select',
-        theme:'bootstrap4',
+        theme: 'bootstrap4',
         ajax: {
-          url: '/applications/users/search',
-          dataType: 'json',
-          delay: 250,      
-          processResults: function (data) {
-            return {
-              results:  $.map(data, function (item) {
+            url: '/applications/users/search',
+            dataType: 'json',
+            delay: 250,
+            processResults: function (data) {
                 return {
-                  text: item.email,
-                  id: item.email,
-                  
-                }
-              })
-            };
-          },
-          cache: true,
-          allowClear:true
+                    results: $.map(data, function (item) {
+                        return {
+                            text: item.email,
+                            id: item.email,
+
+                        }
+                    })
+                };
+            },
+            cache: true,
+            allowClear: true
         }
-      });
+    });
 </script>
 @endsection

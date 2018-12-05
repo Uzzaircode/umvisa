@@ -11,6 +11,7 @@ use Modules\Ticket\Entities\Ticket;
 use Modules\Sap\Entities\Sap;
 use Modules\Ticket\Entities\Reply;
 use App\Profile;
+use App\StudentProfile;
 use Cache;
 
 class User extends Authenticatable
@@ -39,6 +40,10 @@ class User extends Authenticatable
     public function accounts()
     {
         return $this->hasMany(LinkedSocialAccount::class);
+    }
+
+    public function studentProfile(){
+        return $this->hasOne(StudentProfile::class);
     }
 
     public function profile()
