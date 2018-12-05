@@ -89,7 +89,17 @@ class ApplicationsController extends Controller
         return redirect()->back();
     }
 
-    public function loadUsers(Request $request){
+    public function loadSupervisors(Request $request){
+        $student_deptcode = Auth::user()->studentProfile->JAB_HRIS;
+        if ($request->has('q')) {
+    		$search = $request->q;
+            // $data = User::where('email', 'LIKE', '%'.$search.'%')->get();
+            // = DB::table('users')->where('email', 'LIKE', '%'.$search.'%')->get();
+            $data = DB::table('maklumat_staf_sis_vw')->where('DEPARTMENT_CODE',$student_deptcode)->get();
+    		return response()->json($data);
+        }
+    }
+    public function loadCollegeFellows(Request $request){
         $student_deptcode = Auth::user()->studentProfile->JAB_HRIS;
         if ($request->has('q')) {
     		$search = $request->q;
