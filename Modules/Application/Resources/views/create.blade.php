@@ -102,7 +102,7 @@
         placeholder: 'Please Select',
         theme: 'bootstrap4',
         ajax: {
-            url: '/applications/users/search',
+            url: '/applications/college_fellow/search',
             dataType: 'json',
             delay: 250,
             processResults: function (data) {

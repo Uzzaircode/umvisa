@@ -10,10 +10,10 @@
 | contains the "web" middleware group. Now create something great!
 |
 */
-
+Auth::routes();
 Route::get('/', ['uses'=>'Auth\LoginController@showLoginForm']);
 // Auth
-Auth::routes();
+
 // OAuth
 Route::get('login/{provider}',          'Auth\SocialAccountsController@redirectToProvider');
 Route::get('login/{provider}/callback', 'Auth\SocialAccountsController@handleProviderCallback');
