@@ -41,6 +41,11 @@ return [
             'provider' => 'users',
         ],
 
+        'staff'  => [
+            'driver'  => 'session',
+            'provider' => 'staffs',
+          ],
+
         'api' => [
             'driver' => 'token',
             'provider' => 'users',
@@ -70,10 +75,10 @@ return [
             'model' => App\User::class,
         ],
 
-        // 'users' => [
-        //     'driver' => 'database',
-        //     'table' => 'users',
-        // ],
+        'staffs' => [
+            'driver' => 'eloquent',
+            'table' => 'Modules\Staff\Entities\Staff::class',
+        ],
     ],
 
     /*
