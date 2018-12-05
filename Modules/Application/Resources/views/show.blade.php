@@ -9,7 +9,8 @@
         <div class='card align-middle' width="">
             <div class="card-header">
                 <p class="card-title">
-                    <i class="fe fe-document"></i>     Permission To Travel (Overseas) Form | {{ getApplicationRunningNumber($application) }}</p>
+                    <i class="fe fe-document"></i> Permission To Travel (Overseas) Form | {{
+                    getApplicationRunningNumber($application) }}</p>
                 <div class="card-options">
                     <button class="btn btn-sm btn-{{getApplicationStatusState($application)}}" style="float:right">{{$application->status()->reason}}
                         on {{$application->created_at->toDayDateTimeString()}}</button>
@@ -21,7 +22,8 @@
                         <ul class="nav nav-tabs" id="myTab" role="tablist">
                             <li class="nav-item">
                                 <a class="nav-link active" id="applicant-details-tab" data-toggle="tab" href="#applicant-details"
-                                    role="tab" aria-controls="applicant-details" aria-selected="true"> <i class="fe fe-document"></i> Applicant Details</a>
+                                    role="tab" aria-controls="applicant-details" aria-selected="true"> <i class="fe fe-document"></i>
+                                    Applicant Details</a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link" id="travel-info-tab" data-toggle="tab" href="#travel-info" role="tab"
@@ -59,7 +61,7 @@
                             @endif
                             @if($participants->count() > 0)
                             <div class="tab-pane fade" id="participants" role="tabpanel" aria-labelledby="participants-tab">
-                                    @include('application::show._participants')
+                                @include('application::show._participants')
                             </div>
                             @endif
                             @if($application->attachments > 0)
