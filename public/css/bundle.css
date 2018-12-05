@@ -16910,6 +16910,8 @@ a.tag-addon:hover {
   vertical-align: middle;
   border-right: solid 1px #bbb;
   transition: all 0.5s ease;
+  border-radius: 5px;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.27), 0 0 40px rgba(0, 0, 0, 0.06) inset;
 }
 
 .htimeline .step:nth-child(odd) {
@@ -16926,7 +16928,7 @@ a.tag-addon:hover {
 }
 
 .htimeline .step div {
-  margin: 0 5px;
+  margin: 5px 20px;
   font-size: 14px;
   vertical-align: top;
   padding: 0;
@@ -16946,26 +16948,6 @@ a.tag-addon:hover {
 
 .htimeline .step.info {
   border-bottom-color: #49a09d;
-}
-
-.htimeline .step::before {
-  width: 15px;
-  height: 15px;
-  border-radius: 50px;
-  content: ' ';
-  background-color: white;
-  position: absolute;
-  bottom: -10px;
-  left: 0px;
-  border-style: solid;
-  border-width: 3px;
-  transition: all 0.5s ease;
-}
-
-.htimeline .step:hover::before {
-  width: 18px;
-  height: 18px;
-  bottom: -12px;
 }
 
 .htimeline .step.success::before {

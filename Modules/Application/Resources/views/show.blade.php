@@ -8,7 +8,8 @@
     <div class="col">
         <div class='card align-middle' width="">
             <div class="card-header">
-                <p class="card-title">Permission To Travel (Overseas) Form | {{ getApplicationRunningNumber($application) }}</p>
+                <p class="card-title">
+                    <i class="fe fe-document"></i>     Permission To Travel (Overseas) Form | {{ getApplicationRunningNumber($application) }}</p>
                 <div class="card-options">
                     <button class="btn btn-sm btn-{{getApplicationStatusState($application)}}" style="float:right">{{$application->status()->reason}}
                         on {{$application->created_at->toDayDateTimeString()}}</button>
@@ -20,11 +21,12 @@
                         <ul class="nav nav-tabs" id="myTab" role="tablist">
                             <li class="nav-item">
                                 <a class="nav-link active" id="applicant-details-tab" data-toggle="tab" href="#applicant-details"
-                                    role="tab" aria-controls="applicant-details" aria-selected="true">Applicant Details</a>
+                                    role="tab" aria-controls="applicant-details" aria-selected="true"> <i class="fe fe-document"></i> Applicant Details</a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link" id="travel-info-tab" data-toggle="tab" href="#travel-info" role="tab"
-                                    aria-controls="travel-info" aria-selected="false">Event/Travel Information</a>
+                                    aria-controls="travel-info" aria-selected="false">
+                                    <i class="fe fe-globe"></i> Event/Travel Information</a>
                             </li>
                             @if($financialaids->count() > 0)
                             <li class="nav-item">

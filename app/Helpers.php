@@ -2,33 +2,34 @@
 
 use Carbon\Carbon;
 use Modules\Application\Entities\Application;
+use Modules\Application\Entities\ApplicationConfig;
 
 function getApplicationStatusState($application)
 {
     switch ($application->status) {
         case 'Draft':
-        return $state = 'success';
-        break;
+            return $state = 'success';
+            break;
 
         case 'Submitted To Supervisor':
-        return $state = 'success';
-        break;
+            return $state = 'success';
+            break;
 
         case 'Submitted To Deputy Dean':
-        return $state = 'success';
-        break;
+            return $state = 'success';
+            break;
 
         case 'Read':
-        return $state = 'info';
-        break;
+            return $state = 'info';
+            break;
 
         case 'Approved':
-        return $state = 'success';
-        break;
+            return $state = 'success';
+            break;
 
         case 'Rejected':
-        return $state = 'danger';
-        break;
+            return $state = 'danger';
+            break;
     }
 }
 
@@ -36,28 +37,28 @@ function getApplicationStatusByName($s)
 {
     switch ($s->name) {
         case 'Draft':
-        return $state = 'warning';
-        break;
+            return $state = 'success';
+            break;
 
         case 'Submitted To Supervisor':
-        return $state = 'success';
-        break;
+            return $state = 'success';
+            break;
 
         case 'Submitted To Deputy Dean':
-        return $state = 'success';
-        break;
+            return $state = 'success';
+            break;
 
         case 'Read':
-        return $state = 'info';
-        break;
+            return $state = 'info';
+            break;
 
         case 'Approved':
-        return $state = 'success';
-        break;
+            return $state = 'success';
+            break;
 
         case 'Rejected':
-        return $state = 'danger';
-        break;
+            return $state = 'danger';
+            break;
     }
 }
 
@@ -66,30 +67,35 @@ function totalSubmittedApplication($application)
     return $application->statuses->whereIn('name', ['Submitted To Supervisor'])->count();
 }
 
-function setDateObject($value){
-    return Carbon::createFromFormat(config('app.date_format'),$value)->format('Y-m-d');
+function setDateObject($value)
+{
+    return Carbon::createFromFormat(config('app.date_format'), $value)->format('Y-m-d');
 }
 
-function getDiffDays($df,$dt){
+function getDiffDays($df, $dt)
+{
     return Carbon::parse($df)->diffInDays(Carbon::parse($dt));
 }
 function getEventTotalDays($application)
 {
-   $df = setDateObject($application->event_start_date);
-   $dt = setDateObject($application->event_end_date);
-   return getDiffDays($df,$dt);
+    $df = setDateObject($application->event_start_date);
+    $dt = setDateObject($application->event_end_date);
+    return getDiffDays($df, $dt);
 }
 
-function getTravelTotalDays($application){
+function getTravelTotalDays($application)
+{
     $df = setDateObject($application->travel_start_date);
     $dt = setDateObject($application->travel_end_date);
-    return getDiffDays($df,$dt);
+    return getDiffDays($df, $dt);
 }
 
-function getApplicationRunningNumber($application){    
+function getApplicationRunningNumber($application)
+{
+    $prefix = ApplicationConfig::where('name', 'running_no_prefix')->first()->value;
     $year = Carbon::parse($application->created_at)->format('Y');
     $month = Carbon::parse($application->created_at)->format('m');
-    $running_number = $year.'/'.$month;
+    $running_number = $prefix . '/' . $year . '/' . $month;
     return $running_number;
 
 }
