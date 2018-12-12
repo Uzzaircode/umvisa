@@ -126,18 +126,18 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/js/select2.min.js"></script>
 <script>
     $('.supervisor').select2({
-        placeholder: 'Please choose',
+        placeholder: 'Please Select',
         theme: 'bootstrap4',
         ajax: {
-            url: '/applications/users/search',
+            url: '/applications/supervisor/search',
             dataType: 'json',
             delay: 250,
             processResults: function (data) {
                 return {
                     results: $.map(data, function (item) {
                         return {
-                            text: item.email,
-                            id: item.email,
+                            text: item.EMP_NAME,
+                            id: item.id,
 
                         }
                     })
@@ -147,11 +147,11 @@
             allowClear: true
         }
     });
-    $('.college-fellow').select2({
-        placeholder: 'Please choose',
+    $('.college_fellow').select2({
+        placeholder: 'Please Select',
         theme: 'bootstrap4',
         ajax: {
-            url: '/applications/users/search',
+            url: '/applications/college_fellow/search',
             dataType: 'json',
             delay: 250,
             processResults: function (data) {

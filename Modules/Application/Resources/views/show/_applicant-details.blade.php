@@ -8,7 +8,7 @@
         </tr>
         <tr>
             <td><label for="" class="form-label">Applicant Name</label></td>
-            <td>{{  $application->user->studentProfile->MBUT_NAMA}}</td>
+            <td>{{ $application->user->studentProfile->MBUT_NAMA}}</td>
         </tr>
         <tr>
             <td><label for="" class="form-label">Matric Number</label></td>
@@ -21,7 +21,7 @@
         <tr>
             <td><label for="" class="form-label">Study Level</label></td>
             <td>{{ Auth::user()->studentProfile->PBP_JENIS_PENGAJIAN }}</td>
-        </tr>        
+        </tr>
         <tr>
             <td><label for="" class="form-label">Department</label></td>
             <td>{{$application->user->studentProfile->JAB_HRIS}}</td>
@@ -32,15 +32,11 @@
         </tr>
         <tr>
             <td><label for="" class="form-label">Mobile Number</label></td>
-            <td>{{$application->user->profile->mobile_num}}</td>
+            <td>{{$application->user->studentProfile->SIS_HP}}</td>
         </tr>
         <tr>
             <td><label for="" class="form-label">Email Address</label></td>
             <td>{{$application->user->studentProfile->SIS_EMEL}}</td>
-        </tr>
-        <tr>
-            <td><label for="" class="form-label">Alternate Email Address</label></td>
-            <td>{{$application->alternate_email}}</td>
         </tr>
     </table>
 </div>

@@ -27,6 +27,11 @@ Route::group( ['middleware' => 'auth'], function() {
     Route::post('read/{id}/{application_id}','NotificationsController@markAsRead')->name('notifications.read');
 
 });
+Route::prefix('staff')->group(function() {
+    Route::get('login', 'Auth\StaffsLoginController@showLoginForm')->name('staff.login');
+    Route::post('login', 'Auth\StaffsLoginController@login')->name('staff.login.submit');
+    Route::get('home', 'StaffsController@index')->name('staff.home');
+});
 
 
 

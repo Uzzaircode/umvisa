@@ -1,9 +1,10 @@
-@extends('backend.master-auth') @section('content')
+@extends('backend.master-auth') 
+@section('content')
 <div class="container">
   <div class="row">
     <div class="col col-login mx-auto">
       <div class="text-center mb-6">
-        <img src="{{asset('img/logo.png')}}" class="h-8" alt="">
+        <img src="{{asset('img/um-logo.png')}}" class="h-9" alt="">
       </div>
       <form class="card" method="POST" action="{{ route('login') }}">
         @csrf

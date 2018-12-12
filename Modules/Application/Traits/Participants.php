@@ -8,13 +8,14 @@ trait Participants
 {
     public function hasParticipants($request, $app)
     {
-        
-        foreach ($request->input('matric_num') as $p => $val) {
-            if (!empty($val)) {
-                Participant::create([
-                    'matric_num' => $val,
-                    'application_id' => $app->id,                    
-                ]);
+        if ($request->has('matric_num')) {
+            foreach ($request->input('matric_num') as $p => $val) {
+                if (!empty($val)) {
+                    Participant::create([
+                        'matric_num' => $val,
+                        'application_id' => $app->id,
+                    ]);
+                }
             }
         }
     }

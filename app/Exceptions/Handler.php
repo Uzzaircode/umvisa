@@ -61,37 +61,23 @@ class Handler extends ExceptionHandler
         if ($exception instanceof TokenMismatchException) {
             return $this->pageExpired($request, $exception);
         }
-        // if($exception instanceof ErrorException){
-        //     return $this->objectOnNull($request,$exception);
-        // }
-
-        // if ($exception instanceof FatalThrowableError){
-        //     return $this->noRole($request, $exception);
-        // }
 
         return parent::render($request, $exception);
     }
 
-    public function noRole($request, Exception $exception){
-            if(!Auth::user()->hasRole(['Admin','User'])){
-                Auth::logout();
-                return redirect('login');
-            }
+    public function noRole($request, Exception $exception)
+    {
+        if (!Auth::user()->hasRole(['Admin', 'User'])) {
+            Auth::logout();
+            return redirect('login');
+        }
     }
-
-    // public function objectOnNull($request, Exception $exception){
-    //         Session::flash('fail', 'Sorry the system can\'t proceed the request');
-    //         return redirect('/');
-    // }
 
     private function unauthorized($request, Exception $exception)
     {
-        // if ($request->expectsJson()) {
-        //     return response()->json(['error' => $exception->getMessage()], 403);
-        // }
         return $request->expectsJson()
-                    ? response()->json(['message' => $exception->getMessage()], 401)
-                    : redirect()->guest(route('login'));
+            ? response()->json(['message' => $exception->getMessage()], 401)
+            : redirect()->guest(route('login'));
 
         Session::flash('fail', 'You are not allowed to perform the action');
         return redirect()->back();
@@ -103,8 +89,26 @@ class Handler extends ExceptionHandler
         return redirect()->back();
     }
 
-    public function pageExpired($request, Exception $exception){
-        Session::flash('fail','Your session has expired, please login again');
+    public function pageExpired($request, Exception $exception)
+    {
+        Session::flash('fail', 'Your session has expired, please login again');
         return redirect('login');
+    }
+
+    protected function unauthenticated($request, AuthenticationException $exception)
+    {
+        if ($request->expectsJson()) {
+            return response()->json(['error' => 'Unauthenticated.'], 401);
+        }
+        $guard = array_get($exception->guards(), 0);
+        switch ($guard) {
+            case 'staff':
+                $login = 'staff.login';
+                break;
+            default:
+                $login = 'login';
+                break;
+        }
+        return redirect()->guest(route($login));
     }
 }
