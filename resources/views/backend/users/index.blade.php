@@ -32,7 +32,7 @@
             <tr>
                 <td>{{ ++$key }}</td>
                 <td class="text-center"><div class="avatar d-block" style="
-                background-image: url({{asset('$user->profile->avatar')}})">                    
+                background-image: url({{asset($user->profile->avatar)}})">                    
                     {{-- <span class="avatar-status {{$user->isOnline() ? 'bg-green':'bg-red'}}"></span>  --}}
                   </div></td>
                 <td>{{ $user->name }}</td>

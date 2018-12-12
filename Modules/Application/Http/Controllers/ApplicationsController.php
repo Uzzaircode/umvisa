@@ -66,7 +66,6 @@ class ApplicationsController extends Controller
         $financialaids = $application->financialaids;
         $ins = FinancialInstrument::all();
         $countries = $this->country->all();
-        // $countries = $this->country->all()->pluck('name.common', 'flag.flag-icon');
         return view('application::edit', compact('application', 'countries', 'remarks', 'statuses','ins','financialaids','participants'));
     }
 
