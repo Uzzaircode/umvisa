@@ -20,26 +20,26 @@
                     </a> @if(Auth::user()->unreadNotifications->count() > 0)
                     <div class="dropdown-menu dropdown-menu-right dropdown-menu-arrow">
                         @foreach ( Auth::user()->unreadNotifications as $notification)
-                        <form action="{{route('notifications.read', ['id'=>$notification->id,'application_id'=>$notification->data['application_id']])}}" style="display:inline"
-                            method="POST">
+                        <form action="{{route('notifications.read', ['id'=>$notification->id,'application_id'=>$notification->data['application_id']])}}"
+                            style="display:inline" method="POST">
                             @csrf
-                            <button type="submit" href="" class="dropdown-item d-flex btn btn-link">         
-                            <div>
-                                <strong>{{$notification->data['message']}}</strong>                                
-                            <div class="small text-muted">{{$notification->updated_at->diffForHumans()}}</div>
-                            </div>                                               
-                        </button>
+                            <button type="submit" href="" class="dropdown-item d-flex btn btn-link">
+                                <div>
+                                    <strong>{{$notification->data['message']}}</strong>
+                                    <div class="small text-muted">{{$notification->updated_at->diffForHumans()}}</div>
+                                </div>
+                            </button>
                         </form>
-                        @endforeach 
+                        @endforeach
                     </div>
                     @endif
                 </div>
                 <div class="dropdown">
                     <a href="#" class="nav-link pr-0 leading-none" data-toggle="dropdown">
-                        <span class="avatar" style="background-image: url({{asset('uploads/avatars/avatar1.jpg')}})"></span>
+                        <span class="avatar" style="background-image: url({{asset(Auth::user()->profile->avatar)}})"></span>
                         <span class="ml-2 d-none d-lg-block">
                             <span class="text-default">{{Auth::user()->name}}</span>
-                            <small class="text-muted d-block mt-1">{{ Auth::user()->roles()->pluck('name')->first()}}</small>                       
+                            <small class="text-muted d-block mt-1">{{ Auth::user()->roles()->pluck('name')->first()}}</small>
                         </span>
                     </a>
                     <div class="dropdown-menu dropdown-menu-right dropdown-menu-arrow">
@@ -80,19 +80,20 @@
                     @can('view_applications')
                     <li class="nav-item">
                         <a href="{{route('applications.index')}}" class="nav-link">
-                            <i class="fe fe-document"></i>{{Auth::user()->hasRole('Admin') ? 'Application':'My Applications'}}</a>
+                            <i class="fe fe-document"></i>{{Auth::user()->hasRole('Admin') ? 'Application':'My
+                            Applications'}}</a>
                     </li>
-                    @endcan 
-                    
+                    @endcan
+
                     @role('Admin')
                     <li class="nav-item dropdown">
                         <a href="javascript:void(0)" class="nav-link" data-toggle="dropdown">
                             <i class="fe fe-gear"></i> Configurations</a>
                         <div class="dropdown-menu dropdown-menu-arrow">
-                           
+
                             <a href="{{ route('applicationconfig.index') }}" class="dropdown-item">Applications</a>
                         </div>
-                    </li>                   
+                    </li>
                     <li class="nav-item dropdown">
                         <a href="javascript:void(0)" class="nav-link" data-toggle="dropdown">
                             <i class="fe fe-shield"></i> Administration</a>
