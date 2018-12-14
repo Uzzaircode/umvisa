@@ -7,7 +7,7 @@ use App\User;
 
 class StudentProfile extends Model
 {
-    protected $table = 'view_profile_education';
+    protected $table = 'user_student';
 
     protected $guarded = [];
 

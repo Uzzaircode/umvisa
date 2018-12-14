@@ -22,29 +22,29 @@ class ApplicationsController extends Controller
     {
         $this->country = $country;
         $this->app = $app;
-        $this->auth = $auth;        
+        $this->auth = $auth;
     }
-    
+
     public function index()
     {
         $applications = Application::userApplication()->get();
         return view('application::index', compact('applications'));
     }
-    
+
     public function create()
     {
         $user = $this->auth::user();
         $ins = FinancialInstrument::all();
         $countries = $this->country->all();
-        return view('application::create', compact('countries', 'user','ins'));
+        return view('application::create', compact('countries', 'user', 'ins'));
     }
-    
+
     public function store(ApplicationsRequest $request)
     {
-        $this->app->saveApplication($request);        
+        $this->app->saveApplication($request);
         return redirect()->route('applications.index');
     }
-    
+
     public function show($id)
     {
         $application = $this->app->find($id);
@@ -53,10 +53,10 @@ class ApplicationsController extends Controller
         $financialaids = $application->financialaids;
         $participants = $application->participants;
         $travelling_country = $application->country;
-        $flag_icon= Country::where('name.common',$travelling_country)->pluck('flag.flag-icon');        
-        return view('application::show', compact('application', 'remarks', 'statuses','financialaids','flag_icon','participants'));
+        $flag_icon = Country::where('name.common', $travelling_country)->pluck('flag.flag-icon');
+        return view('application::show', compact('application', 'remarks', 'statuses', 'financialaids', 'flag_icon', 'participants'));
     }
-    
+
     public function edit($id)
     {
         $application = $this->app->find($id);
@@ -66,7 +66,7 @@ class ApplicationsController extends Controller
         $financialaids = $application->financialaids;
         $ins = FinancialInstrument::all();
         $countries = $this->country->all();
-        return view('application::edit', compact('application', 'countries', 'remarks', 'statuses','ins','financialaids','participants'));
+        return view('application::edit', compact('application', 'countries', 'remarks', 'statuses', 'ins', 'financialaids', 'participants'));
     }
 
     public function update(Request $request, $id)
@@ -79,7 +79,7 @@ class ApplicationsController extends Controller
     {
         return $this->app->saveRemarks($request, $id);
     }
-   
+
     public function destroy($id)
     {
         $app = $this->app->find($id);
@@ -88,25 +88,23 @@ class ApplicationsController extends Controller
         return redirect()->back();
     }
 
-    public function loadSupervisors(Request $request){
+    public function loadSupervisors(Request $request)
+    {
         $student_deptcode = Auth::user()->studentProfile->JAB_HRIS;
         if ($request->has('q')) {
-    		$search = $request->q;
-            // $data = User::where('email', 'LIKE', '%'.$search.'%')->get();
-            // = DB::table('users')->where('email', 'LIKE', '%'.$search.'%')->get();
-            $data = DB::table('maklumat_staf_sis_vw')->where('DEPARTMENT_CODE',$student_deptcode)->get();
-    		return response()->json($data);
+            $search = $request->q;
+            $data = User::where('email', 'LIKE', '%' . $search . '%')->get();
+            return response()->json($data);
         }
     }
-    public function loadCollegeFellows(Request $request){
+    public function loadCollegeFellows(Request $request)
+    {
         $student_deptcode = Auth::user()->studentProfile->JAB_HRIS;
         if ($request->has('q')) {
-    		$search = $request->q;
-            // $data = User::where('email', 'LIKE', '%'.$search.'%')->get();
-            // = DB::table('users')->where('email', 'LIKE', '%'.$search.'%')->get();
-            $data = DB::table('maklumat_staf_sis_vw')->where('DEPARTMENT_CODE',$student_deptcode)->get();
-    		return response()->json($data);
+            $search = $request->q;
+            $data = DB::table('maklumat_staf_sis_vw')->where('DEPARTMENT_CODE', $student_deptcode)->get();
+            return response()->json($data);
         }
     }
-   
+
 }

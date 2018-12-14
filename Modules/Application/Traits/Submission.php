@@ -4,6 +4,7 @@ namespace Modules\Application\Traits;
 
 use Session;
 use Modules\Application\Notifications\SubmitApplication;
+use DB;
 
 trait Submission
 {
@@ -11,8 +12,8 @@ trait Submission
     {
         if ($this->getTotalDaysBeforeSubmission($app) < $this->totalDaysBeforeSubmission) {
             $app->comment([
-                'title'=>'Late Submission',
-                'body' => 'We have received your application, however we wish you to draw your attention for you to submit the application to our office not less than '.$this->totalDaysBeforeSubmission.' days prior to the event as to ensure that you are granted permission from the University before attending any activity in the future. Thank you.',
+                'title' => 'Late Submission',
+                'body' => 'We have received your application, however we wish you to draw your attention for you to submit the application to our office not less than ' . $this->totalDaysBeforeSubmission . ' days prior to the event as to ensure that you are granted permission from the University before attending any activity in the future. Thank you.',
             ], $this->admin());
         }
     }
@@ -30,6 +31,7 @@ trait Submission
         //draft
         if ($request->has('draft')) {
             $app->setStatus('Draft', 'Successfully created');
+            $state = DB::table('statuses')->where('model_id', $app->id)->update(['state' => 'success']);
             Session::flash('success', $this->draftMessage);
         }
     }
@@ -39,9 +41,9 @@ trait Submission
     {
         // if update draft
         if ($request->has('draft')) {
-            $this->updateFromRequest($request, $app);        
+            $this->updateFromRequest($request, $app);
             $app->save();
             Session::flash('success', $this->updateMessage);
         }
-    }    
+    }
 }

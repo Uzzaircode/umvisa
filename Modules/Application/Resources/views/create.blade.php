@@ -8,7 +8,8 @@
         <form action="{{route('applications.update',['id'=>$application->id])}}" class="" method="POST" enctype="multipart/form-data"
             data-toggle="validator" role="form">
             {{method_field('PUT')}} @else
-            <form action="{{route('applications.store')}}" role="form" class="" method="POST" enctype="multipart/form-data" data-toggle="validator">
+            <form action="{{route('applications.store')}}" role="form" class="" method="POST" enctype="multipart/form-data"
+                data-toggle="validator">
                 @endif @csrf
                 <div class="card">
                     <div class="card-header" style="background:white">
@@ -21,38 +22,45 @@
                     <div class="card-body m-5">
                         <div class="row">
                             <div class="col">
+                                <button type="button" class="btn btn-primary pull-right" data-toggle="modal"
+                                    data-target="#profile">
+                                    <i class="fe fe-user"></i> View My Profile
+                                </button>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col">
+
                                 <p class="help-block">Please fill in the form below accordingly. Field with asterisk (<span
                                         class="text-danger">*</span>) sign is compulsory.</p>
                             </div>
                         </div>
-                        @include('application::components._applicant-details')
                         @include('application::components._application-type')
+                        @include('application::components._participants')
                         @include('application::components._supervisor')
                         @include('application::components._college-fellow')
                         @include('application::components._travel-information')
                         @include('application::components._financial-aid')
-                        @include('application::components._participants')
+
                     </div>
                 </div>
     </div>
 </div>
 
-{{--
-<div class="row">
-    <div class="col col-lg-12 col-md-12">
-        <div class='card'>
-            <div class='card-header'>
-                <p class='card-title'>Recommendations</p>
+</form>
+<div class="modal fade" id="profile" tabindex="-1" role="dialog" aria-labelledby="profile" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">My Profile</h5>
+                <i class="fe fe-close" aria-hidden="true" data-dismiss="modal"></i>
             </div>
-            <div class='card-body'>
-                @include('application::components._remarks')
+            <div class="modal-body">
+                @include('application::components._applicant-details')
             </div>
         </div>
-
     </div>
-</div> --}}
-
-</form>
+</div>
 @endsection
 
 @section('page-css')
@@ -80,14 +88,14 @@
         placeholder: 'Please Select',
         theme: 'bootstrap4',
         ajax: {
-            url: '/applications/supervisor/search',
+            url: "{{route('load.supervisor')}}",
             dataType: 'json',
             delay: 250,
             processResults: function (data) {
                 return {
                     results: $.map(data, function (item) {
                         return {
-                            text: item.EMP_NAME,
+                            text: item.name,
                             id: item.id,
 
                         }

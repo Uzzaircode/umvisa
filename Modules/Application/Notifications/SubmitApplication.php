@@ -46,7 +46,7 @@ class SubmitApplication extends Notification
     public function toMail($notifiable)
     {
         return (new MailMessage)
-                    ->line('You\'ve received an application to be reviewed by '. $this->user->name)                    
+                    ->line('You\'ve received an application to be reviewed by '. $this->user->name)   
                     ->line('Thank you.');
     }
 

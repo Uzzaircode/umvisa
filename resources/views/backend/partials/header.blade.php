@@ -2,7 +2,7 @@
     <div class="container">
         <div class="d-flex">
             <a class="header-brand" href="{{route('applications.index')}}">
-                <img src="{{asset('img/logo.png')}}" class="header-brand-img" alt="brillante logo">
+                <img src="{{asset('img/um-logo.png')}}" class="header-brand-img" alt="" width="200px">
             </a>
             <div class="d-flex order-lg-2 ml-auto">
                 @if(Auth::user()->hasRole(['Admin','User']))

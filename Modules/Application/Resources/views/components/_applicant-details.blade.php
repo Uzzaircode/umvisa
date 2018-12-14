@@ -5,8 +5,7 @@
     <div class="row">
         <div class="col-12">
             <label for="" class="form-label">Applicant Name</label>
-            <input type="text" class="form-control" value="{{Auth::user()->studentProfile->MBUT_NAMA}}"
-                readonly>
+            <input type="text" class="form-control" value="{{Auth::user()->studentProfile->MBUT_NAMA}}" readonly>
             @include('shared._errors',['entity'=>'name'])
         </div>
     </div>
@@ -15,14 +14,13 @@
     <div class="row">
         <div class="col-6">
             <label for="" class="form-label">Matric Number</label>
-            <input type="text" class="form-control" value="{{Auth::user()->studentProfile->PBP_NODAFTAR}}"
-                readonly>
+            <input type="text" class="form-control" value="{{Auth::user()->studentProfile->PBP_NODAFTAR}}" readonly>
             @include('shared._errors',['entity'=>'matric_num'])
         </div>
         <div class="col-6">
             <div class="form-group">
                 <div class="form-label">Study Level</div>
-                <input type="text" class="form-control" value="{{Auth::user()->studentProfile->PBP_JENIS_PENGAJIAN}}"
+                <input type="text" class="form-control" value="{{Auth::user()->studentProfile->PBP_KOD_IJAZAH}}"
                     readonly>
             </div>
         </div>
@@ -33,14 +31,12 @@
     <div class="row">
         <div class="col-6">
             <label for="" class="form-label">IC Number/Passport Number</label>
-            <input type="text" class="form-control" value="{{Auth::user()->studentProfile->PBP_NOMKPB}}"
-                readonly>
+            <input type="text" class="form-control" value="{{Auth::user()->studentProfile->MBUT_NOMKPB}}" readonly>
             @include('shared._errors',['entity'=>'ic_num'])
         </div>
         <div class="col-6">
             <label for="" class="form-label">Nationality</label>
-            <input type="text" class="form-control" value="{{Auth::user()->studentProfile->MBUT_WARGA}}"
-                readonly>
+            <input type="text" class="form-control" value="{{Auth::user()->studentProfile->MBUT_ASAL}}" readonly>
             @include('shared._errors',['entity'=>'citizenship'])
         </div>
     </div>
@@ -56,8 +52,7 @@
         </div>
         <div class="col-6">
             <label for="" class="form-label">Faculty/Academy/Institute/Centre</label>
-            <input type="text" class="form-control" value="{{Auth::user()->studentProfile->FKLTI_KTRGN}}"
-                readonly>
+            <input type="text" class="form-control" value="{{Auth::user()->studentProfile->FKLTI_KTRGN}}" readonly>
             @include('shared._errors',['entity'=>'faculty'])
         </div>
     </div>
@@ -66,8 +61,7 @@
     <div class="row">
         <div class="col-6">
             <label for="" class="form-label">Mobile Number</label>
-            <input type="text" class="form-control" value="{{Auth::user()->profile->mobile_num}}"
-                readonly>
+            <input type="text" class="form-control" value="{{Auth::user()->studentProfile->MBUT_TEL_BIMBIT}}" readonly>
             @include('shared._errors',['entity'=>'mobile_num'])
         </div>
         <div class="col-6">

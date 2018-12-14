@@ -129,15 +129,15 @@
         placeholder: 'Please Select',
         theme: 'bootstrap4',
         ajax: {
-            url: '/applications/supervisor/search',
+            url: "{{route('load.supervisor')}}",
             dataType: 'json',
             delay: 250,
             processResults: function (data) {
                 return {
                     results: $.map(data, function (item) {
                         return {
-                            text: item.EMP_NAME,
-                            id: item.id,
+                            text: item.name,
+                            id: item.email,
 
                         }
                     })

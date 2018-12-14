@@ -8,13 +8,12 @@ trait Financials
 {
     public function hasFinancialAid($request, $app)
     {
-
-        foreach ($request->input('remarks') as $f => $val) {
-            if (!empty($val)) {
+        for ($i = 0; $i < count($request->remarks); ++$i) {
+            if ($request->has('financial_instrument')) {
                 FinancialAid::create([
-                    'remarks' => $val,
+                    'remarks' => $request->remarks[$i],
                     'application_id' => $app->id,
-                    'financialinstrument_id' => $request->financial_instrument[$f],
+                    'financialinstrument_id' => $request->financial_instrument[$i],
                 ]);
             }
         }

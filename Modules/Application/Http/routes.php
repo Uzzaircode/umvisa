@@ -15,8 +15,8 @@ Route::group(['middleware' => ['web', 'timeout'], 'prefix' => 'applications', 'n
     });
     Route::post('{id}/create/remarks',['uses'=>'ApplicationsController@createRemarks','as'=>'create.remarks']);
     Route::get('letter','ApplicationsController@letter');
-    Route::get('/supervisor/search', 'ApplicationsController@loadSupervisors');
-    Route::get('/supervisor/search', 'ApplicationsController@loadCollegeFellows');
+    Route::get('/supervisor/search', 'ApplicationsController@loadSupervisors')->name('load.supervisor');
+    // Route::get('/supervisor/search', 'ApplicationsController@loadCollegeFellows');
        
 });
 

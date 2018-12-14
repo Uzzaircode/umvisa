@@ -18,7 +18,7 @@ use Modules\Application\Traits\Submission;
 class ApplicationRepository extends AbstractRepository implements ApplicationInterface
 {
 
-    use Financials,Participants,Attachments,Submission;
+    use Financials, Participants, Attachments, Submission;
 
     protected $modelClassName = "Modules\Application\Entities\Application";
     protected $applicationAttachmentModel = "Modules\Application\Entities\ApplicationAttachment";
@@ -38,7 +38,7 @@ class ApplicationRepository extends AbstractRepository implements ApplicationInt
     {
         $this->user = $user;
     }
-    
+
     public function allApplications()
     {
         return $this->modelClassName::userApplication()->get();
@@ -46,13 +46,13 @@ class ApplicationRepository extends AbstractRepository implements ApplicationInt
 
     public function saveApplication($request)
     {
-        
+
         $app = $this->createFromRequest($request);
         $this->checkForLateSubmission($app);
         //check if there is any attachments
         $this->hasAttachments($request, $app);
-        $this->hasFinancialAid($request,$app);
-        $this->hasParticipants($request,$app);
+        $this->hasFinancialAid($request, $app);
+        $this->hasParticipants($request, $app);
         // save it as draft or final
         $this->draft($request, $app);
         $this->save($request, $app);
@@ -85,9 +85,9 @@ class ApplicationRepository extends AbstractRepository implements ApplicationInt
             'country' => $request->country,
             'state' => $request->state,
             'event_start_date' => $request->event_start_date,
-            'event_end_date' => $request->event_end_date, 
+            'event_end_date' => $request->event_end_date,
             'travel_start_date' => $request->travel_start_date,
-            'travel_end_date' => $request->travel_end_date,                       
+            'travel_end_date' => $request->travel_end_date,
         ]);
     }
 
@@ -100,9 +100,9 @@ class ApplicationRepository extends AbstractRepository implements ApplicationInt
         $app = $this->modelClassName::find($id);
         $this->updateFromRequest($request, $app);        
         // $this->checkForLateSubmission($app);
-        $this->hasAttachments($request,$app);
-        $this->hasFinancialAid($request,$app);
-        $this->hasParticipants($request,$app);
+        $this->hasAttachments($request, $app);
+        $this->hasFinancialAid($request, $app);
+        $this->hasParticipants($request, $app);
         $this->updateDraft($request, $app);
         $this->submit($request, $app);
     }
@@ -115,13 +115,13 @@ class ApplicationRepository extends AbstractRepository implements ApplicationInt
         // if save remarks
         if ($request->has('save_remarks')) {
             $app->comment([
-            'body' => $request->remark,
-        ], Auth::user());
+                'body' => $request->remark,
+            ], Auth::user());
             // notifies Deputy Dean
             $deputyDean = $this->getDeputyDean();
             $deputyDean->notify(new SubmitApplication($app, $this->getApplicant($app)));
             //Set status
-            $app->setStatus('Submitted To Deputy Dean', 'Submitted to '.$this->getDeputyDeanName($deputyDean).'');
+            $app->setStatus('Submitted To Deputy Dean', 'Submitted to ' . $this->getDeputyDeanName($deputyDean) . '');
             Session::flash('success', $this->successRemarkMessage);
         }
 
@@ -131,7 +131,7 @@ class ApplicationRepository extends AbstractRepository implements ApplicationInt
                 'body' => $request->remark,
             ], Auth::user());
             $deputyDean = $this->getDeputyDean();
-            $app->setStatus('Approved', 'Approved by '.$this->getDeputyDeanName($deputyDean));
+            $app->setStatus('Approved', 'Approved by ' . $this->getDeputyDeanName($deputyDean));
             $user->notify(new ApproveApplication($app, $user));
             Session::flash('success', $this->approveMessage);
         }
@@ -141,11 +141,11 @@ class ApplicationRepository extends AbstractRepository implements ApplicationInt
                 'body' => $request->remark,
             ], Auth::user());
             $deputyDean = $this->getDeputyDean();
-            $app->setStatus('Rejected', 'Rejected by '.$this->getDeputyDeanName($deputyDean));
+            $app->setStatus('Rejected', 'Rejected by ' . $this->getDeputyDeanName($deputyDean));
             $user->notify(new RejectApplication($app, $user));
             Session::flash('success', $this->rejectMessage);
         }
-        $url = URL::signedRoute('applications.show', ['id'=>$id]);
+        $url = URL::signedRoute('applications.show', ['id' => $id]);
         return redirect($url);
     }
 
@@ -156,23 +156,23 @@ class ApplicationRepository extends AbstractRepository implements ApplicationInt
 
     public function getSupervisorName($supervisor)
     {
-        return $supervisor->first()->profile->title.' '.$supervisor->first()->name;
+        return $supervisor->first()->profile->title . ' ' . $supervisor->first()->name;
     }
 
     public function admin()
     {
         return $admin = User::role('Admin')->get()->first();
     }
-    
+
     public function getSupervisor($request)
     {
         $supervisor_email = $request->supervisor;
-        return $supervisor = User::where('email',$supervisor_email)->get()->first();
+        return $supervisor = User::where('email', $supervisor_email)->first();
     }
 
     public function getDeputyDeanName($deputyDean)
     {
-        return $deputyDean->profile->title.' '.$deputyDean->name;
+        return $deputyDean->profile->title . ' ' . $deputyDean->name;
     }
 
     public function getDeputyDean()
@@ -180,9 +180,9 @@ class ApplicationRepository extends AbstractRepository implements ApplicationInt
         return $this->user->role('Deputy Dean')->get()->first();
     }
 
-    
+
     public function getTotalDaysBeforeSubmission($app)
-    {        
+    {
         return $totalDays = Carbon::now()->diffInDays(Carbon::parse(strtotime($app->start_date)));
     }
     
@@ -194,7 +194,7 @@ class ApplicationRepository extends AbstractRepository implements ApplicationInt
             //check for late submission
             $this->checkForLateSubmission($app);
             $supervisor = $this->getSupervisor($request);
-            $app->setStatus('Submitted To Supervisor', 'Submitted to '.$this->getSupervisorName($supervisor));
+            $app->setStatus('Submitted To Supervisor', 'Submitted to ' . $this->getSupervisorName($supervisor));
             $supervisor->notify(new SubmitApplication($app, $this->getApplicant($app)));
             Session::flash('success', $this->saveMessage);
         }
@@ -202,18 +202,18 @@ class ApplicationRepository extends AbstractRepository implements ApplicationInt
 
     public function submit($request, $app)
     {
-        $user = $app->user;
+        $user = Auth::user();
         
         // if submit 'submit'
         if ($request->has('submit')) {
             // check for late submission
             $this->checkForLateSubmission($app);
-            $supervisor = $this->getSupervisor($request);
+            $supervisor = $this->getSupervisor($request);            
             $supervisor->notify(new SubmitApplication($app, $user));
-            $app->setStatus('Submitted To Supervisor', 'Submitted to '.$this->getSupervisorName($supervisor));
+            $app->setStatus('Submitted To Supervisor', 'Submitted to ' . $supervisor->profile->title . ' ' . $supervisor->name);
             Session::flash('success', $this->saveMessage);
         }
     }
 
-    
+
 }
