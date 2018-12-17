@@ -60,20 +60,8 @@ class ApplicationRepository extends AbstractRepository implements ApplicationInt
 
     public function createFromRequest($request)
     {
-        return $this->modelClassName::create([
-            'user_id' => Auth::id(),
-            'title' => $request->title,
-            'venue' => $request->venue,
-            'state' => $request->state,
-            'country' => $request->country,
-            'description' => $request->description,
-            'event_start_date' => $request->event_start_date,
-            'event_end_date' => $request->event_end_date,
-            'travel_start_date' => $request->travel_start_date,
-            'travel_end_date' => $request->travel_end_date,
-            'alternate_email' => $request->alternate_email,
-            'type' => $request->type,
-        ]);
+        // return $this->modelClassName::create([
+        //     ;
     }
 
     public function updateFromRequest($request, $app)

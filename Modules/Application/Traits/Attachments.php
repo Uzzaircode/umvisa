@@ -2,6 +2,8 @@
 
 namespace Modules\Application\Traits;
 
+use Modules\Application\Entities\ApplicationAttachment;
+
 trait Attachments
 {
     public function hasAttachments($request, $app)
@@ -12,11 +14,11 @@ trait Attachments
                // save the attachment with event title and time as prefix
                     $filename = time() . $file->getClientOriginalName();
                // move the attachements to public/uploads/applicationsattachments folder
-                    $file->move($this->attachmentDirectory, $filename);
+                    $file->move('uploads/applicationsattachments', $filename);
                // create attachement record in database, attach it to Ticket ID
-                    $this->applicationAttachmentModel::create([
+                    ApplicationAttachment::create([
                         'application_id' => $app->id,
-                        'path' => $this->attachmentDirectory . '/' . $filename
+                        'path' => 'uploads/applicationsattachments/' . $filename
                     ]);
                 }
             }

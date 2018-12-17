@@ -4,18 +4,28 @@ namespace Modules\Application\Traits;
 
 use Session;
 use Modules\Application\Notifications\SubmitApplication;
+use App\User;
 use DB;
+use Carbon\Carbon;
 
 trait Submission
 {
+
+    protected $totalDaysBeforeSubmission = '21';
+
     public function checkForLateSubmission($app)
     {
         if ($this->getTotalDaysBeforeSubmission($app) < $this->totalDaysBeforeSubmission) {
             $app->comment([
                 'title' => 'Late Submission',
-                'body' => 'We have received your application, however we wish you to draw your attention for you to submit the application to our office not less than ' . $this->totalDaysBeforeSubmission . ' days prior to the event as to ensure that you are granted permission from the University before attending any activity in the future. Thank you.',
+                'body' => $this->getLateMessageText(),
             ], $this->admin());
         }
+    }
+
+    public function getLateMessageText()
+    {
+        return DB::table('applicationconfigs')->where('name', 'late_message')->first()->value;
     }
 
     public function checkLateSubmmisionComment($app)
@@ -32,7 +42,20 @@ trait Submission
         if ($request->has('draft')) {
             $app->setStatus('Draft', 'Successfully created');
             $state = DB::table('statuses')->where('model_id', $app->id)->update(['state' => 'success']);
-            Session::flash('success', $this->draftMessage);
+            Session::flash('success', 'Application created successfully');
+        }
+    }
+
+    public function save($request, $app)
+    {
+        //save
+        if ($request->has('save')) {
+            //check for late submission
+            $this->checkForLateSubmission($app);
+            $supervisor = $this->getSupervisor($request);
+            $app->setStatus('Submitted To Supervisor', 'Submitted to ' . $this->getSupervisorName($supervisor));
+            $supervisor->notify(new SubmitApplication($app, $this->getApplicant($app)));
+            Session::flash('success', $this->saveMessage);
         }
     }
     
@@ -45,5 +68,15 @@ trait Submission
             $app->save();
             Session::flash('success', $this->updateMessage);
         }
+    }
+
+    public function admin()
+    {
+        return User::role('Admin')->first();
+    }
+
+    public function getTotalDaysBeforeSubmission($app)
+    {
+        return Carbon::now()->diffInDays(Carbon::parse(strtotime($app->start_date)));
     }
 }

@@ -35,6 +35,7 @@
                                         class="text-danger">*</span>) sign is compulsory.</p>
                             </div>
                         </div>
+                        <input type="hidden" name="user_id" value="{{Auth::id()}}">
                         @include('application::components._application-type')
                         @include('application::components._participants')
                         @include('application::components._supervisor')

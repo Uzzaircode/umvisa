@@ -1,7 +1,6 @@
 @dynamicCard(['title'=>'Applicant Details','class'=>''])
 @slot('body')
-<div class="form-group" @if ($errors->has('subject')) has-error @endif>
-    <input type="hidden" name="user_id" value="{{Auth::id()}}">
+<div class="form-group" @if ($errors->has('subject')) has-error @endif>    
     <div class="row">
         <div class="col-12">
             <label for="" class="form-label">Applicant Name</label>
