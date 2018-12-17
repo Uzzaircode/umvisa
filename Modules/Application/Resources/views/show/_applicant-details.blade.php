@@ -20,7 +20,7 @@
         </tr>
         <tr>
             <td><label for="" class="form-label">Study Level</label></td>
-            <td>{{ Auth::user()->studentProfile->PBP_JENIS_PENGAJIAN }}</td>
+            <td>{{$application->user->studentProfile->PBP_JENIS_PENGAJIAN }}</td>
         </tr>
         <tr>
             <td><label for="" class="form-label">Department</label></td>

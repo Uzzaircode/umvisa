@@ -18,11 +18,10 @@ use App\User;
 
 class ApplicationsController extends Controller
 {
-    public function __construct(Country $country, AR $app, Auth $auth)
+    public function __construct(Country $country, AR $app)
     {
         $this->country = $country;
-        $this->app = $app;
-        $this->auth = $auth;
+        $this->app = $app;    
     }
 
     public function index()

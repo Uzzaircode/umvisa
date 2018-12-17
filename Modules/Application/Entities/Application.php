@@ -81,7 +81,7 @@ class Application extends Model
                 $s->where('name', 'Submitted To Supervisor');
             });
         }
-        
+                
         if (Auth::user()->hasRole('Deputy Dean')) {
             return $query->whereHas('statuses', function ($s) {
                 $s->where('name', 'Submitted To Deputy Dean');

@@ -1,0 +1,13 @@
+1) Faculty Travel (Local)
+
+user->supervisor->deputydean
+      (recommend) 
+
+2) Faculty Travel (Overseas)
+
+user->supervisor->deputydean->dean->HR
+      (recommend)
+
+3) College Travel (Overseas)
+
+user->
