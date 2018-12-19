@@ -51,6 +51,7 @@ trait Submission
         //save
         if ($request->has('save')) {
             $app->setStatus('Submitted To Supervisor', 'Submitted to ' . $this->getSupervisorName($supervisor));
+            $state = DB::table('statuses')->where('model_id', $app->id)->update(['state' => 'success']);
             $supervisor->notify(new SubmitApplication($app, $this->getApplicant($app)));
             Session::flash('success', $this->saveMessage);
         }

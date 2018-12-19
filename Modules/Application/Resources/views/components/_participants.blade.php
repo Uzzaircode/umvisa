@@ -34,7 +34,7 @@
                         1
                     </td>
                     <td><input type="text" class="form-control" name="matric_num[]"></td>
-                    <td><input type="text" class="form-control" name="matric_num[]"></td>
+                    <td></td>                    
                     <td class="text-center"><a name="remove" id="+p+" class="btn btn-danger remove-participant text-white mx-auto"><i
                                 class="fe fe-trash"></i> Delete</a></td>
                 </tr>

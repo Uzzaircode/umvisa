@@ -18,18 +18,18 @@
                     <p>{!!trim($t->path,'uploads/applicationsattachments/')!!}</p>
                 </a> @endif @if(pathinfo($t->path, PATHINFO_EXTENSION) == 'doc' || pathinfo($t->path,
                 PATHINFO_EXTENSION) == 'docx')
-                <a href="{{asset($t->path)}}">
+                <a href="{{asset($t->path)}}" target="_blank">
                     <img src="{{asset('img/file-icons/doc.png')}}" alt="" width="128px">
                     <br>
                     <p>{!!trim($t->path,'uploads/applicationsattachments/')!!}</p>
                 </a> @elseif(pathinfo($t->path, PATHINFO_EXTENSION) == 'pdf')
-                <a href="{{asset($t->path)}}">
+                <a href="{{asset($t->path)}}" target="_blank">
                     <img src="{{asset('img/file-icons/pdf.png')}}" alt="" width="128px">
                     <br>
                     <p>{!!trim($t->path,'uploads/applicationsattachments/')!!}</p>
                 </a> @elseif(pathinfo($t->path, PATHINFO_EXTENSION) == 'xls' || pathinfo($t->path,
                 PATHINFO_EXTENSION) == 'csv' )
-                <a href="{{asset($t->path)}}">
+                <a href="{{asset($t->path)}}" target="_blank">
                     <img src="{{asset('img/file-icons/xls.png')}}" alt="" width="128px">
                     <br>
                     <p>{!!trim($t->path,'uploads/applicationsattachments/')!!}</p>
