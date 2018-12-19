@@ -56,7 +56,32 @@ trait Submission
             Session::flash('success', $this->saveMessage);
         }
     }
-    
+
+    public function submit($request, $app)
+    {
+        $user = Auth::user();
+        
+        // if submit 'submit'
+        if ($request->has('submit')) {
+            // check for late submission
+            $this->checkForLateSubmission($app);
+            $supervisor = $this->getSupervisor($request);
+            $supervisor->notify(new SubmitApplication($app, $user));
+            $app->setStatus('Submitted To Supervisor', 'Submitted to ' . $supervisor->profile->title . ' ' . $supervisor->name);
+            Session::flash('success', $this->saveMessage);
+        }
+    }
+
+    public function getSupervisor($request)
+    {
+        $supervisor_email = $request->supervisor;
+        return $supervisor = User::where('email', $supervisor_email)->first();
+    }
+
+    public function getSupervisorName($supervisor)
+    {
+        return $supervisor->first()->profile->title . ' ' . $supervisor->first()->name;
+    }
     // update draft
     public function updateDraft($request, $app)
     {
@@ -64,7 +89,7 @@ trait Submission
         if ($request->has('draft')) {
             $this->updateFromRequest($request, $app);
             $app->save();
-            Session::flash('success', $this->updateMessage);
+            Session::flash('success', 'Application information updated successfully');
         }
     }
 

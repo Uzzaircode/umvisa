@@ -105,7 +105,12 @@ class ApplicationsController extends Controller
 
     public function update(Request $request, $id)
     {
-        $this->app->updateApplication($id, $request);
+        $application = $this->application->find($id);
+        $this->hasAttachments($request, $app);
+        $this->hasFinancialAid($request, $app);
+        $this->hasParticipants($request, $app);
+        $this->updateDraft($request, $app);
+        $this->submit($request, $app);        
         return redirect()->back();
     }
 

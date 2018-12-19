@@ -17,9 +17,11 @@
                         </div>
                     </div>
                     <div class="card-body">
-                        @include('application::components._participant-list')
                         @csrf
+                        @include('application::components._participant-list')
+                        @include('application::components._application-type')
                         @include('application::components._supervisor')
+                        @include('application::components._college-fellow')
                         @include('application::components._travel-information')
                         @include('application::components._financial-aid')
                         @include('application::components._attachment')
