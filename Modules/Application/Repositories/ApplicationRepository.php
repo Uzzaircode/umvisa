@@ -68,14 +68,19 @@ class ApplicationRepository extends AbstractRepository implements ApplicationInt
     {
         $app->update([
             'user_id' => Auth::id(),
-            'title' => $request->title,
+            'title' => $request->title,            
             'venue' => $request->venue,
-            'country' => $request->country,
             'state' => $request->state,
+            'country' => $request->country,
+            'description' => $request->description,
             'event_start_date' => $request->event_start_date,
             'event_end_date' => $request->event_end_date,
             'travel_start_date' => $request->travel_start_date,
             'travel_end_date' => $request->travel_end_date,
+            'alternate_email' => $request->alternate_email,
+            'type' => $request->type,
+            'event_type' => $request->event_type,
+            'travel_type' => $request->travel_type
         ]);
     }
 
@@ -196,7 +201,7 @@ class ApplicationRepository extends AbstractRepository implements ApplicationInt
         if ($request->has('submit')) {
             // check for late submission
             $this->checkForLateSubmission($app);
-            $supervisor = $this->getSupervisor($request);            
+            $supervisor = $this->getSupervisor($request);
             $supervisor->notify(new SubmitApplication($app, $user));
             $app->setStatus('Submitted To Supervisor', 'Submitted to ' . $supervisor->profile->title . ' ' . $supervisor->name);
             Session::flash('success', $this->saveMessage);

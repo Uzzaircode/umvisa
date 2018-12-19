@@ -41,19 +41,19 @@
         </div>
         <div class="form-group">
                 <label for="" class="form-label">Event Type<span class="text-danger">*</span></label>
-                <select class="form-control selectize" name="event_type" placeholder="">
+                <select class="form-control " name="event_type" placeholder="">
                         <option value="">Please select</option>                        
-                        <option value="competition">Competition</option>
-                        <option value="conference">Conference</option>
-                        <option value="conventions">Conventions</option>
-                        <option value="exhibitions">Exhibitions</option>
-                        <option value="fairs">Fairs</option>
-                        <option value="networking-events">Networking Events</option>
-                        <option value="seminars">Seminars</option>
-                        <option value="symposium">Symposium</option>
-                        <option value="workshop">Workshop</option>
+                        <option value="competition" {{isset($application) && $application->event_type == 'competition' ? 'selected':null}}>Competition</option>
+                        <option value="conference" {{isset($application) && $application->event_type == 'conference' ? 'selected':null}}>Conference</option>
+                        <option value="conventions" {{isset($application)&& $application->event_type == 'conventions' ? 'selected':null}}>Conventions</option>
+                        <option value="exhibitions" {{isset($application) && $application->event_type == 'exhibitions' ? 'selected':null}}>Exhibitions</option>
+                        <option value="fairs" {{isset($application) && $application->event_type == 'fairs' ? 'selected':null}}>Fairs</option>
+                        <option value="networking-events" {{isset($application) && $application->event_type == 'networking-events' ? 'selected':null}}>Networking Events</option>
+                        <option value="seminars" {{isset($application) && $application->event_type == 'seminars' ? 'selected':null}}>Seminars</option>
+                        <option value="symposium" {{isset($application) && $application->event_type == 'symposium' ? 'selected':null}}>Symposium</option>
+                        <option value="workshop" {{isset($application) && $application->event_type == 'workshop' ? 'selected':null}}>Workshop</option>
                 </select>
-                @include('shared._errors',['entity'=>'event-type'])
+                @include('shared._errors',['entity'=>'event_type'])
         </div>
         <div class="form-group">
                 <label for="" class="form-label">Justifications For Attending The Visit<span class="text-danger">*</span></label>

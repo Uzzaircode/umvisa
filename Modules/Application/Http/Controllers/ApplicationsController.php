@@ -73,10 +73,10 @@ class ApplicationsController extends Controller
         $this->checkForLateSubmission($application);
         $this->hasFinancialAid($request, $application);
         $this->hasParticipants($request, $application);
-        $this->hasAttachments($request, $application);        
+        $this->hasAttachments($request, $application);
         $this->draft($request, $application);
         $this->save($request, $application);
-        $this->checkTravelType($request,$application);
+        $this->checkTravelType($request, $application);
         return redirect()->route('applications.index');
     }
 
@@ -105,12 +105,33 @@ class ApplicationsController extends Controller
 
     public function update(Request $request, $id)
     {
-        $application = $this->application->find($id);
+        $app = $this->application->find($id);
         $this->hasAttachments($request, $app);
         $this->hasFinancialAid($request, $app);
         $this->hasParticipants($request, $app);
-        $this->updateDraft($request, $app);
-        $this->submit($request, $app);        
+        // $this->updateDraft($request,$app);        
+        if ($request->has('draft')) {
+
+            $app->user_id = $this->user->id;
+            $app->title = $request->title;
+            $app->venue = $request->venue;
+            $app->state = $request->state;
+            $app->country = $request->country;
+            $app->description = $request->description;
+            $app->event_start_date = $request->event_start_date;
+            $app->event_end_date = $request->event_end_date;
+            $app->travel_start_date = $request->travel_start_date;
+            $app->travel_end_date = $request->travel_end_date;
+            $app->alternate_email = $request->alternate_email;
+            $app->type = $request->type;
+            $app->event_type = $request->event_type;
+            $app->travel_type = $request->travel_type;
+            $app->save();
+            Session::flash('success', 'Application updated successfully');
+        }
+        if ($request->has('submit')) {
+            $this->submit($request, $app);
+        }
         return redirect()->back();
     }
 

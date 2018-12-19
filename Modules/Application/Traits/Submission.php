@@ -7,6 +7,7 @@ use Modules\Application\Notifications\SubmitApplication;
 use App\User;
 use DB;
 use Carbon\Carbon;
+use Auth;
 
 trait Submission
 {
@@ -87,8 +88,7 @@ trait Submission
     {
         // if update draft
         if ($request->has('draft')) {
-            $this->updateFromRequest($request, $app);
-            $app->save();
+            $this->updateFromRequest($request, $app);            
             Session::flash('success', 'Application information updated successfully');
         }
     }
@@ -111,4 +111,24 @@ trait Submission
     {
         return User::find(19);
     }
+    public function updateFromRequest($request, $app)
+    {
+        $app->update([
+            'user_id' => Auth::id(),
+            'title' => $request->title,
+            'venue' => $request->venue,
+            'state' => $request->state,
+            'country' => $request->country,
+            'description' => $request->description,
+            'event_start_date' => $request->event_start_date,
+            'event_end_date' => $request->event_end_date,
+            'travel_start_date' => $request->travel_start_date,
+            'travel_end_date' => $request->travel_end_date,
+            'alternate_email' => $request->alternate_email,
+            'type' => $request->type,
+            'event_type' => $request->event_type,
+            'travel_type' => $request->travel_type
+        ]);
+    }
+
 }
