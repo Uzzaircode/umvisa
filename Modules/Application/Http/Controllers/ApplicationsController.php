@@ -42,6 +42,8 @@ class ApplicationsController extends Controller
                 'travel_end_date' => $request->travel_end_date,
                 'alternate_email' => $request->alternate_email,
                 'type' => $request->type,
+                'event_type' => $request->event_type,
+                'travel_type' => $request->travel_type
             ];
             return $next($request);
         });
@@ -65,15 +67,16 @@ class ApplicationsController extends Controller
         ]);
     }
 
-    public function store(ApplicationsRequest $request)
+    public function store(Request $request)
     {
         $application = $this->application->create($this->data);
         $this->checkForLateSubmission($application);
         $this->hasFinancialAid($request, $application);
         $this->hasParticipants($request, $application);
-        $this->hasAttachments($request, $application);
+        $this->hasAttachments($request, $application);        
         $this->draft($request, $application);
         $this->save($request, $application);
+        $this->checkTravelType($request,$application);
         return redirect()->route('applications.index');
     }
 

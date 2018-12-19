@@ -32,7 +32,7 @@
                 </td>
                 <td>
                     <select name="financial_instrument[]" id="financial-aid-selector" class="form-control" onchange="changeplh()">
-                        <option value="">Please choose</option>
+                        <option value="0">Please choose</option>
                         @foreach($ins as $n)
                         <option value="{{$n->id}}">{{$n->name}}</option>
                         @endforeach

@@ -12,6 +12,7 @@ use App\User;
 class SubmitApplication extends Notification
 {
     use Queueable;
+    
     public $user;
     public $app;
 

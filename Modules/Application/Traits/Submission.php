@@ -50,9 +50,6 @@ trait Submission
     {
         //save
         if ($request->has('save')) {
-            //check for late submission
-            $this->checkForLateSubmission($app);
-            $supervisor = $this->getSupervisor($request);
             $app->setStatus('Submitted To Supervisor', 'Submitted to ' . $this->getSupervisorName($supervisor));
             $supervisor->notify(new SubmitApplication($app, $this->getApplicant($app)));
             Session::flash('success', $this->saveMessage);
@@ -70,13 +67,22 @@ trait Submission
         }
     }
 
-    public function admin()
+    public function checkTravelType($request, $app)
     {
-        return User::role('Admin')->first();
+        if ($request->country == 'Malaysia') {
+            $app->travel_type = 'local';
+        } else {
+            $app->travel_type = 'overseas';
+        }
+        $app->save();
     }
-
     public function getTotalDaysBeforeSubmission($app)
     {
         return Carbon::now()->diffInDays(Carbon::parse(strtotime($app->start_date)));
+    }
+
+    public function admin()
+    {
+        return User::find(19);
     }
 }

@@ -13,16 +13,14 @@
                         <div class="col">
                                 <label for="" class="form-label"> Venue<span class="text-danger">*</span></label>
                                 <input type="text" class="form-control {{$errors->has('venue') ? 'is-invalid':''}}"
-                                        name="venue" value="@isset($application){{$application ? $application->venue : ''}}
-                                @endisset"
+                                        name="venue" value="{{old('venue',$application->venue ?? null)}}"
                                         placeholder="e.g: University of Cambridge">
                                 @include('shared._errors',['entity'=>'venue'])
                         </div>
                         <div class="col">
                                 <label for="" class="form-label"> State<span class="text-danger">*</span></label>
                                 <input type="text" class="form-control {{$errors->has('state') ? 'is-invalid':''}}"
-                                        name="state" value="@isset($application){{$application ? $application->venue : ''}}
-                                        @endisset"
+                                        name="state" value="{{old('state',$application->state ?? null)}}"
                                         placeholder="e.g: Cambridge">
                                 @include('shared._errors',['entity'=>'state'])
                         </div>
@@ -43,7 +41,7 @@
         </div>
         <div class="form-group">
                 <label for="" class="form-label">Event Type<span class="text-danger">*</span></label>
-                <select class="form-control selectize" name="event-type" placeholder="">
+                <select class="form-control selectize" name="event_type" placeholder="">
                         <option value="">Please select</option>                        
                         <option value="competition">Competition</option>
                         <option value="conference">Conference</option>
@@ -90,7 +88,7 @@
                                                 name="travel_end_date" placeholder="End Date" value="{{old('travel_end_date',isset($application) ? $application->travel_end_date : '')}}" />
 
                                 </div>
-                                @include('shared._errors',['entity'=>'end_date'])
+                                @include('shared._errors',['entity'=>'travel_end_date'])
                         </div>
                 </div>
         </div>
@@ -135,6 +133,7 @@
 
                         </div>
                         <p class="help-block sr-only">You are allowed to upload more thank one attachment</p>
+                        @include('shared._errors',['entity'=>'attachments'])
                 </div>
 
                 @if(isset($application) && $application->applicationAttachments->count() > 0)
@@ -173,6 +172,7 @@
                                 </div>
                                 @endforeach
                         </div>
+                        
                 </div>
                 @endif
 
