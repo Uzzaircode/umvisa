@@ -26,7 +26,7 @@
                         <td>{{ ++$key }}</td>
                         <td>{{str_limit($application->title,$limit = 40,$end = '...')}}</td>
                         <td>{{$application->created_at->toDayDateTimeString()}}</td>
-                        <td><span class="badge badge-{{getApplicationStatusState($application)}}">{{
+                        <td><span class="badge badge-{{getApplicationStatusByName($application->status()->name)}}">{{
                                 strtoupper($application->status()->reason) }}</span></td>
                         <td>
                             @can('view_applications')

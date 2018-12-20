@@ -35,7 +35,7 @@ function getApplicationStatusState($application)
 
 function getApplicationStatusByName($s)
 {
-    switch ($s->name) {
+    switch ($s) {
         case 'Draft':
             return $state = 'success';
             break;
