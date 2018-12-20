@@ -67,9 +67,14 @@ trait Submission
     {
         //save
         if ($request->has('save')) {
-            $app->setStatus('Submitted To Supervisor', 'Submitted to ' . $this->getSupervisorName($supervisor));
+            $supervisor = $this->getSupervisor($request);
+            $app->setStatus('Submitted To Supervisor', 'Submitted to Supervisor');
             $state = DB::table('statuses')->where('model_id', $app->id)->update(['state' => 'success']);
             $supervisor->notify(new SubmitApplication($app, $this->getApplicant($app)));
+            DB::table('application_user')->insert([
+                'application_id' => $app->id,
+                'user_id' => $supervisor->id,
+            ]);
             Session::flash('success', $this->saveMessage);
         }
     }
@@ -96,8 +101,8 @@ trait Submission
 
     public function getSupervisor($request)
     {
-        $supervisor_email = $request->supervisor;
-        return $supervisor = User::where('email', $supervisor_email)->first();
+        $supervisor_email = $request->supervisor;        
+        return $supervisor = User::find($supervisor_email);
     }
 
     public function getSupervisorName($supervisor)
@@ -175,8 +180,8 @@ trait Submission
                 'body' => $request->remark,
             ], Auth::user());
             $deputyDean = $this->getDeputyDean();
-            $app->setStatus('Approved', 'Approved by ' . $this->getDeputyDeanName($deputyDean));
-            $user->notify(new ApproveApplication($app, $user));
+            $app->setStatus('Approved', 'Approved by ' . Auth::user()->profile->title.' '. Auth::user()->name);$state = DB::table('statuses')->where('model_id', $app->id)->update(['state' => 'success']);
+            $app->user->notify(new ApproveApplication($app, Auth::user()));
             Session::flash('success', $this->approveMessage);
         }
         // if reject
@@ -186,6 +191,7 @@ trait Submission
             ], Auth::user());
             $deputyDean = $this->getDeputyDean();
             $app->setStatus('Rejected', 'Rejected by ' . $this->getDeputyDeanName($deputyDean));
+            $state = DB::table('statuses')->where('model_id', $app->id)->update(['state' => 'success']);
             $user->notify(new RejectApplication($app, $user));
             Session::flash('success', $this->rejectMessage);
         }

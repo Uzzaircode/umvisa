@@ -6,6 +6,8 @@ use Illuminate\Bus\Queueable;
 use Illuminate\Notifications\Notification;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
+use Modules\Application\Entities\Application;
+use App\User;
 
 class ApproveApplication extends Notification
 {
@@ -43,8 +45,7 @@ class ApproveApplication extends Notification
     public function toMail($notifiable)
     {
         return (new MailMessage)
-                    ->line('The introduction to the notification.')
-                    ->action('Notification Action', 'https://laravel.com')
+                    ->line('The application '.$this->app->title.' was approved')                    
                     ->line('Thank you for using our application!');
     }
 
