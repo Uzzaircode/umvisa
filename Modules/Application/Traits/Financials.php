@@ -12,9 +12,9 @@ trait Financials
             foreach($request->financial_instrument as $f) {
                 if (!empty($f)) {
                     FinancialAid::create([
-                        'remarks' => $request->remarks[$i],
+                        'remarks' => $request->remarks,
                         'application_id' => $app->id,
-                        'financialinstrument_id' => $request->financial_instrument[$i],
+                        'financialinstrument_id' => $request->financial_instrument,
                     ]);
                 }
             }
