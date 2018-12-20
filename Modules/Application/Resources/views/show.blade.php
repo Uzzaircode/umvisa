@@ -70,11 +70,21 @@
                             @endif
                         </div>
                     </div>
+
+                    <div class="col">
+                        <form action="{{route('create.remarks',['id'=>$application->id])}}" class="" method="POST">                            @csrf
+                            <h4>Recommendations</h4>
+                            @include('application::components._remarks')
+                        </form>
+                    </div>
+
+
                 </div>
-
-
             </div>
 
 
         </div>
-        @endsection
+
+
+    </div>
+    @endsection

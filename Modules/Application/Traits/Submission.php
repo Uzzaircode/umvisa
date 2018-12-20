@@ -3,16 +3,32 @@
 namespace Modules\Application\Traits;
 
 use Session;
-use Modules\Application\Notifications\SubmitApplication;
-use App\User;
-use DB;
 use Carbon\Carbon;
 use Auth;
+use Illuminate\Notifications\Notification;
+use Modules\Application\Notifications\SubmitApplication;
+use Modules\Application\Notifications\ApproveApplication;
+use App\User;
+use DB;
+use Illuminate\Support\Facades\URL;
+use Modules\Application\Traits\Financials;
+use Modules\Application\Traits\Participants;
+use Modules\Application\Traits\Attachments;
 
 trait Submission
 {
-
-    protected $totalDaysBeforeSubmission = '21';
+    protected $modelClassName = "Modules\Application\Entities\Application";
+    protected $applicationAttachmentModel = "Modules\Application\Entities\ApplicationAttachment";
+    protected $totalDaysBeforeSubmission = 21;
+    protected $attachmentDirectory = 'uploads/applicationsattachments';
+    protected $draft;
+    protected $draftMessage = 'Application created successfully';
+    protected $saveMessage = 'Your application has been saved and sent to Immediate Supervisor';
+    protected $updateMessage = 'Application details has been updated';
+    protected $submitSupervisorMessage = "Submitted to Supervisor";
+    protected $successRemarkMessage = "Your remark has been saved";
+    protected $approveMessage = "The application has been approved";
+    protected $rejectMessage = "The application has been rejected";
 
     public function checkForLateSubmission($app)
     {
@@ -69,7 +85,12 @@ trait Submission
             $supervisor = $this->getSupervisor($request);
             $supervisor->notify(new SubmitApplication($app, $user));
             $app->setStatus('Submitted To Supervisor', 'Submitted to ' . $supervisor->profile->title . ' ' . $supervisor->name);
-            Session::flash('success', $this->saveMessage);
+            $state = DB::table('statuses')->where('model_id', $app->id)->update(['state' => 'success']);
+            DB::table('application_user')->insert([
+                'application_id' => $app->id,
+                'user_id' => $supervisor->id,
+            ]);
+            Session::flash('success', 'Your application has been sent');
         }
     }
 
@@ -88,7 +109,7 @@ trait Submission
     {
         // if update draft
         if ($request->has('draft')) {
-            $this->updateFromRequest($request, $app);            
+            $this->updateFromRequest($request, $app);
             Session::flash('success', 'Application information updated successfully');
         }
     }
@@ -131,4 +152,59 @@ trait Submission
         ]);
     }
 
+    public function saveRemarks($request, $id)
+    {
+        $app = $this->modelClassName::find($id);
+        
+        // if save remarks
+        if ($request->has('save_remarks')) {
+            $app->comment([
+                'body' => $request->remark,
+            ], Auth::user());
+            // notifies Deputy Dean
+            $deputyDean = $this->getDeputyDean();
+            $deputyDean->notify(new SubmitApplication($app, $this->getApplicant($app)));
+            //Set status
+            $app->setStatus('Submitted To Deputy Dean', 'Submitted to ' . $this->getDeputyDeanName($deputyDean) . '');
+            Session::flash('success', $this->successRemarkMessage);
+        }
+
+        // if approve
+        if ($request->has('approve')) {
+            $app->comment([
+                'body' => $request->remark,
+            ], Auth::user());
+            $deputyDean = $this->getDeputyDean();
+            $app->setStatus('Approved', 'Approved by ' . $this->getDeputyDeanName($deputyDean));
+            $user->notify(new ApproveApplication($app, $user));
+            Session::flash('success', $this->approveMessage);
+        }
+        // if reject
+        if ($request->has('reject')) {
+            $app->comment([
+                'body' => $request->remark,
+            ], Auth::user());
+            $deputyDean = $this->getDeputyDean();
+            $app->setStatus('Rejected', 'Rejected by ' . $this->getDeputyDeanName($deputyDean));
+            $user->notify(new RejectApplication($app, $user));
+            Session::flash('success', $this->rejectMessage);
+        }
+        $url = URL::signedRoute('applications.show', ['id' => $id]);
+        return redirect($url);
+    }
+
+    public function getApplicant($app)
+    {
+        return $app->user;
+    }
+
+    public function getDeputyDeanName($deputyDean)
+    {
+        return $deputyDean->profile->title . ' ' . $deputyDean->name;
+    }
+
+    public function getDeputyDean()
+    {
+        return $this->user->role('Deputy Dean')->get()->first();
+    }
 }

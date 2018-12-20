@@ -137,7 +137,7 @@ class ApplicationsController extends Controller
 
     public function createRemarks(Request $request, $id)
     {
-        return $this->application->saveRemarks($request, $id);
+        return $this->saveRemarks($request, $id);
     }
 
     public function destroy($id)
@@ -165,5 +165,51 @@ class ApplicationsController extends Controller
             return response()->json($data);
         }
     }
+
+    // public function saveRemarks($request, $id)
+    // {
+    //     $app = $this->application->find($id);
+        
+    //     // if save remarks
+    //     if ($request->has('save_remarks')) {
+    //         $app->comment([
+    //             'body' => $request->remark,
+    //         ], Auth::user());
+    //         // notifies Deputy Dean
+    //         $deputyDean = $this->getDeputyDean();
+    //         $deputyDean->notify(new SubmitApplication($app, $this->getApplicant($app)));
+    //         //Set status
+    //         $app->setStatus('Submitted To Deputy Dean', 'Submitted to ' . $this->getDeputyDeanName($deputyDean) . '');
+    //         $state = DB::table('statuses')->where('model_id', $id)->update(['state' => 'success']);
+    //         DB::table('application_user')->insert([
+    //             'application_id' => $app->id,
+    //             'user_id' => $supervisor->id,
+    //         ]);
+    //         Session::flash('success', 'The application has been sent');
+    //     }
+
+    //     // if approve
+    //     if ($request->has('approve')) {
+    //         $app->comment([
+    //             'body' => $request->remark,
+    //         ], Auth::user());
+    //         $deputyDean = $this->getDeputyDean();
+    //         $app->setStatus('Approved', 'Approved by ' . $this->getDeputyDeanName($deputyDean));
+    //         $user->notify(new ApproveApplication($app, $user));
+    //         Session::flash('success', $this->approveMessage);
+    //     }
+    //     // if reject
+    //     if ($request->has('reject')) {
+    //         $app->comment([
+    //             'body' => $request->remark,
+    //         ], Auth::user());
+    //         $deputyDean = $this->getDeputyDean();
+    //         $app->setStatus('Rejected', 'Rejected by ' . $this->getDeputyDeanName($deputyDean));
+    //         $user->notify(new RejectApplication($app, $user));
+    //         Session::flash('success', $this->rejectMessage);
+    //     }
+    //     $url = URL::signedRoute('applications.show', ['id' => $id]);
+    //     return redirect($url);
+    // }
 
 }
