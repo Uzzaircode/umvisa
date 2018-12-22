@@ -129,6 +129,28 @@
             allowClear: true
         }
     });
+    $('.students').select2({
+        placeholder: 'Please Select',
+        theme: 'bootstrap4',
+        ajax: {
+            url: "{{route('load.student')}}",
+            dataType: 'json',
+            delay: 250,
+            processResults: function (data) {
+                return {
+                    results: $.map(data, function (item) {
+                        return {
+                            text: item.MBUT_NAMA,
+                            id: item.id,
+
+                        }
+                    })
+                };
+            },
+            cache: true,
+            allowClear: true
+        }
+    });
 </script>
 <script>
     function changeplh() {

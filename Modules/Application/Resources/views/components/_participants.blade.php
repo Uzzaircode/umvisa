@@ -33,7 +33,8 @@
                     <td>
                         1
                     </td>
-                    <td><input type="text" class="form-control" name="matric_num[]"></td>
+                    <td> 
+                        <select id="" name="matric_num[]" class="form-control students" style="height:50%"></select></td>
                     <td></td>                    
                     <td class="text-center"><a name="remove" id="+p+" class="btn btn-danger remove-participant text-white mx-auto"><i
                                 class="fe fe-trash"></i> Delete</a></td>

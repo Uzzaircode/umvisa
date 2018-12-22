@@ -166,6 +166,15 @@ class ApplicationsController extends Controller
         }
     }
 
+    public function loadStudents(Request $request)
+    {
+        if ($request->has('q')) {
+            $search = $request->q;
+            $data = DB::table('user_student')->where('PBP_NODAFTAR','LIKE', $search)->get();
+            return response()->json($data);
+        }
+    }
+
     // public function saveRemarks($request, $id)
     // {
     //     $app = $this->application->find($id);

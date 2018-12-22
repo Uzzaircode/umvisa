@@ -9,7 +9,7 @@ trait Financials
     public function hasFinancialAid($request, $app)
     {
         $count = count($request->financial_instrument);
-
+        dd($count);
         if (!empty($request->financial_instrument)) {
             for ($i = 0; $i < $count; $i++) {
                 $data[] = array(
